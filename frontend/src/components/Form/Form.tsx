@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -12,7 +12,7 @@ import { useAppDispatch } from '../../hooks';
 export default function Form() {
   const [inputState, setInputState] = useState<FormInput>({
     title: '',
-    amount: '',
+    amount: 0,
     date: new Date(),
     category: '',
     description: '',
@@ -24,27 +24,34 @@ export default function Form() {
 
   const handleInput =
     (name: string) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    (
+      e: React.ChangeEvent<
+        HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+      >
+    ) => {
       setInputState({ ...inputState, [name]: e.target.value });
     };
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    await addIncomeMutation(inputState)
-      .unwrap()
-      .then(() =>
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      try {
+        const result = await addIncomeMutation(inputState).unwrap();
+        // Handle the result if needed
+        console.log('Mutation result:', result);
         setInputState({
           title: '',
-          amount: '',
+          amount: 0,
           date: new Date(),
           category: '',
           description: '',
-        })
-      )
-      .catch((error: Error) => {
-        throw new Error(`${error}`);
-      });
-  }
+        });
+      } catch (error) {
+        console.error('Error adding income:', error);
+      }
+    },
+    [addIncomeMutation, inputState]
+  );
 
   if (isError && error) {
     return <div>{error.toString()}</div>;
@@ -100,6 +107,17 @@ export default function Form() {
             </option>
           ))}
         </select>
+      </div>
+      <div className='input-control'>
+        <textarea
+          name='description'
+          value={description}
+          placeholder='Add A Reference'
+          id='description'
+          cols={30}
+          rows={4}
+          onChange={handleInput('description')}
+        ></textarea>
       </div>
       <div className='submit-btn'>
         <button>Add Income</button>
