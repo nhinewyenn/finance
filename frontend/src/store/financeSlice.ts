@@ -1,11 +1,12 @@
 /** @format */
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BASE_URL } from '../store';
 
 export const financeAPI = createApi({
   reducerPath: 'financeAPI',
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5173/api/v1/' }),
+  tagTypes: ['Income', 'Expense'],
   endpoints: (builder) => ({
     getIncomes: builder.query({
       query: () => 'get-incomes',
@@ -18,8 +19,24 @@ export const financeAPI = createApi({
       }),
     }),
     deleteIncome: builder.mutation({
-      query: (id: string) => ({
+      query: (id) => ({
         url: `delete-income/${id}`,
+        method: 'DELETE',
+      }),
+    }),
+    getExpenses: builder.query({
+      query: () => 'get-expenses',
+    }),
+    addExpense: builder.mutation({
+      query: (expense) => ({
+        url: 'add-expense',
+        method: 'POST',
+        body: expense,
+      }),
+    }),
+    deleteExpense: builder.mutation({
+      query: (id) => ({
+        url: `delete-expense/${id}`,
         method: 'DELETE',
       }),
     }),
@@ -30,4 +47,7 @@ export const {
   useGetIncomesQuery,
   useAddIncomeMutation,
   useDeleteIncomeMutation,
+  useGetExpensesQuery,
+  useAddExpenseMutation,
+  useDeleteExpenseMutation,
 } = financeAPI;

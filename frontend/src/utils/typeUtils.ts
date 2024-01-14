@@ -1,16 +1,8 @@
 /** @format */
 
-export type Income = {
+export type FormInput = {
   title: string;
-  amount: number;
-  date: Date;
-  category: string;
-  description: string;
-};
-
-export type Expense = {
-  title: string;
-  amount: number;
+  amount: string;
   date: Date;
   category: string;
   description: string;

@@ -1,13 +1,15 @@
 /** @format */
 
+/** @format */
+
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
-
-export const BASE_URL = 'http://localhost:5000/api/v1';
+import { financeAPI } from './financeSlice';
 
 export const store = configureStore({
-  reducer: {},
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(), //enable caching, polling etc
+  reducer: { [financeAPI.reducerPath]: financeAPI.reducer },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(financeAPI.middleware), //enable caching, polling etc
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
