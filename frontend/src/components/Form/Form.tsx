@@ -7,7 +7,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { optionsCategory } from '../../utils/formOptions';
 import { useAddIncomeMutation } from '../../store/financeSlice';
 import { FormInput } from '../../utils/typeUtils';
-import { useAppDispatch } from '../../hooks';
+import Button from '../Button/Button';
+import { plus } from '../../utils/Icon';
 
 export default function Form() {
   const [inputState, setInputState] = useState<FormInput>({
@@ -20,7 +21,6 @@ export default function Form() {
 
   const [addIncomeMutation, { isError, error }] = useAddIncomeMutation();
   const { title, amount, date, category, description } = inputState;
-  const dispatch = useAppDispatch();
 
   const handleInput =
     (name: string) =>
@@ -35,6 +35,7 @@ export default function Form() {
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
+
       try {
         const result = await addIncomeMutation(inputState).unwrap();
         // Handle the result if needed
@@ -120,7 +121,14 @@ export default function Form() {
         ></textarea>
       </div>
       <div className='submit-btn'>
-        <button>Add Income</button>
+        <Button
+          name={'Add Income'}
+          icon={plus}
+          bPad={'.8rem 1.6rem'}
+          bRadius={'30px'}
+          bg={'var(--color-accent'}
+          color={'#fff'}
+        />
       </div>
     </FormStyled>
   );

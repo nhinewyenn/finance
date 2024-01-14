@@ -1,6 +1,7 @@
 /** @format */
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { FormInput } from '../utils/typeUtils';
 
 export const financeAPI = createApi({
   reducerPath: 'financeAPI',
@@ -8,11 +9,11 @@ export const financeAPI = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:1000/api/v1/' }),
   tagTypes: ['Income', 'Expense'],
   endpoints: (builder) => ({
-    getIncomes: builder.query<FormData[], void>({
+    getIncomes: builder.query<FormInput[], void>({
       query: () => 'get-incomes',
       providesTags: [{ type: 'Income', id: 'LIST' }],
     }),
-    addIncome: builder.mutation<FormData, void>({
+    addIncome: builder.mutation({
       query: (income) => ({
         url: 'add-income',
         method: 'POST',
@@ -27,11 +28,11 @@ export const financeAPI = createApi({
       }),
       invalidatesTags: [{ type: 'Income', id: 'LIST' }],
     }),
-    getExpenses: builder.query<FormData[], void>({
+    getExpenses: builder.query<FormInput[], void>({
       query: () => 'get-expenses',
       providesTags: [{ type: 'Expense', id: 'LIST' }],
     }),
-    addExpense: builder.mutation<FormData, void>({
+    addExpense: builder.mutation({
       query: (expense) => ({
         url: 'add-expense',
         method: 'POST',
