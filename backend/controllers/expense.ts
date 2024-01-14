@@ -27,7 +27,7 @@ export async function addExpense(req: Request, res: Response) {
     await expense.save();
     res.status(200).json({ message: 'Expense added' });
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Add expense server error' });
   }
 }
 
@@ -37,7 +37,7 @@ export async function getExpenses(req: Request, res: Response) {
     const expense = await ExpenseSchema.find().sort({ createdAt: -1 });
     res.status(200).json(expense);
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Get expense server error' });
   }
 }
 
@@ -47,5 +47,7 @@ export async function deleteExpense(req: Request, res: Response) {
     .then((expense) => {
       res.status(200).json({ message: 'Expense deleted' });
     })
-    .catch((err) => res.status(500).json({ message: 'Server error' }));
+    .catch((err) =>
+      res.status(500).json({ message: 'Delete expense server error' })
+    );
 }
