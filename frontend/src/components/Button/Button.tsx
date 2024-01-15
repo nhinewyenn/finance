@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import styled from 'styled-components';
 
 type ButtonProps = {
-  name: string;
+  name?: string;
   color: string;
   bg: string;
   bPad: string;

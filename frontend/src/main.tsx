@@ -4,14 +4,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import { GlobalStyle } from './styles/GlobalStyle.ts';
-import { ApiProvider } from '@reduxjs/toolkit/query/react';
-import { financeAPI } from './store/financeSlice.ts';
+import { Provider } from 'react-redux';
+import { store } from './store/store.ts';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <GlobalStyle />
-    <ApiProvider api={financeAPI}>
+    <Provider store={store}>
       <App />
-    </ApiProvider>
+    </Provider>
   </React.StrictMode>
 );

@@ -1,11 +1,11 @@
 /** @format */
 
 export const optionsCategory = [
-  { label: 'Salary', value: 'Salary' },
-  { label: 'Freelancing', value: 'Freelancing' },
-  { label: 'Investments', value: 'Investments' },
-  { label: 'Stocks', value: 'Stocks' },
-  { label: 'Bank Transfer', value: 'Bank' },
-  { label: 'Online', value: 'Online' },
-  { label: 'Other', value: 'Other' },
+  { label: 'Salary', value: 'salary' },
+  { label: 'Freelancing', value: 'freelancing' },
+  { label: 'Investments', value: 'investments' },
+  { label: 'Stocks', value: 'stocks' },
+  { label: 'Bank Transfer', value: 'bank' },
+  { label: 'Online', value: 'online' },
+  { label: 'Other', value: 'other' },
 ];

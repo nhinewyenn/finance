@@ -5,13 +5,14 @@ import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { optionsCategory } from '../../utils/formOptions';
-import { useAddIncomeMutation } from '../../store/financeSlice';
+import { useAddIncomeMutation } from '../../store/financeAPI';
 import { FormInput } from '../../utils/typeUtils';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
 
 export default function Form() {
   const [inputState, setInputState] = useState<FormInput>({
+    _id: '',
     title: '',
     amount: 0,
     date: new Date(),
@@ -37,10 +38,9 @@ export default function Form() {
       e.preventDefault();
 
       try {
-        const result = await addIncomeMutation(inputState).unwrap();
-        // Handle the result if needed
-        console.log('Mutation result:', result);
+        await addIncomeMutation(inputState).unwrap();
         setInputState({
+          _id: '',
           title: '',
           amount: 0,
           date: new Date(),
@@ -57,8 +57,6 @@ export default function Form() {
   if (isError && error) {
     return <div>{error.toString()}</div>;
   }
-
-  console.log(title, amount);
 
   return (
     <FormStyled onSubmit={handleSubmit}>

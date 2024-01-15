@@ -4,7 +4,7 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
-import { financeAPI } from './financeSlice';
+import { financeAPI } from './financeAPI';
 
 export const store = configureStore({
   reducer: { [financeAPI.reducerPath]: financeAPI.reducer },

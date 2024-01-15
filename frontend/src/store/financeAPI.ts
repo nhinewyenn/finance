@@ -5,7 +5,6 @@ import { FormInput } from '../utils/typeUtils';
 
 export const financeAPI = createApi({
   reducerPath: 'financeAPI',
-
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:1000/api/v1/' }),
   tagTypes: ['Income', 'Expense'],
   endpoints: (builder) => ({
