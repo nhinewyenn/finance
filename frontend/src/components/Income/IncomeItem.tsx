@@ -22,6 +22,7 @@ import {
   yt,
 } from '../../utils/Icon';
 import Button from '../Button/Button';
+import { dateFormat } from '../../utils/formUtils';
 
 type IncomeItemProps = {
   id: string;
@@ -104,7 +105,7 @@ export default function IncomeItem({
                 {dollar} {amount}
               </p>
               <p>
-                {calendar} {`${date}`}
+                {calendar} {dateFormat(date)}
               </p>
               <p>
                 {comment} {description}

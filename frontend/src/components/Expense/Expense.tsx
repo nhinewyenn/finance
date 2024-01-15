@@ -2,11 +2,39 @@
 
 import styled from 'styled-components';
 import { InnerLayout } from '../../styles/Layout';
+import ExpenseForm from './ExpenseForm';
+import {
+  useDeleteExpenseMutation,
+  useGetExpensesQuery,
+} from '../../store/financeAPI';
+import IncomeItem from '../Income/IncomeItem';
 
 export default function Expense() {
+  const { data: expenses } = useGetExpensesQuery();
+  const [deleteExpense] = useDeleteExpenseMutation();
+
   return (
     <ExpenseStyled>
-      <InnerLayout></InnerLayout>
+      <InnerLayout>
+        <h1>Expenses</h1>
+        <div className='expenses-content'>
+          <div className='form-container'>
+            <ExpenseForm />
+          </div>
+          <div className='expenses'>
+            {expenses?.map((expense) => (
+              <IncomeItem
+                {...expense}
+                key={expense._id}
+                id={expense._id}
+                indicatorColor='var(--color-green)'
+                onDelete={deleteExpense}
+                type={expense.type ?? 'expense'}
+              />
+            ))}
+          </div>
+        </div>
+      </InnerLayout>
     </ExpenseStyled>
   );
 }
@@ -32,10 +60,10 @@ const ExpenseStyled = styled.div`
       color: var(--color-green);
     }
   }
-  .income-content {
+  .expenses-content {
     display: flex;
     gap: 2rem;
-    .incomes {
+    .expenses {
       flex: 1;
     }
   }

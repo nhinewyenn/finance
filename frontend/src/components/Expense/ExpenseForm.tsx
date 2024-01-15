@@ -2,15 +2,14 @@
 
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { optionsCategory } from '../../utils/formOptions';
-import { useAddIncomeMutation } from '../../store/financeAPI';
 import { FormInput } from '../../utils/typeUtils';
+import { useAddExpenseMutation } from '../../store/financeAPI';
+import ReactDatePicker from 'react-datepicker';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
+import { expenseCategory } from '../../utils/formUtils';
 
-export default function Form() {
+export default function ExpenseForm() {
   const [inputState, setInputState] = useState<FormInput>({
     _id: '',
     title: '',
@@ -20,7 +19,7 @@ export default function Form() {
     description: '',
   });
 
-  const [addIncomeMutation, { isError, error }] = useAddIncomeMutation();
+  const [addExpense, { isError, error }] = useAddExpenseMutation();
   const { title, amount, date, category, description } = inputState;
 
   const handleInput =
@@ -38,7 +37,7 @@ export default function Form() {
       e.preventDefault();
 
       try {
-        await addIncomeMutation(inputState).unwrap();
+        await addExpense(inputState).unwrap();
         setInputState({
           _id: '',
           title: '',
@@ -51,35 +50,32 @@ export default function Form() {
         console.error('Error adding income:', error);
       }
     },
-    [addIncomeMutation, inputState]
+    [addExpense, inputState]
   );
 
-  if (isError && error) {
-    return <div>{error.toString()}</div>;
-  }
-
   return (
-    <FormStyled onSubmit={handleSubmit}>
+    <ExpenseFormStyled onSubmit={handleSubmit}>
+      {isError && error && <p className='error'>{error.toString()}</p>}
       <div className='input-control'>
         <input
           type='text'
-          name='title'
-          placeholder='Salary Title'
-          onChange={handleInput('title')}
           value={title}
+          name={'title'}
+          placeholder='Expense Title'
+          onChange={handleInput('title')}
         />
       </div>
       <div className='input-control'>
         <input
-          type='text'
-          name='amount'
-          placeholder='Salary Amount'
-          onChange={handleInput('amount')}
           value={amount}
+          type='text'
+          name={'amount'}
+          placeholder={'Expense Amount'}
+          onChange={handleInput('amount')}
         />
       </div>
       <div className='input-control'>
-        <DatePicker
+        <ReactDatePicker
           id='date'
           placeholderText='Enter a date'
           selected={date}
@@ -100,7 +96,7 @@ export default function Form() {
           <option value='' disabled>
             Select Option
           </option>
-          {optionsCategory.map((option) => (
+          {expenseCategory.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>
@@ -120,7 +116,7 @@ export default function Form() {
       </div>
       <div className='submit-btn'>
         <Button
-          name={'Add Income'}
+          name={'Add Expense'}
           icon={plus}
           bPad={'.8rem 1.6rem'}
           bRadius={'30px'}
@@ -128,11 +124,11 @@ export default function Form() {
           color={'#fff'}
         />
       </div>
-    </FormStyled>
+    </ExpenseFormStyled>
   );
 }
 
-const FormStyled = styled.form`
+const ExpenseFormStyled = styled.form`
   display: flex;
   flex-direction: column;
   gap: 2rem;

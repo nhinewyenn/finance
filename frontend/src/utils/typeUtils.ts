@@ -9,3 +9,5 @@ export type FormInput = {
   description: string;
   type?: 'income' | 'expense';
 };
+
+export type FormInputAmount = number;

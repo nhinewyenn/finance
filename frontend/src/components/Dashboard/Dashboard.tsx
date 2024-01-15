@@ -2,11 +2,20 @@
 
 import styled from 'styled-components';
 import { InnerLayout } from '../../styles/Layout';
+import {
+  useGetExpensesQuery,
+  useGetIncomesQuery,
+} from '../../store/financeAPI';
 
 export default function Dashboard() {
+  const { data: expenses } = useGetExpensesQuery();
+  const { data: income } = useGetIncomesQuery();
+
   return (
     <DashboardStyled>
-      <InnerLayout></InnerLayout>
+      <InnerLayout>
+        <h1>Dashboard</h1>
+      </InnerLayout>
     </DashboardStyled>
   );
 }

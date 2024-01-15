@@ -1,7 +1,12 @@
 /** @format */
 
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { FormInput } from '../utils/typeUtils';
+import {
+  FetchBaseQueryMeta,
+  createApi,
+  fetchBaseQuery,
+} from '@reduxjs/toolkit/query/react';
+import { FormInput, FormInputAmount } from '../utils/typeUtils';
+import { calculateTotal } from '../utils/formUtils';
 
 export const financeAPI = createApi({
   reducerPath: 'financeAPI',
@@ -10,7 +15,7 @@ export const financeAPI = createApi({
   endpoints: (builder) => ({
     getIncomes: builder.query<FormInput[], void>({
       query: () => 'get-incomes',
-      providesTags: [{ type: 'Income', id: 'LIST' }],
+      providesTags: [{ type: 'Income' }],
     }),
     addIncome: builder.mutation({
       query: (income) => ({
@@ -18,18 +23,18 @@ export const financeAPI = createApi({
         method: 'POST',
         body: income,
       }),
-      invalidatesTags: [{ type: 'Income', id: 'LIST' }],
+      invalidatesTags: [{ type: 'Income' }],
     }),
     deleteIncome: builder.mutation({
       query: (id) => ({
         url: `delete-income/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: [{ type: 'Income', id: 'LIST' }],
+      invalidatesTags: (result, _, arg) => [{ type: 'Income', id: arg.id }],
     }),
     getExpenses: builder.query<FormInput[], void>({
       query: () => 'get-expenses',
-      providesTags: [{ type: 'Expense', id: 'LIST' }],
+      providesTags: [{ type: 'Expense' }],
     }),
     addExpense: builder.mutation({
       query: (expense) => ({
@@ -37,14 +42,14 @@ export const financeAPI = createApi({
         method: 'POST',
         body: expense,
       }),
-      invalidatesTags: [{ type: 'Expense', id: 'LIST' }],
+      invalidatesTags: [{ type: 'Expense' }],
     }),
     deleteExpense: builder.mutation({
       query: (id) => ({
         url: `delete-expense/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: [{ type: 'Expense', id: 'LIST' }],
+      invalidatesTags: (result, _, arg) => [{ type: 'Expense', id: arg.id }],
     }),
   }),
 });

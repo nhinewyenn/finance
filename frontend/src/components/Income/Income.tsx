@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 import { InnerLayout } from '../../styles/Layout';
-import Form from '../Form/Form';
+import Form from './IncomeForm';
 import {
   useAddIncomeMutation,
   useDeleteIncomeMutation,
@@ -11,8 +11,8 @@ import {
 import IncomeItem from './IncomeItem';
 
 export default function Income() {
-  const { data: incomes, isFetching, isSuccess } = useGetIncomesQuery();
-  const [addIncome, { isError, error }] = useAddIncomeMutation();
+  const { data: incomes } = useGetIncomesQuery();
+  const [addIncome] = useAddIncomeMutation();
   const [deleteIncome] = useDeleteIncomeMutation();
 
   console.log(incomes);
