@@ -8,14 +8,12 @@ import {
   useGetExpensesQuery,
 } from '../../store/financeAPI';
 import IncomeItem from '../Income/IncomeItem';
+import { useTotalExpense } from '../../utils/useTotal';
 
 export default function Expense() {
   const { data } = useGetExpensesQuery();
   const [deleteExpense] = useDeleteExpenseMutation();
-  const totalExpense = data?.reduce(
-    (total, expense) => total + expense.amount,
-    0
-  );
+  const totalExpense = useTotalExpense(data ?? []);
 
   return (
     <ExpenseStyled>

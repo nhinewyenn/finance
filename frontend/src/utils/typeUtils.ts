@@ -8,6 +8,5 @@ export type FormInput = {
   category: string;
   description: string;
   type?: 'income' | 'expense';
+  createdAt?: Date;
 };
-
-export type FormInputAmount = number;

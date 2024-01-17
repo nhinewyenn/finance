@@ -31,23 +31,28 @@ ChartJs.register(
 
 export default function Chart() {
   const { data: expenses } = useGetExpensesQuery();
-  const { data: income } = useGetIncomesQuery();
+  const { data: incomes } = useGetIncomesQuery();
 
   const data = {
-    labels: income?.map((income) => dateFormat(income.date)),
+    labels: incomes?.map((income) => dateFormat(income.date)),
     datasets: [
       {
-        labels: 'Income',
-        data: [...income?.map((income) => income.amount)],
+        label: 'Income',
+        data: incomes?.map((income) => income.amount),
         backgroundColor: 'green',
+        tension: 0.2,
       },
       {
-        labels: 'Expense',
-        data: [...expenses?.map((expense) => expense.amount)],
+        label: 'Expense',
+        data: expenses?.map((expense) => expense.amount),
         backgroundColor: 'red',
+        tension: 0.2,
       },
     ],
   };
+
+  console.log(data);
+
   return (
     <ChartStyled>
       <Line data={data} />

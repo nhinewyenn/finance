@@ -8,11 +8,12 @@ import {
   useGetIncomesQuery,
 } from '../../store/financeAPI';
 import IncomeItem from './IncomeItem';
+import { useTotalIncome } from '../../utils/useTotal';
 
 export default function Income() {
   const { data } = useGetIncomesQuery();
   const [deleteIncome] = useDeleteIncomeMutation();
-  const totalIncome = data?.reduce((total, income) => total + income.amount, 0);
+  const totalIncome = useTotalIncome(data ?? []);
 
   return (
     <IncomeStyled>
