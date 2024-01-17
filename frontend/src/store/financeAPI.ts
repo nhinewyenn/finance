@@ -1,12 +1,7 @@
 /** @format */
 
-import {
-  FetchBaseQueryMeta,
-  createApi,
-  fetchBaseQuery,
-} from '@reduxjs/toolkit/query/react';
-import { FormInput, FormInputAmount } from '../utils/typeUtils';
-import { calculateTotal } from '../utils/formUtils';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { FormInput } from '../utils/typeUtils';
 
 export const financeAPI = createApi({
   reducerPath: 'financeAPI',

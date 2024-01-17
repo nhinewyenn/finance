@@ -10,19 +10,26 @@ import {
 import IncomeItem from '../Income/IncomeItem';
 
 export default function Expense() {
-  const { data: expenses } = useGetExpensesQuery();
+  const { data } = useGetExpensesQuery();
   const [deleteExpense] = useDeleteExpenseMutation();
+  const totalExpense = data?.reduce(
+    (total, expense) => total + expense.amount,
+    0
+  );
 
   return (
     <ExpenseStyled>
       <InnerLayout>
         <h1>Expenses</h1>
+        <h2 className='total-expense'>
+          Total Expense: <span>${totalExpense}</span>
+        </h2>
         <div className='expenses-content'>
           <div className='form-container'>
             <ExpenseForm />
           </div>
           <div className='expenses'>
-            {expenses?.map((expense) => (
+            {data?.map((expense) => (
               <IncomeItem
                 {...expense}
                 key={expense._id}
@@ -42,7 +49,7 @@ export default function Expense() {
 const ExpenseStyled = styled.div`
   display: flex;
   overflow: auto;
-  .total-income {
+  .total-expense {
     display: flex;
     justify-content: center;
     align-items: center;

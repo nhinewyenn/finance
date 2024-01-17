@@ -4,29 +4,29 @@ import styled from 'styled-components';
 import { InnerLayout } from '../../styles/Layout';
 import Form from './IncomeForm';
 import {
-  useAddIncomeMutation,
   useDeleteIncomeMutation,
   useGetIncomesQuery,
 } from '../../store/financeAPI';
 import IncomeItem from './IncomeItem';
 
 export default function Income() {
-  const { data: incomes } = useGetIncomesQuery();
-  const [addIncome] = useAddIncomeMutation();
+  const { data } = useGetIncomesQuery();
   const [deleteIncome] = useDeleteIncomeMutation();
-
-  console.log(incomes);
+  const totalIncome = data?.reduce((total, income) => total + income.amount, 0);
 
   return (
     <IncomeStyled>
       <InnerLayout>
         <h1>Incomes</h1>
+        <h2 className='total-income'>
+          Total Income: <span>${totalIncome}</span>
+        </h2>
         <div className='income-content'>
           <div className='form-container'>
             <Form />
           </div>
           <div className='incomes'>
-            {incomes?.map((income) => (
+            {data?.map((income) => (
               <IncomeItem
                 {...income}
                 key={income._id}
