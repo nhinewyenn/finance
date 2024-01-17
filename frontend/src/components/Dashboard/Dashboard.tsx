@@ -6,6 +6,7 @@ import {
   useGetExpensesQuery,
   useGetIncomesQuery,
 } from '../../store/financeAPI';
+import Chart from './Chart';
 
 export default function Dashboard() {
   const { data: expenses } = useGetExpensesQuery();
@@ -14,7 +15,12 @@ export default function Dashboard() {
   return (
     <DashboardStyled>
       <InnerLayout>
-        <h1>Dashboard</h1>
+        <h1>All Transactions</h1>
+        <div className='stats-con'>
+          <div className='chart-con'>
+            <Chart />
+          </div>
+        </div>
       </InnerLayout>
     </DashboardStyled>
   );
