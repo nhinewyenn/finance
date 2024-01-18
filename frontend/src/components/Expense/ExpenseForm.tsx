@@ -55,7 +55,7 @@ export default function ExpenseForm() {
 
   return (
     <ExpenseFormStyled onSubmit={handleSubmit}>
-      {isError && error && <p className='error'>{error.toString()}</p>}
+      {isError && error && <p className='error'>All fields are required</p>}
       <div className='input-control'>
         <input
           type='text'

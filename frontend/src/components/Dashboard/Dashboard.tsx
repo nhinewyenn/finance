@@ -47,6 +47,40 @@ export default function Dashboard() {
           </div>
           <div className='history-con'>
             <History />
+            <h2 className='salary-title'>
+              Min <span>Salary</span> Max
+            </h2>
+            <div className='salary-item'>
+              {income && income?.length > 0 && (
+                <>
+                  <p>${Math.min(...income.map((value) => value.amount))}</p>
+                  <p>${Math.max(...income.map((value) => value.amount))}</p>
+                </>
+              )}
+              {!income?.length && (
+                <>
+                  <p>$0</p>
+                  <p>$0</p>
+                </>
+              )}
+            </div>
+            <h2 className='salary-title'>
+              Min <span>Salary</span> Max
+            </h2>
+            <div className='salary-item'>
+              {expenses && expenses?.length > 0 && (
+                <>
+                  <p>${Math.min(...expenses.map((value) => value.amount))}</p>
+                  <p>${Math.max(...expenses.map((value) => value.amount))}</p>
+                </>
+              )}
+              {!expenses?.length && (
+                <>
+                  <p>$0</p>
+                  <p>$0</p>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </InnerLayout>

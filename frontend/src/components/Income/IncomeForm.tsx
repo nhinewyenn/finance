@@ -56,7 +56,7 @@ export default function Form() {
 
   return (
     <FormStyled onSubmit={handleSubmit}>
-      {isError && error && <p className='error'>{error.toString()}</p>}
+      {isError && error && <p className='error'>All fields are required</p>}
       <div className='input-control'>
         <input
           type='text'

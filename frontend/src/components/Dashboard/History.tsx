@@ -1,7 +1,6 @@
 /** @format */
 
 import styled from 'styled-components';
-import useTransactionHistory from '../../utils/useHistory';
 import {
   useGetExpensesQuery,
   useGetIncomesQuery,
@@ -10,7 +9,17 @@ import {
 export default function History() {
   const { data: expenses } = useGetExpensesQuery();
   const { data: income } = useGetIncomesQuery();
-  const [...history] = useTransactionHistory(income, expenses);
+
+  const storedTransactions = [...(income ?? []), ...(expenses ?? [])];
+
+  const history = storedTransactions
+    .filter((transaction) => transaction.createdAt)
+    .sort((a, b) => {
+      const dateA = new Date(a.createdAt ?? new Date());
+      const dateB = new Date(b.createdAt ?? new Date());
+      return dateB.getTime() - dateA.getTime();
+    })
+    .slice(0, 3);
 
   return (
     <HistoryStyled>
@@ -29,7 +38,9 @@ export default function History() {
               color: item.type === 'expense' ? 'red' : 'var(--color-green)',
             }}
           >
-            {item.type === 'expense' ? `-${item.amount}` : `+${item.amount}`}
+            {item.type === 'expense'
+              ? `- $${item.amount <= 0 ? 0 : item.amount}`
+              : `+ $${item.amount <= 0 ? 0 : item.amount}`}
           </p>
         </div>
       ))}

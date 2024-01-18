@@ -17,6 +17,7 @@ import {
   useGetIncomesQuery,
 } from '../../store/financeAPI';
 import { dateFormat } from '../../utils/formUtils';
+import { FormInput } from '../../utils/typeUtils';
 
 ChartJs.register(
   CategoryScale,
@@ -33,25 +34,37 @@ export default function Chart() {
   const { data: expenses } = useGetExpensesQuery();
   const { data: incomes } = useGetIncomesQuery();
 
+  const allData: FormInput[] = [...(incomes || []), ...(expenses || [])];
+
+  const filteredData = allData.filter(
+    (item) => item.amount !== undefined && item.amount !== null
+  );
+
+  // Remove duplicate dates from the filtered data
+  const uniqueDates = Array.from(
+    new Set(filteredData.map((item) => item.date))
+  ).filter((date, index, self) => index === 0 || date !== self[index - 1]);
+
+  // Sort unique dates by date in ascending order
+  uniqueDates.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+
   const data = {
-    labels: incomes?.map((income) => dateFormat(income.date)),
+    labels: uniqueDates.map((date) => dateFormat(date)),
     datasets: [
       {
         label: 'Income',
         data: incomes?.map((income) => income.amount),
         backgroundColor: 'green',
-        tension: 0.2,
+        tension: 0.5,
       },
       {
         label: 'Expense',
         data: expenses?.map((expense) => expense.amount),
         backgroundColor: 'red',
-        tension: 0.2,
+        tension: 0.5,
       },
     ],
   };
-
-  console.log(data);
 
   return (
     <ChartStyled>
