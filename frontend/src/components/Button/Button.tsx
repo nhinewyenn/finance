@@ -10,7 +10,7 @@ type ButtonProps = {
   bPad: string;
   bRadius: string;
   onClick?: () => void;
-  icon: ReactNode;
+  icon?: ReactNode;
 };
 
 export default function Button({

@@ -1,6 +1,5 @@
 /** @format */
 
-import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { FormInput } from '../../utils/typeUtils';
 import { useAddExpenseMutation } from '../../store/financeAPI';
@@ -8,6 +7,7 @@ import ReactDatePicker from 'react-datepicker';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
 import { expenseCategory } from '../../utils/formUtils';
+import { useCallback, useState } from 'react';
 
 export default function ExpenseForm() {
   const [inputState, setInputState] = useState<FormInput>({
@@ -47,7 +47,7 @@ export default function ExpenseForm() {
           description: '',
         });
       } catch (error) {
-        console.error('Error adding income:', error);
+        throw new Error('Error adding expense:' + error);
       }
     },
     [addExpense, inputState]
