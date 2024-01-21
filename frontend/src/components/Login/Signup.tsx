@@ -2,29 +2,22 @@
 
 import styled from 'styled-components';
 import Button from '../Button/Button';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Login() {
-  const loginRef = useRef<HTMLInputElement>(null);
+export default function SignUp() {
+  const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-
-    if (loginRef.current) loginRef.current.value = '';
-    if (passwordRef.current) passwordRef.current.value = '';
-  }
 
   return (
     <LoginStyled onSubmit={() => {}} action='/login'>
-      <h1>Login</h1>
+      <h1>Sign Up</h1>
       <input
         type='text'
         name='username'
         id='username'
         placeholder='username'
-        ref={loginRef}
+        ref={usernameRef}
       />
       <input
         type='password'
@@ -41,9 +34,9 @@ export default function Login() {
         color={'#fff'}
       />
       <hr />
-      <p>Don't have an account?</p>
-      <Link to='/register' style={{ textDecoration: 'none' }}>
-        Sign up
+      <p>Have an account?</p>
+      <Link to='/login' style={{ textDecoration: 'none' }}>
+        Log In
       </Link>
     </LoginStyled>
   );

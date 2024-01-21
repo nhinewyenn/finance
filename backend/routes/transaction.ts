@@ -1,6 +1,6 @@
 /** @format */
 
-import express, { Response, Request } from 'express';
+import express from 'express';
 import { addIncome, deleteIncome, getIncomes } from '../controllers/income';
 import { addExpense, deleteExpense, getExpenses } from '../controllers/expense';
 
