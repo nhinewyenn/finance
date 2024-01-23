@@ -11,7 +11,7 @@ import IncomeItem from './IncomeItem';
 import { useTotalIncome } from '../../utils/useTotal';
 
 export default function Income() {
-  const { data } = useGetIncomesQuery();
+  const { data, isSuccess } = useGetIncomesQuery();
   const [deleteIncome] = useDeleteIncomeMutation();
   const totalIncome = useTotalIncome(data ?? []);
 
@@ -27,16 +27,17 @@ export default function Income() {
             <Form />
           </div>
           <div className='incomes'>
-            {data?.map((income) => (
-              <IncomeItem
-                {...income}
-                key={income._id}
-                id={income._id}
-                indicatorColor='var(--color-green)'
-                onDelete={deleteIncome}
-                type={income.type ?? 'expense'}
-              />
-            ))}
+            {isSuccess &&
+              data.map((income) => (
+                <IncomeItem
+                  {...income}
+                  key={income._id}
+                  id={income._id}
+                  indicatorColor='var(--color-green)'
+                  onDelete={deleteIncome}
+                  type={income.type ?? 'expense'}
+                />
+              ))}
           </div>
         </div>
       </InnerLayout>

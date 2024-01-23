@@ -30,7 +30,7 @@ export default function Login() {
   }
 
   return (
-    <LoginStyled onSubmit={handleSubmit} action='/login'>
+    <LoginStyled onSubmit={handleSubmit}>
       <h1>Login</h1>
       <input
         type='text'

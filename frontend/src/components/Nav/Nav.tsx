@@ -5,6 +5,7 @@ import avatar from '../../img/avatar.png';
 import { signout } from '../../utils/Icon';
 import { menuItems } from '../../utils/menuItems';
 import { Link } from 'react-router-dom';
+import { useGetUserQuery } from '../../store/userAPI';
 
 type NavProps = {
   active: number;
@@ -12,12 +13,18 @@ type NavProps = {
 };
 
 export default function Nav({ active, setActive }: NavProps) {
+  const { data, isLoading, isSuccess } = useGetUserQuery();
+
+  console.log(typeof data);
+  console.log(data);
+
   return (
     <NavStyled>
       <div className='user-container'>
         <img src={avatar} alt='User icon image' />
         <div className='text'>
-          <h2>User</h2>
+          {isLoading && <h2>Loading user</h2>}
+          {/* {isSuccess && data.map((user) => <h2>{user.username}</h2>)} */}
           <p>Your Money</p>
         </div>
       </div>

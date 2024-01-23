@@ -5,11 +5,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { financeAPI } from './financeAPI';
+import { userAPI } from './userAPI';
 
 export const store = configureStore({
-  reducer: { [financeAPI.reducerPath]: financeAPI.reducer },
+  reducer: {
+    [financeAPI.reducerPath]: financeAPI.reducer,
+    [userAPI.reducerPath]: userAPI.reducer,
+  },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(financeAPI.middleware), //enable caching, polling etc
+    getDefaultMiddleware().concat(financeAPI.middleware, userAPI.middleware), //enable caching, polling etc
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
