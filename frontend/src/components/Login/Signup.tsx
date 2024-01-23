@@ -30,6 +30,9 @@ export default function SignUp() {
     }
   }
 
+  console.log(user.username);
+  console.log(user.password);
+
   return (
     <LoginStyled onSubmit={handleSubmit}>
       <h1>Sign Up</h1>

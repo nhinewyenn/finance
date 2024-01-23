@@ -16,7 +16,6 @@ export default function Nav({ active, setActive }: NavProps) {
   const { data, isLoading, isSuccess } = useGetUserQuery();
 
   console.log(typeof data);
-  console.log(data);
 
   return (
     <NavStyled>
@@ -24,7 +23,8 @@ export default function Nav({ active, setActive }: NavProps) {
         <img src={avatar} alt='User icon image' />
         <div className='text'>
           {isLoading && <h2>Loading user</h2>}
-          {/* {isSuccess && data.map((user) => <h2>{user.username}</h2>)} */}
+          {isSuccess &&
+            Array.from(data).map((user) => <h2>{user.username}</h2>)}
           <p>Your Money</p>
         </div>
       </div>
