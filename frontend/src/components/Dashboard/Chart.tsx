@@ -40,12 +40,12 @@ export default function Chart() {
     (item) => item.amount !== undefined && item.amount !== null
   );
 
-  // Remove duplicate dates from the filtered data
+  // Remove dupes from data
   const uniqueDates = Array.from(
     new Set(filteredData.map((item) => item.date))
   ).filter((date, index, self) => index === 0 || date !== self[index - 1]);
 
-  // Sort unique dates by date in ascending order
+  // Sort unique dates in ascending order
   uniqueDates.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
 
   const data = {

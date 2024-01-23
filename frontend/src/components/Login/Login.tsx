@@ -4,19 +4,33 @@ import styled from 'styled-components';
 import Button from '../Button/Button';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useLoginMutation } from '../../store/userAPI';
 
 export default function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  console.log(loginRef.current?.value);
+  const [login] = useLoginMutation();
+  const [user, setUser] = useState({
+    _id: '',
+    username: '',
+    password: '',
+  });
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    alert('submit');
+
+    try {
+      await login(user).unwrap();
+      setUser({
+        _id: '',
+        username: '',
+        password: '',
+      });
+    } catch (error) {
+      console.error('Error with registering user:', error);
+    }
   }
 
   return (
-    <LoginStyled onSubmit={() => {}} action='/login'>
+    <LoginStyled onSubmit={handleSubmit} action='/login'>
       <h1>Login</h1>
       <input
         type='text'
@@ -24,8 +38,13 @@ export default function Login() {
         id='username'
         placeholder='username'
         required
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        value={user.username}
+        onChange={(e) =>
+          setUser((prev) => ({
+            ...prev,
+            username: e.target.value,
+          }))
+        }
       />
       <input
         type='password'
@@ -33,8 +52,13 @@ export default function Login() {
         id='password'
         placeholder='password'
         required
-        onChange={(e) => setPassword(e.target.value)}
-        value={password}
+        onChange={(e) =>
+          setUser((prev) => ({
+            ...prev,
+            password: e.target.value,
+          }))
+        }
+        value={user.password}
       />
       <Button
         name={'Submit'}

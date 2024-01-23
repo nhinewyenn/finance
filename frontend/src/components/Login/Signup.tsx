@@ -4,15 +4,30 @@ import styled from 'styled-components';
 import Button from '../Button/Button';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useRegisterMutation } from '../../store/userAPI';
 
 export default function SignUp() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [register, setRegister] = useState(false);
+  const [user, setUser] = useState({
+    _id: '',
+    username: '',
+    password: '',
+  });
+  // const [register, setRegister] = useState(false);
+  const [registerUser] = useRegisterMutation();
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    alert('submit');
+
+    try {
+      await registerUser(user).unwrap();
+      setUser({
+        _id: '',
+        username: '',
+        password: '',
+      });
+    } catch (error) {
+      console.error('Error with registering user:', error);
+    }
   }
 
   return (
@@ -22,8 +37,13 @@ export default function SignUp() {
         type='text'
         name='username'
         id='username'
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        value={user.username}
+        onChange={(e) =>
+          setUser((prev) => ({
+            ...prev,
+            username: e.target.value,
+          }))
+        }
         placeholder='username'
         required
       />
@@ -31,8 +51,13 @@ export default function SignUp() {
         type='password'
         name='password'
         id='password'
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        value={user.password}
+        onChange={(e) =>
+          setUser((prev) => ({
+            ...prev,
+            password: e.target.value,
+          }))
+        }
         placeholder='password'
         required
       />
