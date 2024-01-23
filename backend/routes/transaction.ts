@@ -1,8 +1,16 @@
 /** @format */
 
 import express from 'express';
-import { addIncome, deleteIncome, getIncomes } from '../controllers/income';
-import { addExpense, deleteExpense, getExpenses } from '../controllers/expense';
+import {
+  addIncome,
+  deleteIncome,
+  getIncomes,
+} from '../controllers/IncomeController';
+import {
+  addExpense,
+  deleteExpense,
+  getExpenses,
+} from '../controllers/ExpenseController';
 
 const router = express.Router();
 
