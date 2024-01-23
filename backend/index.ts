@@ -3,6 +3,8 @@
 import dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
 import express from 'express';
+import { Request, Response, NextFunction } from 'express';
+
 import cors from 'cors';
 import { db } from './db/db';
 import { readdirSync } from 'fs';
@@ -15,9 +17,7 @@ const { PORT } = process.env ?? 8000;
 
 // Middlewares
 app.use(express.json());
-app.use(cors()); // Enable CORS middleware
 app.use(express.urlencoded({ extended: true }));
-
 app.use(
   cookieSession({
     name: 'session',
@@ -27,7 +27,18 @@ app.use(
   })
 );
 
-// Routes
+app.use((_, res: Response, next: NextFunction) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'
+  );
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PUT, DELETE, PATCH, OPTIONS'
+  );
+  next();
+});
 
 // Routes
 readdirSync('./routes').map((route) =>

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import avatar from '../../img/avatar.png';
 import { signout } from '../../utils/Icon';
 import { menuItems } from '../../utils/menuItems';
+import { Link } from 'react-router-dom';
 
 type NavProps = {
   active: number;
@@ -34,9 +35,13 @@ export default function Nav({ active, setActive }: NavProps) {
         ))}
       </ul>
 
-      <div className='bottom-nav'>
+      <Link
+        style={{ textDecoration: 'none' }}
+        className='bottom-nav'
+        to='/login'
+      >
         <li>{signout} Sign Out</li>
-      </div>
+      </Link>
     </NavStyled>
   );
 }

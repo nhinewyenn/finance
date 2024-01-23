@@ -10,3 +10,10 @@ export type FormInput = {
   type?: 'income' | 'expense';
   createdAt?: Date;
 };
+
+export type User = {
+  _id: string;
+  username: string;
+  password: string;
+  createdAt?: Date;
+};

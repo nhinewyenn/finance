@@ -2,18 +2,17 @@
 
 import styled from 'styled-components';
 import Button from '../Button/Button';
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Login() {
-  const loginRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  console.log(loginRef.current?.value);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-
-    if (loginRef.current) loginRef.current.value = '';
-    if (passwordRef.current) passwordRef.current.value = '';
+    alert('submit');
   }
 
   return (
@@ -24,14 +23,18 @@ export default function Login() {
         name='username'
         id='username'
         placeholder='username'
-        ref={loginRef}
+        required
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
       />
       <input
         type='password'
         name='password'
         id='password'
         placeholder='password'
-        ref={passwordRef}
+        required
+        onChange={(e) => setPassword(e.target.value)}
+        value={password}
       />
       <Button
         name={'Submit'}
