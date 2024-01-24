@@ -73,7 +73,7 @@ export default function SignUp() {
       />
       <hr />
       <p>Have an account?</p>
-      <Link to='' style={{ textDecoration: 'none' }}>
+      <Link to='/login' style={{ textDecoration: 'none' }}>
         Log In
       </Link>
     </LoginStyled>

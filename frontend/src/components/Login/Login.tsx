@@ -3,11 +3,15 @@
 import styled from 'styled-components';
 import Button from '../Button/Button';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { useLoginMutation } from '../../store/userAPI';
 
 export default function Login() {
   const [login] = useLoginMutation();
+  const location = useLocation();
+  const params = useParams();
+  console.log(location);
+  console.log(params);
   const [user, setUser] = useState({
     _id: '',
     username: '',
@@ -25,7 +29,7 @@ export default function Login() {
         password: '',
       });
     } catch (error) {
-      console.error('Error with registering user:', error);
+      console.error('Error with logging in:', error);
     }
   }
 

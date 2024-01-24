@@ -24,7 +24,8 @@ export async function registerUser(req: Request, res: Response) {
   const { username, password } = req.body;
 
   try {
-    const hashedPass = await bcrypt.hash(password, 10);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPass = await bcrypt.hash(password, salt);
     const user = await UserSchema.create({
       username,
       password: hashedPass,
@@ -35,7 +36,7 @@ export async function registerUser(req: Request, res: Response) {
       user: {
         id: user._id,
         username: user.username,
-        token: generateToken(user.id),
+        token: generateToken(user._id),
       },
     });
   } catch (error) {
