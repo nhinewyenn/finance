@@ -1,9 +1,8 @@
 /** @format */
 
-import React from 'react';
 import { toastTypes } from '../../utils/Icon';
 
-type ToastProps = {
+export type ToastProps = {
   message: string;
   type: keyof typeof toastTypes;
   id?: string;
