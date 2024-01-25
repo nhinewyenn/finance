@@ -3,15 +3,14 @@
 import styled from 'styled-components';
 import Button from '../Button/Button';
 import React, { useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../store/userAPI';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Login() {
-  const [login] = useLoginMutation();
-  const location = useLocation();
-  const params = useParams();
-  console.log(location);
-  console.log(params);
+  const [login, { isError }] = useLoginMutation();
+  const navigate = useNavigate();
+
   const [user, setUser] = useState({
     _id: '',
     username: '',
@@ -23,12 +22,15 @@ export default function Login() {
 
     try {
       await login(user).unwrap();
+      toast.success('Login success!');
       setUser({
         _id: '',
         username: '',
         password: '',
       });
+      setTimeout(() => navigate('/'), 700);
     } catch (error) {
+      isError && toast.error('Info does not match!');
       console.error('Error with logging in:', error);
     }
   }
@@ -71,6 +73,7 @@ export default function Login() {
         bg={'var(--color-accent'}
         color={'#fff'}
       />
+      <ToastContainer />
       <hr />
       <p>Don't have an account?</p>
       <Link to='/register' style={{ textDecoration: 'none' }}>

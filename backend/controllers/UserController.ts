@@ -24,22 +24,29 @@ export async function registerUser(req: Request, res: Response) {
   const { username, password } = req.body;
 
   try {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPass = await bcrypt.hash(password, salt);
-    const user = await UserSchema.create({
-      username,
-      password: hashedPass,
-    });
+    if (password.length < 8) {
+      return res
+        .status(400)
+        .json({ message: 'Password must be at least 8 characters long' });
+    } else {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPass = await bcrypt.hash(password, salt);
+      const user = await UserSchema.create({
+        username,
+        password: hashedPass,
+      });
 
-    res.status(200).json({
-      message: 'User successfully created',
-      user: {
-        id: user._id,
-        username: user.username,
-        token: generateToken(user._id),
-      },
-    });
+      return res.status(200).json({
+        message: 'User successfully created',
+        user: {
+          id: user._id,
+          username: user.username,
+          token: generateToken(user._id),
+        },
+      });
+    }
   } catch (error) {
+    console.error('Error during registration:', error); // Log detailed error
     res.status(401).json({ message: 'User not created' });
   }
 }

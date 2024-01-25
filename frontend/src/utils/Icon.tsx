@@ -1,19 +1,4 @@
 /** @format */
-import { BsXCircleFill } from 'react-icons/bs';
-import { MdExpandCircleDown } from 'react-icons/md';
-
-export const toastTypes = {
-  success: {
-    icon: <MdExpandCircleDown />,
-    iconClass: 'success-icon',
-    progressBarClass: 'success',
-  },
-  error: {
-    icon: <BsXCircleFill />,
-    iconClass: 'error-icon',
-    progressBarClass: 'error',
-  },
-};
 
 export const dashboard = <i className='fa-solid fa-chart-line' />;
 export const transactions = <i className='fa-solid fa-credit-card'></i>;

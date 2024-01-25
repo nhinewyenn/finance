@@ -6,13 +6,11 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { financeAPI } from './financeAPI';
 import { userAPI } from './userAPI';
-import toastSliceReducer from './toastNotificationSlice';
 
 export const store = configureStore({
   reducer: {
     [financeAPI.reducerPath]: financeAPI.reducer,
     [userAPI.reducerPath]: userAPI.reducer,
-    toasts: toastSliceReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(financeAPI.middleware, userAPI.middleware), //enable caching, polling etc

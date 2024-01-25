@@ -3,29 +3,36 @@
 import styled from 'styled-components';
 import Button from '../Button/Button';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useRegisterMutation } from '../../store/userAPI';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     _id: '',
     username: '',
     password: '',
   });
   // const [register, setRegister] = useState(false);
-  const [registerUser] = useRegisterMutation();
+  const [registerUser, { isError }] = useRegisterMutation();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     try {
       await registerUser(user).unwrap();
+      toast.success('Sign up success!');
       setUser({
         _id: '',
         username: '',
         password: '',
       });
+      setTimeout(() => navigate('/login'), 700);
     } catch (error) {
+      isError && toast.error('Password must be 8 character');
       console.error('Error with registering user:', error);
     }
   }
@@ -71,6 +78,7 @@ export default function SignUp() {
         bg={'var(--color-accent'}
         color={'#fff'}
       />
+      <ToastContainer />
       <hr />
       <p>Have an account?</p>
       <Link to='/login' style={{ textDecoration: 'none' }}>
