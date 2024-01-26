@@ -76,6 +76,7 @@ export default function ExpenseForm() {
       </div>
       <div className='input-control'>
         <ReactDatePicker
+          wrapperClassName='date-picker'
           id='date'
           placeholderText='Enter a date'
           selected={date}
@@ -154,6 +155,10 @@ const ExpenseFormStyled = styled.form`
     input {
       width: 100%;
     }
+  }
+
+  .date-picker {
+    width: 100%;
   }
 
   .selects {

@@ -8,8 +8,20 @@ export const userAPI = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:1000/api/v1/auth/' }),
   tagTypes: ['Register', 'Login'],
   endpoints: (builder) => ({
-    getUser: builder.query<User[], void>({
-      query: () => 'user',
+    getUser: builder.query<User, null>({
+      query() {
+        return {
+          url: 'user',
+          credentials: 'include',
+        };
+      },
+      transformResponse: (result: { data: { user: User } }) => result.data.user,
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(setUser(data));
+        } catch (error) {}
+      },
       providesTags: [{ type: 'Login' }],
     }),
     register: builder.mutation({
@@ -25,7 +37,9 @@ export const userAPI = createApi({
         url: 'login',
         method: 'POST',
         body: user,
+        credentials: 'include',
       }),
+
       invalidatesTags: [{ type: 'Login' }],
     }),
   }),

@@ -15,6 +15,11 @@ export default function Expense() {
   const [deleteExpense] = useDeleteExpenseMutation();
   const totalExpense = useTotalExpense(data ?? []);
 
+  console.log(data);
+  console.log(Array.isArray(data));
+  console.log(typeof data);
+  console.log(useGetExpensesQuery());
+
   return (
     <ExpenseStyled>
       <InnerLayout>

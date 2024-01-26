@@ -1,5 +1,6 @@
 /** @format */
-import express, { Response, Request } from 'express';
+
+import { Response, Request } from 'express';
 import UserSchema from '../models/userModel';
 import bcrypt from 'bcrypt';
 import { generateToken } from '../utils/generateToken';
@@ -22,6 +23,10 @@ export async function getAllUser(req: Request, res: Response) {
  */
 export async function registerUser(req: Request, res: Response) {
   const { username, password } = req.body;
+  const user = await UserSchema.findOne({ username });
+  if (user) {
+    return res.status(400).json({ message: 'Username already exists' });
+  }
 
   try {
     if (password.length < 8) {
@@ -46,7 +51,7 @@ export async function registerUser(req: Request, res: Response) {
       });
     }
   } catch (error) {
-    console.error('Error during registration:', error); // Log detailed error
+    console.error('Error during registration:', error);
     res.status(401).json({ message: 'User not created' });
   }
 }
@@ -55,6 +60,7 @@ export async function registerUser(req: Request, res: Response) {
  * @desc - login
  * @method - post
  */
+
 export async function login(req: Request, res: Response) {
   const { username, password } = req.body;
 
@@ -80,7 +86,7 @@ export async function login(req: Request, res: Response) {
         user: {
           id: user._id,
           username: user.username,
-          token: generateToken(user.id),
+          token: generateToken(user._id),
         },
       });
     } else {
@@ -90,6 +96,7 @@ export async function login(req: Request, res: Response) {
       });
     }
   } catch (error) {
+    console.error('Error logging in:', error);
     res.status(400).json({ message: 'An error occurred with login process' });
   }
 }

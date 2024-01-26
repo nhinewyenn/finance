@@ -7,7 +7,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../store/userAPI';
 import { ToastContainer, toast } from 'react-toastify';
 
-export default function Login() {
+type LoginProps = {
+  setToken: (token: string) => void;
+};
+
+export default function Login({ setToken }: LoginProps) {
   const [login, { isError }] = useLoginMutation();
   const navigate = useNavigate();
 
@@ -22,6 +26,7 @@ export default function Login() {
 
     try {
       await login(user).unwrap();
+      setToken(login.token);
       toast.success('Login success!');
       setUser({
         _id: '',

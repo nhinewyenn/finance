@@ -77,6 +77,7 @@ export default function Form() {
       </div>
       <div className='input-control'>
         <DatePicker
+          wrapperClassName='date-picker'
           id='date'
           placeholderText='Enter a date'
           selected={date}
@@ -151,10 +152,15 @@ const FormStyled = styled.form`
       color: rgba(34, 34, 96, 0.4);
     }
   }
+
   .input-control {
     input {
       width: 100%;
     }
+  }
+
+  .date-picker {
+    width: 100%;
   }
 
   .selects {
