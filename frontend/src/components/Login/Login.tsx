@@ -26,7 +26,6 @@ export default function Login({ setToken }: LoginProps) {
 
     try {
       await login(user).unwrap();
-      setToken(login.token);
       toast.success('Login success!');
       setUser({
         _id: '',

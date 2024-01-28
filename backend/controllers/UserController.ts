@@ -12,9 +12,29 @@ import { generateToken } from '../utils/generateToken';
  * @method - get
  */
 export async function getAllUser(req: Request, res: Response) {
-  // find all user from mongo but exclude the password
-  const user = await UserSchema.find({}).select('-password');
-  res.status(201).json({ success: true, count: user.length, user });
+  try {
+    const users = await UserSchema.find({}, { password: 0 }); // exclude password
+    res.status(200).json({ success: true, count: users.length, users });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to retrieve users' });
+  }
+}
+
+export async function getUserByID(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    const user = await UserSchema.findById(id, { password: 0 });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to retrieve user' });
+  }
 }
 
 /**
@@ -24,6 +44,7 @@ export async function getAllUser(req: Request, res: Response) {
 export async function registerUser(req: Request, res: Response) {
   const { username, password } = req.body;
   const user = await UserSchema.findOne({ username });
+
   if (user) {
     return res.status(400).json({ message: 'Username already exists' });
   }
@@ -36,19 +57,13 @@ export async function registerUser(req: Request, res: Response) {
     } else {
       const salt = await bcrypt.genSalt(10);
       const hashedPass = await bcrypt.hash(password, salt);
-      const user = await UserSchema.create({
+      const user = new UserSchema({
         username,
         password: hashedPass,
       });
 
-      return res.status(200).json({
-        message: 'User successfully created',
-        user: {
-          id: user._id,
-          username: user.username,
-          token: generateToken(user._id),
-        },
-      });
+      await user.save();
+      return res.status(200).json({ message: 'User successfully created' });
     }
   } catch (error) {
     console.error('Error during registration:', error);
@@ -73,28 +88,26 @@ export async function login(req: Request, res: Response) {
   try {
     const user = await UserSchema.findOne({ username });
     if (!user) {
+      return res.status(400).json({ message: 'User not found' });
+    }
+
+    const validPassword = await bcrypt.compare(password, user.password);
+
+    if (!validPassword) {
       return res
         .status(400)
-        .json({ message: 'Login unsuccessful', error: 'User not found' });
+        .json({ message: 'Incorrect username or password' });
     }
 
-    const matchedPass = await bcrypt.compare(password, user.password);
-
-    if (matchedPass) {
-      res.status(200).json({
-        message: 'Login successful',
-        user: {
-          id: user._id,
-          username: user.username,
-          token: generateToken(user._id),
-        },
-      });
-    } else {
-      res.status(400).json({
-        message: 'Login unsuccessful',
-        error: 'Password do not match',
-      });
-    }
+    return res.status(200).json({
+      message: 'Login successful',
+      user: {
+        id: user._id,
+        username: user.username,
+        token: generateToken(user._id),
+      },
+      userID: user._id,
+    });
   } catch (error) {
     console.error('Error logging in:', error);
     res.status(400).json({ message: 'An error occurred with login process' });

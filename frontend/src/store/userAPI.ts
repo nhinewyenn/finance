@@ -20,7 +20,9 @@ export const userAPI = createApi({
         try {
           const { data } = await queryFulfilled;
           dispatch(setUser(data));
-        } catch (error) {}
+        } catch (error) {
+          console.error(error);
+        }
       },
       providesTags: [{ type: 'Login' }],
     }),
