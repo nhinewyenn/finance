@@ -6,14 +6,12 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../store/userAPI';
 import { ToastContainer, toast } from 'react-toastify';
+import { useCookies } from 'react-cookie';
 
-type LoginProps = {
-  setToken: (token: string) => void;
-};
-
-export default function Login({ setToken }: LoginProps) {
+export default function Login() {
   const [login, { isError }] = useLoginMutation();
   const navigate = useNavigate();
+  const [_, setCookies] = useCookies(['access_token']); //eslint-disable-line
 
   const [user, setUser] = useState({
     _id: '',
@@ -23,9 +21,12 @@ export default function Login({ setToken }: LoginProps) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    const loginData = await login(user).unwrap();
 
     try {
-      await login(user).unwrap();
+      setCookies('access_token', loginData.user.token);
+      localStorage.setItem('userID', loginData.userID);
+      localStorage.setItem('access_token', loginData.token);
       toast.success('Login success!');
       setUser({
         _id: '',
@@ -70,13 +71,15 @@ export default function Login({ setToken }: LoginProps) {
         }
         value={user.password}
       />
-      <Button
-        name={'Submit'}
-        bPad={'.8rem 1.6rem'}
-        bRadius={'30px'}
-        bg={'var(--color-accent'}
-        color={'#fff'}
-      />
+      <div className='submit-btn'>
+        <Button
+          name={'Submit'}
+          bPad={'.8rem 1.6rem'}
+          bRadius={'30px'}
+          bg={'var(--color-accent'}
+          color={'#fff'}
+        />
+      </div>
       <ToastContainer />
       <hr />
       <p>Don't have an account?</p>

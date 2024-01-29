@@ -101,11 +101,8 @@ export async function login(req: Request, res: Response) {
 
     return res.status(200).json({
       message: 'Login successful',
-      user: {
-        id: user._id,
-        username: user.username,
-        token: generateToken(user._id),
-      },
+      user,
+      token: generateToken(user._id),
       userID: user._id,
     });
   } catch (error) {

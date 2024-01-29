@@ -27,6 +27,10 @@ export function dateFormat(date: Date) {
   return moment(date).format('DD/MM/YY');
 }
 
-export function uid() {
-  return Date.now().toString(36) + Math.random().toString(36).substring(2);
+export function getToken() {
+  return localStorage.getItem('access_token');
+}
+
+export function useGetUserId() {
+  return localStorage.getItem('userID');
 }

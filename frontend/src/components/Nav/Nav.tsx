@@ -4,9 +4,11 @@ import styled from 'styled-components';
 import avatar from '../../img/avatar.png';
 import { signout } from '../../utils/Icon';
 import { menuItems } from '../../utils/menuItems';
-import { Link } from 'react-router-dom';
-import { useGetUserQuery } from '../../store/userAPI';
-import { User } from '../../utils/typeUtils';
+import { useNavigate } from 'react-router-dom';
+import { useGetUserByIdQuery } from '../../store/userAPI';
+import { useCookies } from 'react-cookie';
+import Button from '../Button/Button';
+import { useGetUserId } from '../../utils/formUtils';
 
 type NavProps = {
   active: number;
@@ -14,30 +16,26 @@ type NavProps = {
 };
 
 export default function Nav({ active, setActive }: NavProps) {
-  const { data, isLoading, isSuccess, isError } = useGetUserQuery();
+  const userId = useGetUserId();
 
-  console.log(data);
-  console.log(Array.isArray(data));
-  console.log(typeof data);
-  console.log(useGetUserQuery());
+  const { data, isLoading, isSuccess } = useGetUserByIdQuery(userId!);
+  const [_, setCookies] = useCookies(); //eslint-disable-line
+  const navigate = useNavigate();
+
+  function logout() {
+    setCookies('access_token', '');
+    localStorage.removeItem('userID');
+    localStorage.removeItem('access_token');
+    navigate('/login');
+  }
 
   return (
     <NavStyled>
       <div className='user-container'>
         <img src={avatar} alt='User icon image' />
         <div className='text'>
-          {isLoading ? (
-            <h2>Loading user</h2>
-          ) : (
-            isSuccess && (
-              <ul>
-                {data?.user.map((user: User) => (
-                  <li key={user._id}>{user.username},</li>
-                ))}
-              </ul>
-            )
-          )}
-          <h2>User</h2>
+          {isLoading && <h2>Loading user...</h2>}
+          {isSuccess && <h2 key={data.user._id}>Hi {data.user.username}!</h2>}
           <p>Your Money</p>
         </div>
       </div>
@@ -55,13 +53,16 @@ export default function Nav({ active, setActive }: NavProps) {
         ))}
       </ul>
 
-      <Link
-        style={{ textDecoration: 'none' }}
-        className='bottom-nav'
-        to='/login'
-      >
-        <li>{signout} Sign Out</li>
-      </Link>
+      <form className='submit-btn' onSubmit={logout}>
+        <Button
+          icon={signout}
+          name={'Sign Out'}
+          bPad={'.8rem 1.6rem'}
+          bRadius={'30px'}
+          bg={'var(--color-accent'}
+          color={'#fff'}
+        />
+      </form>
     </NavStyled>
   );
 }
@@ -139,6 +140,15 @@ const NavStyled = styled.nav`
       height: 100%;
       background: #222260;
       border-radius: 0 10px 10px 0;
+    }
+  }
+
+  .submit-btn {
+    button {
+      box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+      &:hover {
+        background: var(--color-green) !important;
+      }
     }
   }
 `;

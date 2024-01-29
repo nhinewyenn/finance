@@ -10,7 +10,12 @@ import { db } from './db/db';
 import { readdirSync } from 'fs';
 import cookieSession from 'cookie-session';
 import { notFound, errorHandler } from './controllers/errorMiddleware';
-import { getAllUser, login, registerUser } from './controllers/UserController';
+import {
+  getAllUser,
+  getUserByID,
+  login,
+  registerUser,
+} from './controllers/UserController';
 
 const app = express();
 const { PORT } = process.env ?? 8000;
@@ -35,6 +40,7 @@ readdirSync('./routes').map((route) =>
 
 // Login and register route
 app.get('/api/v1/auth/user', getAllUser);
+app.get('/api/v1/auth/user/:id', getUserByID);
 app.post('/api/v1/auth/login', login);
 app.post('/api/v1/auth/register', registerUser);
 

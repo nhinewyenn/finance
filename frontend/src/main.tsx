@@ -9,6 +9,7 @@ import { store } from './store/store.ts';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Login from './components/Login/Login.tsx';
 import SignUp from './components/Login/Signup.tsx';
+import { CookiesProvider } from 'react-cookie';
 
 const router = createBrowserRouter([
   {
@@ -28,8 +29,10 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <GlobalStyle />
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
+    <CookiesProvider defaultSetOptions={{ path: '/' }}>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </CookiesProvider>
   </React.StrictMode>
 );
