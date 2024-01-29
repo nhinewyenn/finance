@@ -1,7 +1,7 @@
 /** @format */
 
 import styled from 'styled-components';
-import avatar from '../../img/avatar.png';
+import avatar from '../../img/blank-avatar-photo-place-holder-600nw-1114445501.webp';
 import { signout } from '../../utils/Icon';
 import { menuItems } from '../../utils/menuItems';
 import { useNavigate } from 'react-router-dom';
@@ -34,9 +34,9 @@ export default function Nav({ active, setActive }: NavProps) {
       <div className='user-container'>
         <img src={avatar} alt='User icon image' />
         <div className='text'>
-          {isLoading && <h2>Loading user...</h2>}
-          {isSuccess && <h2 key={data.user._id}>Hi {data.user.username}!</h2>}
-          <p>Your Money</p>
+          {isLoading && <h3>Loading user...</h3>}
+          {isSuccess && <h3 key={data.user._id}>Hi {data.user.username}!</h3>}
+          <p>Your Money Overview</p>
         </div>
       </div>
 

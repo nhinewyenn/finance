@@ -17,3 +17,8 @@ export type User = {
   password: string;
   createdAt?: Date;
 };
+
+export type UserApiResponse = {
+  success: boolean;
+  user: User;
+};

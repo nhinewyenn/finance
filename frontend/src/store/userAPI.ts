@@ -1,10 +1,8 @@
 /** @format */
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { User } from '../utils/typeUtils';
+import { UserApiResponse } from '../utils/typeUtils';
 import { getToken } from '../utils/formUtils';
-
-console.log(localStorage.getItem('access_token'));
 
 export const userAPI = createApi({
   reducerPath: 'userAPI',
@@ -32,7 +30,7 @@ export const userAPI = createApi({
       }),
       invalidatesTags: [{ type: 'Login' }],
     }),
-    getUserById: builder.query<User, string>({
+    getUserById: builder.query<UserApiResponse, string>({
       query: (id) => `user/${id}`,
       providesTags: (result, error, id) => [{ type: 'Login', id }],
     }),
