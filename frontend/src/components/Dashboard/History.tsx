@@ -50,6 +50,7 @@ export default function History() {
 
 const HistoryStyled = styled.div`
   display: flex;
+  margin-bottom: 3rem;
   flex-direction: column;
   gap: 1rem;
   .history-item {

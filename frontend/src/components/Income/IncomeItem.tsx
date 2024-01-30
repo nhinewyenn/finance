@@ -150,7 +150,7 @@ const IncomeItemStyled = styled.div<{ indicator: string }>`
     justify-content: center;
     border: 2px solid #ffffff;
     i {
-      font-size: 2.6rem;
+      font-size: 2.5rem;
     }
   }
 
@@ -159,6 +159,7 @@ const IncomeItemStyled = styled.div<{ indicator: string }>`
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
+    border: 1px solid blue;
     h5 {
       font-size: 1.3rem;
       padding-left: 2rem;
@@ -178,6 +179,7 @@ const IncomeItemStyled = styled.div<{ indicator: string }>`
 
     .inner-content {
       display: flex;
+      border: 1px solid red;
       justify-content: space-between;
       align-items: center;
       .text {
@@ -192,6 +194,17 @@ const IncomeItemStyled = styled.div<{ indicator: string }>`
           opacity: 0.8;
         }
       }
+    }
+  }
+
+  @media (max-width: 1450px) {
+    .icon {
+      width: 50px;
+      height: 50px;
+    }
+
+    .text p {
+      font-size: 1.2rem;
     }
   }
 `;

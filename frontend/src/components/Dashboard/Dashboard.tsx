@@ -48,7 +48,7 @@ export default function Dashboard() {
           <div className='history-con'>
             <History />
             <h2 className='salary-title'>
-              Min <span>Salary</span> Max
+              Min <span>Income</span> Max
             </h2>
             <div className='salary-item'>
               {income && income?.length > 0 && (
@@ -65,7 +65,7 @@ export default function Dashboard() {
               )}
             </div>
             <h2 className='salary-title'>
-              Min <span>Salary</span> Max
+              Min <span>Expense</span> Max
             </h2>
             <div className='salary-item'>
               {expenses && expenses?.length > 0 && (
@@ -160,6 +160,24 @@ const DashboardStyled = styled.div`
         p {
           font-weight: 600;
           font-size: 1.6rem;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 1300px) {
+    .amount-con {
+      .income,
+      .expense,
+      .balance {
+        p {
+          font-size: 2rem;
+          border: 1px solid red;
+          font-weight: 700;
+        }
+
+        h2 {
+          font-size: 1.3rem;
         }
       }
     }

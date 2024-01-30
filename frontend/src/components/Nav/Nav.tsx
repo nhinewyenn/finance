@@ -36,7 +36,7 @@ export default function Nav({ active, setActive }: NavProps) {
         <div className='text'>
           {isLoading && <h3>Loading user...</h3>}
           {isSuccess && <h3 key={data.user._id}>Hi {data.user.username}!</h3>}
-          <p>Your Money Overview</p>
+          <p>Overview</p>
         </div>
       </div>
 
@@ -69,7 +69,7 @@ export default function Nav({ active, setActive }: NavProps) {
 
 const NavStyled = styled.nav`
   padding: 2rem 1.5rem;
-  width: 374px;
+  width: 350px;
   height: 100%;
   background: rgba(252, 246, 249, 0.78);
   border: 3px solid #ffffff;
@@ -150,5 +150,9 @@ const NavStyled = styled.nav`
         background: var(--color-green) !important;
       }
     }
+  }
+
+  @media (max-width: 1350px) {
+    width: 325px;
   }
 `;

@@ -15,11 +15,6 @@ export default function Expense() {
   const [deleteExpense] = useDeleteExpenseMutation();
   const totalExpense = useTotalExpense(data ?? []);
 
-  console.log(data);
-  console.log(Array.isArray(data));
-  console.log(typeof data);
-  console.log(useGetExpensesQuery());
-
   return (
     <ExpenseStyled>
       <InnerLayout>
@@ -38,7 +33,7 @@ export default function Expense() {
                   {...expense}
                   key={expense._id}
                   id={expense._id}
-                  indicatorColor='var(--color-green)'
+                  indicatorColor='var(--color-accent)'
                   onDelete={deleteExpense}
                   type={expense.type ?? 'expense'}
                 />
@@ -68,7 +63,7 @@ const ExpenseStyled = styled.div`
     span {
       font-size: 2.5rem;
       font-weight: 800;
-      color: var(--color-green);
+      color: var(--color-delete);
     }
   }
   .expenses-content {
