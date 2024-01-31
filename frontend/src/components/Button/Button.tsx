@@ -11,6 +11,7 @@ type ButtonProps = {
   bRadius: string;
   onClick?: () => void;
   icon?: ReactNode;
+  className?: string;
 };
 
 export default function Button({
@@ -21,6 +22,7 @@ export default function Button({
   bPad,
   bRadius,
   onClick,
+  className,
 }: ButtonProps) {
   return (
     <ButtonStyled
@@ -31,6 +33,7 @@ export default function Button({
         color: color,
       }}
       onClick={onClick}
+      className={className}
     >
       {icon}
       {name}

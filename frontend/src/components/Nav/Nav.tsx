@@ -153,6 +153,11 @@ const NavStyled = styled.nav`
   }
 
   @media (max-width: 1350px) {
-    width: 325px;
+    width: 315px;
+    .user-container {
+      h3 {
+        font-size: 1.2rem;
+      }
+    }
   }
 `;

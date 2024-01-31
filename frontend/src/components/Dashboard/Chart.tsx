@@ -54,14 +54,9 @@ export default function Chart() {
 
   const datesWithData = filteredData.map((v) => v.date);
 
-  console.log(datesWithData);
-
   // Remove duplicates and maintain order:
   const uniqueDates = Array.from(new Set(datesWithData));
-  console.log(uniqueDates);
-
-  // Sort unique dates in ascending order:
-  uniqueDates.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+  uniqueDates.sort((a, b) => new Date(a).getTime() - new Date(b).getTime()); //sort ascending
 
   const data = {
     labels: uniqueDates.map((date) => dateFormat(date)),

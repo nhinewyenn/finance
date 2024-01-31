@@ -27,19 +27,19 @@ export default function Dashboard() {
             <div className='amount-con'>
               <div className='income'>
                 <h2>Total Income</h2>
-                <p>
+                <p id='income-amount'>
                   {dollar} {totalIncome}
                 </p>
               </div>
               <div className='expense'>
                 <h2>Total Expense</h2>
-                <p>
+                <p id='expense-amount'>
                   {dollar} {totalExpense}
                 </p>
               </div>
               <div className='balance'>
                 <h2>Total Balance</h2>
-                <p>
+                <p id='balance-amount'>
                   {dollar} {totalIncome - totalExpense}
                 </p>
               </div>
@@ -92,6 +92,7 @@ const DashboardStyled = styled.div`
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 2rem;
+
     .chart-con {
       grid-column: 1 / 4;
       height: 400px;
@@ -165,25 +166,21 @@ const DashboardStyled = styled.div`
     }
   }
 
-  @media (max-width: 1300px) {
-    .amount-con {
-      .income,
-      .expense,
-      .balance {
-        p {
-          font-size: 2rem;
-          border: 1px solid red;
-          font-weight: 700;
-        }
+  @media (max-width: 1400px) {
+    #income-amount,
+    #expense-amount,
+    #balance-amount {
+      font-size: 2.25rem;
+    }
+  }
 
-        .balance {
-          p {
-            font-size: 2rem;
-          }
-        }
-        h2 {
-          font-size: 1.3rem;
-        }
+  @media (max-width: 1300px) {
+    .income,
+    .expense,
+    .balance {
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
       }
     }
   }
