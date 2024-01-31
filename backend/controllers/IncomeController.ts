@@ -24,10 +24,12 @@ export async function addIncome(req: Request, res: Response) {
         .json({ message: 'Amount must be a positive value' });
     }
 
+    console.log(income);
+
     await income.save();
     res.status(200).json({ message: 'Income added' });
   } catch (error) {
-    res.status(500).json({ message: 'Add income server error' });
+    res.status(500).json({ message: 'Add income server error', error });
   }
 }
 
@@ -37,7 +39,7 @@ export async function getIncomes(req: Request, res: Response) {
     const income = await IncomeSchema.find().sort({ createdAt: -1 });
     res.status(200).json(income);
   } catch (error) {
-    res.status(500).json({ message: 'Get income server error' });
+    res.status(500).json({ message: 'Get income server error', error });
   }
 }
 

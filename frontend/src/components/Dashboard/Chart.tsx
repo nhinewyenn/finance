@@ -30,22 +30,37 @@ ChartJs.register(
   ArcElement
 );
 
+type Accumulator = { [key: string]: number };
+
 export default function Chart() {
   const { data: expenses } = useGetExpensesQuery();
   const { data: incomes } = useGetIncomesQuery();
 
+  const incomeData = incomes?.reduce((acc: Accumulator, income) => {
+    acc[income.date.toString()] = income.amount;
+    return acc;
+  }, {});
+
+  const expenseData = expenses?.reduce((acc: Accumulator, expense) => {
+    acc[expense.date.toString()] = expense.amount;
+    return acc;
+  }, {});
+
   const allData: FormInput[] = [...(incomes || []), ...(expenses || [])];
 
   const filteredData = allData.filter(
-    (item) => item.amount !== undefined && item.amount !== null
+    (v) => v.amount !== undefined && v.amount !== null && v.amount !== 0
   );
 
-  // Remove dupes from data
-  const uniqueDates = Array.from(
-    new Set(filteredData.map((item) => item.date))
-  ).filter((date, index, self) => index === 0 || date !== self[index - 1]);
+  const datesWithData = filteredData.map((v) => v.date);
 
-  // Sort unique dates in ascending order
+  console.log(datesWithData);
+
+  // Remove duplicates and maintain order:
+  const uniqueDates = Array.from(new Set(datesWithData));
+  console.log(uniqueDates);
+
+  // Sort unique dates in ascending order:
   uniqueDates.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
 
   const data = {
@@ -53,13 +68,13 @@ export default function Chart() {
     datasets: [
       {
         label: 'Income',
-        data: incomes?.map((income) => income.amount),
+        data: uniqueDates.map((date) => incomeData?.[date.toString()] || 0),
         backgroundColor: 'green',
         tension: 0.5,
       },
       {
         label: 'Expense',
-        data: expenses?.map((expense) => expense.amount),
+        data: uniqueDates.map((date) => expenseData?.[date.toString()] || 0),
         backgroundColor: 'red',
         tension: 0.5,
       },

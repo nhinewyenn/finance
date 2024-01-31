@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 import Button from '../Button/Button';
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../store/userAPI';
 import { ToastContainer, toast } from 'react-toastify';
@@ -12,28 +12,22 @@ export default function Login() {
   const [login, { isError }] = useLoginMutation();
   const navigate = useNavigate();
   const [_, setCookies] = useCookies(['access_token']); //eslint-disable-line
-
-  const [user, setUser] = useState({
-    _id: '',
-    username: '',
-    password: '',
-  });
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const loginData = await login(user).unwrap();
+    const loginData = await login({
+      username: usernameRef.current?.value,
+      password: passwordRef.current?.value,
+    }).unwrap();
 
     try {
       setCookies('access_token', loginData.user.token);
       localStorage.setItem('userID', loginData.userID);
       localStorage.setItem('access_token', loginData.token);
       toast.success('Login success!');
-      setUser({
-        _id: '',
-        username: '',
-        password: '',
-      });
-      setTimeout(() => navigate('/'), 700);
+      setTimeout(() => navigate('/'), 500);
     } catch (error) {
       isError && toast.error('Info does not match!');
       console.error('Error with logging in:', error);
@@ -47,29 +41,17 @@ export default function Login() {
         type='text'
         name='username'
         id='username'
+        ref={usernameRef}
         placeholder='username'
         required
-        value={user.username}
-        onChange={(e) =>
-          setUser((prev) => ({
-            ...prev,
-            username: e.target.value,
-          }))
-        }
       />
       <input
         type='password'
         name='password'
         id='password'
+        ref={passwordRef}
         placeholder='password'
         required
-        onChange={(e) =>
-          setUser((prev) => ({
-            ...prev,
-            password: e.target.value,
-          }))
-        }
-        value={user.password}
       />
       <div className='submit-btn'>
         <Button

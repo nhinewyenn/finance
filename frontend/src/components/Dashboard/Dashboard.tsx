@@ -176,6 +176,11 @@ const DashboardStyled = styled.div`
           font-weight: 700;
         }
 
+        .balance {
+          p {
+            font-size: 2rem;
+          }
+        }
         h2 {
           font-size: 1.3rem;
         }

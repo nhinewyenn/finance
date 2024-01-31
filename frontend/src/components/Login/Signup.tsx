@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 import Button from '../Button/Button';
-import { useState } from 'react';
+import { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRegisterMutation } from '../../store/userAPI';
 import { ToastContainer, toast } from 'react-toastify';
@@ -11,34 +11,25 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const [user, setUser] = useState({
-    _id: '',
-    username: '',
-    password: '',
-  });
-  // const [register, setRegister] = useState(false);
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const [registerUser, { isError }] = useRegisterMutation();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     try {
-      await registerUser(user).unwrap();
+      await registerUser({
+        username: usernameRef.current?.value,
+        password: passwordRef.current?.value,
+      }).unwrap();
       toast.success('Sign up success!');
-      setUser({
-        _id: '',
-        username: '',
-        password: '',
-      });
-      setTimeout(() => navigate('/login'), 700);
+      setTimeout(() => navigate('/login'), 500);
     } catch (error) {
       isError && toast.error('Password must be 8 character');
       console.error('Error with registering user:', error);
     }
   }
-
-  console.log(user.username);
-  console.log(user.password);
 
   return (
     <LoginStyled onSubmit={handleSubmit}>
@@ -47,13 +38,7 @@ export default function SignUp() {
         type='text'
         name='username'
         id='username'
-        value={user.username}
-        onChange={(e) =>
-          setUser((prev) => ({
-            ...prev,
-            username: e.target.value,
-          }))
-        }
+        ref={usernameRef}
         placeholder='username'
         required
       />
@@ -61,13 +46,7 @@ export default function SignUp() {
         type='password'
         name='password'
         id='password'
-        value={user.password}
-        onChange={(e) =>
-          setUser((prev) => ({
-            ...prev,
-            password: e.target.value,
-          }))
-        }
+        ref={passwordRef}
         placeholder='password'
         required
       />
