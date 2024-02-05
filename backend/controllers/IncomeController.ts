@@ -43,6 +43,48 @@ export async function getIncomes(req: Request, res: Response) {
   }
 }
 
+export async function updateIncome(req: Request, res: Response) {
+  try {
+    const { title, amount, category, description, date } = req.body;
+    const { id } = req.params;
+    const income = await IncomeSchema.findByIdAndUpdate(
+      id,
+      {
+        title,
+        amount,
+        category,
+        description,
+        date,
+      },
+      { new: true }
+    );
+
+    if (!income) {
+      return res.status(400).json({
+        success: false,
+        message: 'Income not found',
+      });
+    }
+
+    if (amount <= 0 && typeof amount !== 'number') {
+      return res
+        .status(400)
+        .json({ message: 'Amount must be a positive value' });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Income updated successfully',
+      income,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: `Edit income server error`,
+    });
+  }
+}
+
 export async function deleteIncome(req: Request, res: Response) {
   const { id } = req.params;
   IncomeSchema.findByIdAndDelete(id)

@@ -41,6 +41,48 @@ export async function getExpenses(req: Request, res: Response) {
   }
 }
 
+export async function updateExpense(req: Request, res: Response) {
+  try {
+    const { title, amount, category, description, date } = req.body;
+    const { id } = req.params;
+    const income = await ExpenseSchema.findByIdAndUpdate(
+      id,
+      {
+        title,
+        amount,
+        category,
+        description,
+        date,
+      },
+      { new: true }
+    );
+
+    if (!income) {
+      return res.status(400).json({
+        success: false,
+        message: 'Expense not found',
+      });
+    }
+
+    if (amount <= 0 && typeof amount !== 'number') {
+      return res
+        .status(400)
+        .json({ message: 'Amount must be a positive value' });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Expense updated successfully',
+      income,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: `Edit expense server error`,
+    });
+  }
+}
+
 export async function deleteExpense(req: Request, res: Response) {
   const { id } = req.params;
   ExpenseSchema.findByIdAndDelete(id)
