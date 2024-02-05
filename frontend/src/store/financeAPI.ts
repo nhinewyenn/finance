@@ -13,11 +13,21 @@ export const financeAPI = createApi({
       providesTags: [{ type: 'Income' }],
     }),
     addIncome: builder.mutation({
-      query: (income) => ({
+      query: (income: FormInput) => ({
         url: 'add-income',
         method: 'POST',
         body: income,
       }),
+      invalidatesTags: [{ type: 'Income' }],
+    }),
+    updateIncome: builder.mutation({
+      query: ({ _id, ...income }: FormInput) => ({
+        url: `add-income/${_id}`,
+        method: 'PATCH',
+        body: income,
+        credentials: 'same-origin',
+      }),
+      transformResponse: (response: { data: FormInput }) => response.data,
       invalidatesTags: [{ type: 'Income' }],
     }),
     deleteIncome: builder.mutation({
@@ -32,7 +42,7 @@ export const financeAPI = createApi({
       providesTags: [{ type: 'Expense' }],
     }),
     addExpense: builder.mutation({
-      query: (expense) => ({
+      query: (expense: FormInput) => ({
         url: 'add-expense',
         method: 'POST',
         body: expense,
@@ -52,6 +62,7 @@ export const financeAPI = createApi({
 export const {
   useGetIncomesQuery,
   useAddIncomeMutation,
+  useUpdateIncomeMutation,
   useDeleteIncomeMutation,
   useGetExpensesQuery,
   useAddExpenseMutation,

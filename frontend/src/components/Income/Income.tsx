@@ -6,6 +6,7 @@ import Form from './IncomeForm';
 import {
   useDeleteIncomeMutation,
   useGetIncomesQuery,
+  useUpdateIncomeMutation,
 } from '../../store/financeAPI';
 import IncomeItem from './IncomeItem';
 import { useTotalIncome } from '../../utils/useTotal';
@@ -13,6 +14,7 @@ import { useTotalIncome } from '../../utils/useTotal';
 export default function Income() {
   const { data, isSuccess } = useGetIncomesQuery();
   const [deleteIncome] = useDeleteIncomeMutation();
+  const [updateIncome] = useUpdateIncomeMutation();
   const totalIncome = useTotalIncome(data ?? []);
 
   return (
@@ -35,6 +37,7 @@ export default function Income() {
                   id={income._id}
                   indicatorColor='var(--color-green)'
                   onDelete={deleteIncome}
+                  onUpdate={updateIncome}
                   type={income.type ?? 'expense'}
                 />
               ))}

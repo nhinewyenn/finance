@@ -9,6 +9,7 @@ import {
   clothing,
   comment,
   dollar,
+  edit,
   food,
   freelance,
   medical,
@@ -23,6 +24,7 @@ import {
 } from '../../utils/Icon';
 import Button from '../Button/Button';
 import { dateFormat } from '../../utils/formUtils';
+import { FormInput } from '../../utils/typeUtils';
 
 type IncomeItemProps = {
   id: string;
@@ -32,6 +34,7 @@ type IncomeItemProps = {
   title: string;
   description: string;
   onDelete: (id: string) => void;
+  onUpdate: (id: FormInput) => void;
   indicatorColor: string;
   type: 'income' | 'expense';
 };
@@ -44,6 +47,7 @@ export default function IncomeItem({
   category,
   description,
   onDelete,
+  onUpdate,
   type,
   indicatorColor,
 }: IncomeItemProps) {
@@ -112,15 +116,26 @@ export default function IncomeItem({
                 {comment} {description}
               </p>
             </div>
-            <Button
-              className='btn-con'
-              icon={trash}
-              bPad={'1rem'}
-              bRadius={'50%'}
-              bg={'var(--primary-color'}
-              color={'#fff'}
-              onClick={() => onDelete(id)}
-            />
+            <div className='btn-content'>
+              <Button
+                className='btn-con'
+                icon={trash}
+                bPad={'0.9rem'}
+                bRadius={'50%'}
+                bg={'var(--primary-color'}
+                color={'#fff'}
+                onClick={() => onDelete(id)}
+              />
+              <Button
+                className='btn-con'
+                icon={edit}
+                bPad={'0.9rem'}
+                bRadius={'50%'}
+                bg={'var(--primary-color'}
+                color={'#fff'}
+                onClick={() => onUpdate(id)}
+              />
+            </div>
           </div>
         </h5>
       </div>
@@ -174,6 +189,13 @@ const IncomeItemStyled = styled.div<{ indicator: string }>`
         border-radius: 50%;
         background: ${(props) => props.indicator};
       }
+    }
+
+    .btn-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
     }
 
     .inner-content {
