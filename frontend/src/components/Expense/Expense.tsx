@@ -6,14 +6,41 @@ import ExpenseForm from './ExpenseForm';
 import {
   useDeleteExpenseMutation,
   useGetExpensesQuery,
+  useUpdateExpenseMutation,
 } from '../../store/financeAPI';
 import IncomeItem from '../Income/IncomeItem';
 import { useTotalExpense } from '../../utils/useTotal';
+import { useState } from 'react';
+import { FormInput } from '../../utils/typeUtils';
 
 export default function Expense() {
   const { data, isSuccess } = useGetExpensesQuery();
+  const [updateExpense] = useUpdateExpenseMutation();
   const [deleteExpense] = useDeleteExpenseMutation();
   const totalExpense = useTotalExpense(data ?? []);
+  const [selectedExpense, setSelectedExpense] = useState<FormInput | null>(
+    null
+  );
+  const [toggleUpdate, setToggleUpdate] = useState(false);
+
+  async function handleUpdate(id: string) {
+    const expense = data?.find((v) => v._id === id);
+
+    if (expense) {
+      const formattedExpense = {
+        ...expense,
+        date: new Date(expense.date),
+        _id: id,
+      };
+      try {
+        setToggleUpdate(true);
+        await updateExpense(formattedExpense).unwrap();
+        setSelectedExpense(formattedExpense);
+      } catch (error) {
+        console.error('Error updating expense:', error);
+      }
+    }
+  }
 
   return (
     <ExpenseStyled>
@@ -24,7 +51,10 @@ export default function Expense() {
         </h2>
         <div className='expenses-content'>
           <div className='form-container'>
-            <ExpenseForm />
+            <ExpenseForm
+              updateMode={toggleUpdate}
+              selectedExpense={selectedExpense}
+            />
           </div>
           <div className='expenses'>
             {isSuccess &&
@@ -35,6 +65,7 @@ export default function Expense() {
                   id={expense._id}
                   indicatorColor='var(--color-accent)'
                   onDelete={deleteExpense}
+                  onUpdate={handleUpdate}
                   type={expense.type ?? 'expense'}
                 />
               ))}

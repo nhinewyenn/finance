@@ -2,14 +2,25 @@
 
 import styled from 'styled-components';
 import { FormInput } from '../../utils/typeUtils';
-import { useAddExpenseMutation } from '../../store/financeAPI';
+import {
+  useAddExpenseMutation,
+  useUpdateExpenseMutation,
+} from '../../store/financeAPI';
 import ReactDatePicker from 'react-datepicker';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
 import { expenseCategory } from '../../utils/formUtils';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-export default function ExpenseForm() {
+type ExpenseFormProps = {
+  updateMode: boolean;
+  selectedExpense: FormInput | null;
+};
+
+export default function ExpenseForm({
+  updateMode,
+  selectedExpense,
+}: ExpenseFormProps) {
   const [inputState, setInputState] = useState<FormInput>({
     _id: '',
     title: '',
@@ -18,9 +29,25 @@ export default function ExpenseForm() {
     category: '',
     description: '',
   });
-
+  const [updateExpense] = useUpdateExpenseMutation();
   const [addExpense, { isError, error }] = useAddExpenseMutation();
   const { title, amount, date, category, description } = inputState;
+
+  useEffect(() => {
+    // Update form when selectedExpense changes
+    if (selectedExpense) {
+      setInputState(selectedExpense);
+    } else {
+      setInputState({
+        _id: '',
+        title: '',
+        amount: 0,
+        date: new Date(),
+        category: '',
+        description: '',
+      });
+    }
+  }, [selectedExpense, updateMode]);
 
   const handleInput =
     (name: string) =>
@@ -29,7 +56,16 @@ export default function ExpenseForm() {
         HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
       >
     ) => {
-      setInputState({ ...inputState, [name]: e.target.value });
+      try {
+        if (name === 'date') {
+          const selectedDate = new Date(e.target.value);
+          setInputState({ ...inputState, [name]: selectedDate });
+        } else {
+          setInputState({ ...inputState, [name]: e.target.value });
+        }
+      } catch (error) {
+        console.error('Error updating date:', error);
+      }
     };
 
   const handleSubmit = useCallback(
@@ -37,7 +73,13 @@ export default function ExpenseForm() {
       e.preventDefault();
 
       try {
-        await addExpense(inputState).unwrap();
+        if (updateMode) {
+          await updateExpense(inputState).unwrap();
+          // we want to refetch the data right after -> get-expenses payload
+        } else {
+          await addExpense(inputState).unwrap();
+          // this immediately refetch with the get-expenses
+        }
         setInputState({
           _id: '',
           title: '',
@@ -50,7 +92,7 @@ export default function ExpenseForm() {
         throw new Error('Error adding expense:' + error);
       }
     },
-    [addExpense, inputState]
+    [addExpense, inputState, updateExpense, updateMode]
   );
 
   return (
@@ -117,7 +159,7 @@ export default function ExpenseForm() {
       </div>
       <div className='submit-btn'>
         <Button
-          name={'Add Expense'}
+          name={updateMode ? 'Update Expense' : 'Add Expense'}
           icon={plus}
           bPad={'.8rem 1.6rem'}
           bRadius={'30px'}

@@ -27,7 +27,6 @@ export default function Form({ updateMode, selectedIncome }: IncomeFormProps) {
     category: '',
     description: '',
   });
-
   const [updateIncome] = useUpdateIncomeMutation();
   const [addIncome, { isError, error }] = useAddIncomeMutation();
   const { title, amount, date, category, description } = inputState;
@@ -159,7 +158,7 @@ export default function Form({ updateMode, selectedIncome }: IncomeFormProps) {
       </div>
       <div className='submit-btn'>
         <Button
-          name={updateMode ? 'Update income' : 'Add Income'}
+          name={updateMode ? 'Update Income' : 'Add Income'}
           icon={plus}
           bPad={'.8rem 1.6rem'}
           bRadius={'30px'}

@@ -22,12 +22,12 @@ export default function Income() {
   const [toggleUpdate, setToggleUpdate] = useState(false);
 
   async function handleUpdate(id: string) {
-    const incomeToUpdate = data?.find((v) => v._id === id);
+    const income = data?.find((v) => v._id === id);
 
-    if (incomeToUpdate) {
+    if (income) {
       const formattedIncome = {
-        ...incomeToUpdate,
-        date: new Date(incomeToUpdate.date),
+        ...income,
+        date: new Date(income.date),
         _id: id,
       };
       try {
