@@ -75,10 +75,8 @@ export default function ExpenseForm({
       try {
         if (updateMode) {
           await updateExpense(inputState).unwrap();
-          // we want to refetch the data right after -> get-expenses payload
         } else {
           await addExpense(inputState).unwrap();
-          // this immediately refetch with the get-expenses
         }
         setInputState({
           _id: '',
