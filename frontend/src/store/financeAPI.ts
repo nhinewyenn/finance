@@ -28,7 +28,7 @@ export const financeAPI = createApi({
         credentials: 'same-origin',
       }),
       transformResponse: (response) => response,
-      invalidatesTags: [{ type: 'Income' }],
+      invalidatesTags: (result, _, arg) => [{ type: 'Income', id: arg.id }],
     }),
     deleteIncome: builder.mutation({
       query: (id) => ({
@@ -57,7 +57,7 @@ export const financeAPI = createApi({
         credentials: 'same-origin',
       }),
       transformResponse: (response) => response,
-      invalidatesTags: [{ type: 'Income' }],
+      invalidatesTags: (result, _, arg) => [{ type: 'Expense', id: arg.id }],
     }),
     deleteExpense: builder.mutation({
       query: (id) => ({
