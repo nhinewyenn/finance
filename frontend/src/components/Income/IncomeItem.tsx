@@ -24,7 +24,6 @@ import {
 } from '../../utils/Icon';
 import Button from '../Button/Button';
 import { dateFormat } from '../../utils/formUtils';
-import { FormInput } from '../../utils/typeUtils';
 
 type IncomeItemProps = {
   id: string;
@@ -34,7 +33,7 @@ type IncomeItemProps = {
   title: string;
   description: string;
   onDelete: (id: string) => void;
-  onUpdate: (id: FormInput) => void;
+  onUpdate: (id: string) => void;
   indicatorColor: string;
   type: 'income' | 'expense';
 };

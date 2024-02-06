@@ -10,12 +10,35 @@ import {
 } from '../../store/financeAPI';
 import IncomeItem from './IncomeItem';
 import { useTotalIncome } from '../../utils/useTotal';
+import { useState } from 'react';
+import { FormInput } from '../../utils/typeUtils';
 
 export default function Income() {
   const { data, isSuccess } = useGetIncomesQuery();
   const [deleteIncome] = useDeleteIncomeMutation();
   const [updateIncome] = useUpdateIncomeMutation();
   const totalIncome = useTotalIncome(data ?? []);
+  const [selectedIncome, setSelectedIncome] = useState<FormInput | null>(null);
+  const [toggleUpdate, setToggleUpdate] = useState(false);
+
+  async function handleUpdate(id: string) {
+    const incomeToUpdate = data?.find((v) => v._id === id);
+
+    if (incomeToUpdate) {
+      const formattedIncome = {
+        ...incomeToUpdate,
+        date: new Date(incomeToUpdate.date),
+        _id: id,
+      };
+      try {
+        setToggleUpdate(true);
+        await updateIncome(formattedIncome).unwrap();
+        setSelectedIncome(formattedIncome);
+      } catch (error) {
+        console.error('Error updating income:', error);
+      }
+    }
+  }
 
   return (
     <IncomeStyled>
@@ -26,7 +49,7 @@ export default function Income() {
         </h2>
         <div className='income-content'>
           <div className='form-container'>
-            <Form />
+            <Form updateMode={toggleUpdate} selectedIncome={selectedIncome} />
           </div>
           <div className='incomes'>
             {isSuccess &&
@@ -37,7 +60,7 @@ export default function Income() {
                   id={income._id}
                   indicatorColor='var(--color-green)'
                   onDelete={deleteIncome}
-                  onUpdate={updateIncome}
+                  onUpdate={handleUpdate}
                   type={income.type ?? 'expense'}
                 />
               ))}

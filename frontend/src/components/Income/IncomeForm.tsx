@@ -1,16 +1,24 @@
 /** @format */
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { incomeCategory } from '../../utils/formUtils';
-import { useAddIncomeMutation } from '../../store/financeAPI';
+import {
+  useAddIncomeMutation,
+  useUpdateIncomeMutation,
+} from '../../store/financeAPI';
 import { FormInput } from '../../utils/typeUtils';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
 
-export default function Form() {
+type IncomeFormProps = {
+  updateMode: boolean;
+  selectedIncome: FormInput | null;
+};
+
+export default function Form({ updateMode, selectedIncome }: IncomeFormProps) {
   const [inputState, setInputState] = useState<FormInput>({
     _id: '',
     title: '',
@@ -20,8 +28,25 @@ export default function Form() {
     description: '',
   });
 
+  const [updateIncome] = useUpdateIncomeMutation();
   const [addIncome, { isError, error }] = useAddIncomeMutation();
   const { title, amount, date, category, description } = inputState;
+
+  useEffect(() => {
+    // Update form when selectedIncome changes
+    if (selectedIncome) {
+      setInputState(selectedIncome);
+    } else {
+      setInputState({
+        _id: '',
+        title: '',
+        amount: 0,
+        date: new Date(),
+        category: '',
+        description: '',
+      });
+    }
+  }, [selectedIncome, updateMode]);
 
   const handleInput =
     (name: string) =>
@@ -30,7 +55,16 @@ export default function Form() {
         HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
       >
     ) => {
-      setInputState({ ...inputState, [name]: e.target.value });
+      try {
+        if (name === 'date') {
+          const selectedDate = new Date(e.target.value);
+          setInputState({ ...inputState, [name]: selectedDate });
+        } else {
+          setInputState({ ...inputState, [name]: e.target.value });
+        }
+      } catch (error) {
+        console.error('Error updating date:', error);
+      }
     };
 
   const handleSubmit = useCallback(
@@ -38,7 +72,12 @@ export default function Form() {
       e.preventDefault();
 
       try {
-        await addIncome(inputState).unwrap();
+        if (updateMode) {
+          await updateIncome(inputState).unwrap();
+        } else {
+          await addIncome(inputState).unwrap();
+        }
+
         setInputState({
           _id: '',
           title: '',
@@ -48,10 +87,10 @@ export default function Form() {
           description: '',
         });
       } catch (error) {
-        console.error('Error adding income:', error);
+        console.error('Error adding/updating income:', error);
       }
     },
-    [addIncome, inputState]
+    [addIncome, updateIncome, inputState, updateMode]
   );
 
   return (
@@ -80,11 +119,13 @@ export default function Form() {
           wrapperClassName='date-picker'
           id='date'
           placeholderText='Enter a date'
-          selected={date}
+          selected={date ?? selectedIncome?.date ?? new Date()}
           dateFormat='dd/MM/yyyy'
-          onChange={(date) =>
-            setInputState({ ...inputState, date: date ?? new Date() })
-          }
+          onChange={(date) => {
+            if (date && !isNaN(date.getTime())) {
+              setInputState({ ...inputState, date });
+            }
+          }}
         />
       </div>
       <div className='selects input-control'>
@@ -118,7 +159,7 @@ export default function Form() {
       </div>
       <div className='submit-btn'>
         <Button
-          name={'Add Income'}
+          name={updateMode ? 'Update income' : 'Add Income'}
           icon={plus}
           bPad={'.8rem 1.6rem'}
           bRadius={'30px'}

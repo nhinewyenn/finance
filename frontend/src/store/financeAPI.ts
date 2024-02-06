@@ -21,13 +21,13 @@ export const financeAPI = createApi({
       invalidatesTags: [{ type: 'Income' }],
     }),
     updateIncome: builder.mutation({
-      query: ({ _id, ...income }: FormInput) => ({
+      query: ({ _id, ...income }) => ({
         url: `add-income/${_id}`,
         method: 'PATCH',
         body: income,
         credentials: 'same-origin',
       }),
-      transformResponse: (response: { data: FormInput }) => response.data,
+      transformResponse: (response) => response,
       invalidatesTags: [{ type: 'Income' }],
     }),
     deleteIncome: builder.mutation({
@@ -48,6 +48,16 @@ export const financeAPI = createApi({
         body: expense,
       }),
       invalidatesTags: [{ type: 'Expense' }],
+    }),
+    updateExpense: builder.mutation({
+      query: ({ _id, ...income }) => ({
+        url: `add-expense/${_id}`,
+        method: 'PATCH',
+        body: income,
+        credentials: 'same-origin',
+      }),
+      transformResponse: (response) => response,
+      invalidatesTags: [{ type: 'Income' }],
     }),
     deleteExpense: builder.mutation({
       query: (id) => ({
