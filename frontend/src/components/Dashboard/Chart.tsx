@@ -92,6 +92,10 @@ const ChartStyled = styled.div`
   height: 90%;
 
   @media (max-width: 1450px) {
-    height: 70%;
+    height: 75%;
+  }
+
+  @media (max-width: 1295px) {
+    height: 60%;
   }
 `;

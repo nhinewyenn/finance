@@ -63,7 +63,6 @@ export default function Expense() {
                   {...expense}
                   key={expense._id}
                   id={expense._id}
-                  indicatorColor='var(--color-accent)'
                   onDelete={deleteExpense}
                   onUpdate={handleUpdate}
                   type={expense.type ?? 'expense'}

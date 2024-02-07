@@ -58,7 +58,6 @@ export default function Income() {
                   {...income}
                   key={income._id}
                   id={income._id}
-                  indicatorColor='var(--color-green)'
                   onDelete={deleteIncome}
                   onUpdate={handleUpdate}
                   type={income.type ?? 'expense'}

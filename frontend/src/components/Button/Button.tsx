@@ -47,6 +47,7 @@ const ButtonStyled = styled.button`
   font-family: inherit;
   font-size: inherit;
   display: flex;
+  text-align: center;
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;

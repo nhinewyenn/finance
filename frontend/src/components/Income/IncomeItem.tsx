@@ -34,7 +34,6 @@ type IncomeItemProps = {
   description: string;
   onDelete: (id: string) => void;
   onUpdate: (id: string) => void;
-  indicatorColor: string;
   type: 'income' | 'expense';
 };
 
@@ -48,7 +47,6 @@ export default function IncomeItem({
   onDelete,
   onUpdate,
   type,
-  indicatorColor,
 }: IncomeItemProps) {
   function incomeCategoryIcon() {
     switch (category) {
@@ -95,7 +93,7 @@ export default function IncomeItem({
   }
 
   return (
-    <IncomeItemStyled indicator={indicatorColor}>
+    <IncomeItemStyled type={type}>
       <div className='icon'>
         {type === 'expense' ? expenseCategoryIcon() : incomeCategoryIcon()}
       </div>
@@ -142,7 +140,7 @@ export default function IncomeItem({
   );
 }
 
-const IncomeItemStyled = styled.div<{ indicator: string }>`
+const IncomeItemStyled = styled.div<{ type: 'income' | 'expense' }>`
   background: #fcf6f9;
   border: 2px solid #ffffff;
   box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
@@ -155,8 +153,8 @@ const IncomeItemStyled = styled.div<{ indicator: string }>`
   width: 100%;
   color: #222260;
   .icon {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     border-radius: 20px;
     background: #f5f5f5;
     display: flex;
@@ -164,7 +162,7 @@ const IncomeItemStyled = styled.div<{ indicator: string }>`
     justify-content: center;
     border: 2px solid #ffffff;
     i {
-      font-size: 2.5rem;
+      font-size: 2rem;
     }
   }
 
@@ -177,6 +175,7 @@ const IncomeItemStyled = styled.div<{ indicator: string }>`
       font-size: 1.3rem;
       padding-left: 2rem;
       position: relative;
+      color: ${(props) => (props.type === 'expense' ? '#FF0000' : '#42AD00')};
       &::before {
         content: '';
         position: absolute;
@@ -186,15 +185,7 @@ const IncomeItemStyled = styled.div<{ indicator: string }>`
         width: 0.8rem;
         height: 0.8rem;
         border-radius: 50%;
-        background: ${(props) => props.indicator};
       }
-    }
-
-    .btn-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
     }
 
     .inner-content {
@@ -204,7 +195,8 @@ const IncomeItemStyled = styled.div<{ indicator: string }>`
       .text {
         display: flex;
         align-items: center;
-        gap: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1.4rem;
         p {
           display: flex;
           align-items: center;
@@ -216,14 +208,21 @@ const IncomeItemStyled = styled.div<{ indicator: string }>`
     }
   }
 
+  .btn-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
   @media (max-width: 1500px) {
     .icon {
-      width: 50px;
-      height: 50px;
+      width: 70px;
+      height: 70px;
     }
 
     .text p {
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
 
     .btn-con {

@@ -154,7 +154,7 @@ export default function Form({ updateMode, selectedIncome }: IncomeFormProps) {
           cols={30}
           rows={4}
           onChange={handleInput('description')}
-        ></textarea>
+        />
       </div>
       <div className='submit-btn'>
         <Button
@@ -205,7 +205,7 @@ const FormStyled = styled.form`
 
   .selects {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     select {
       color: rgba(34, 34, 96, 0.4);
       &:focus,
@@ -223,4 +223,14 @@ const FormStyled = styled.form`
       }
     }
   }
+
+  @media (max-width: 1300px) {
+  }
 `;
+
+// .input-control {
+//   input,
+//   textarea {
+//     width: 90%;
+//   }
+// }
