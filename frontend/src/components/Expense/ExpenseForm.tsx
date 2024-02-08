@@ -191,6 +191,7 @@ const ExpenseFormStyled = styled.form`
       color: rgba(34, 34, 96, 0.4);
     }
   }
+
   .input-control {
     input {
       width: 100%;
@@ -220,5 +221,9 @@ const ExpenseFormStyled = styled.form`
         background: var(--color-green) !important;
       }
     }
+  }
+
+  @media (max-width: 967px) {
+    display: none;
   }
 `;

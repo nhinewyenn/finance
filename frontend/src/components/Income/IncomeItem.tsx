@@ -34,6 +34,7 @@ type IncomeItemProps = {
   description: string;
   onDelete: (id: string) => void;
   onUpdate: (id: string) => void;
+  onToggle: () => void;
   type: 'income' | 'expense';
 };
 
@@ -46,6 +47,7 @@ export default function IncomeItem({
   description,
   onDelete,
   onUpdate,
+  onToggle,
   type,
 }: IncomeItemProps) {
   function incomeCategoryIcon() {
@@ -130,7 +132,10 @@ export default function IncomeItem({
                 bRadius={'50%'}
                 bg={'var(--primary-color'}
                 color={'#fff'}
-                onClick={() => onUpdate(id)}
+                onClick={() => {
+                  onUpdate(id);
+                  onToggle();
+                }}
               />
             </div>
           </div>

@@ -18,6 +18,7 @@ export const GlobalStyle = createGlobalStyle`
         --color-grey: #aaa;
         --color-accent: #F56692;
         --color-delete: #FF0000;
+        --color-transparent: transparent;
     }
 
     body{
@@ -29,6 +30,10 @@ export const GlobalStyle = createGlobalStyle`
 
     h1, h2, h3, h4, h5, h6{
         color: var(--primary-color);
+    }
+
+    button {
+        cursor: pointer;
     }
 
     .error{

@@ -50,6 +50,5 @@ const ButtonStyled = styled.button`
   text-align: center;
   align-items: center;
   gap: 0.5rem;
-  cursor: pointer;
   transition: all 0.4s ease-in-out;
 `;

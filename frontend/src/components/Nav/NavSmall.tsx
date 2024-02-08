@@ -118,7 +118,6 @@ const NavSmallStyled = styled.nav`
       align-items: center;
       margin: 0.6rem 0;
       font-weight: 500;
-      cursor: pointer;
       transition: all 0.4s ease-in-out;
       color: rgba(34, 34, 96, 0.6);
       padding-left: 1rem;

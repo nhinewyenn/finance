@@ -12,6 +12,9 @@ import IncomeItem from './IncomeItem';
 import { useTotalIncome } from '../../utils/useTotal';
 import { useState } from 'react';
 import { FormInput } from '../../utils/typeUtils';
+import FormModal from './IncomeFormModal';
+import Button from '../Button/Button';
+import { plus } from '../../utils/Icon';
 
 export default function Income() {
   const { data, isSuccess } = useGetIncomesQuery();
@@ -20,6 +23,7 @@ export default function Income() {
   const totalIncome = useTotalIncome(data ?? []);
   const [selectedIncome, setSelectedIncome] = useState<FormInput | null>(null);
   const [toggleUpdate, setToggleUpdate] = useState(false);
+  const [toggleModal, setToggleModal] = useState(false);
 
   async function handleUpdate(id: string) {
     const income = data?.find((v) => v._id === id);
@@ -43,13 +47,30 @@ export default function Income() {
   return (
     <IncomeStyled>
       <InnerLayout>
-        <h1>Incomes</h1>
+        <div className='top-content'>
+          <h1>Incomes</h1>
+          <Button
+            name={'Add income'}
+            icon={plus}
+            bPad={'.8rem 1.6rem'}
+            bRadius={'30px'}
+            bg={'var(--color-transparent'}
+            color={'var(--color-accent'}
+            onClick={() => setToggleModal(true)}
+          />
+        </div>
         <h2 className='total-income'>
           Total Income: <span>${totalIncome}</span>
         </h2>
         <div className='income-content'>
           <div className='form-container'>
             <Form updateMode={toggleUpdate} selectedIncome={selectedIncome} />
+            <FormModal
+              updateMode={toggleUpdate}
+              selectedIncome={selectedIncome}
+              isOpen={toggleModal}
+              onClose={() => setToggleModal(false)}
+            />
           </div>
           <div className='incomes'>
             {isSuccess &&
@@ -61,6 +82,7 @@ export default function Income() {
                   onDelete={deleteIncome}
                   onUpdate={handleUpdate}
                   type={income.type ?? 'expense'}
+                  onToggle={() => setToggleModal(true)}
                 />
               ))}
           </div>
@@ -73,6 +95,15 @@ export default function Income() {
 const IncomeStyled = styled.div`
   display: flex;
   overflow: auto;
+
+  .top-content {
+    display: flex;
+    justify-content: space-between;
+    button {
+      display: none;
+    }
+  }
+
   .total-income {
     display: flex;
     justify-content: center;
@@ -91,11 +122,27 @@ const IncomeStyled = styled.div`
       color: var(--color-green);
     }
   }
+
   .income-content {
     display: flex;
     gap: 2rem;
     .incomes {
       flex: 1;
+    }
+  }
+
+  @media (max-width: 1000px) {
+    .income-content {
+      gap: 1.5rem;
+    }
+  }
+
+  @media (max-width: 967px) {
+    .top-content {
+      button {
+        display: block;
+        border: 2px solid #f56692;
+      }
     }
   }
 `;

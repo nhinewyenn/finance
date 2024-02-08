@@ -224,13 +224,7 @@ const FormStyled = styled.form`
     }
   }
 
-  @media (max-width: 1300px) {
+  @media (max-width: 967px) {
+    display: none;
   }
 `;
-
-// .input-control {
-//   input,
-//   textarea {
-//     width: 90%;
-//   }
-// }

@@ -12,16 +12,19 @@ import IncomeItem from '../Income/IncomeItem';
 import { useTotalExpense } from '../../utils/useTotal';
 import { useState } from 'react';
 import { FormInput } from '../../utils/typeUtils';
+import Button from '../Button/Button';
+import { plus } from '../../utils/Icon';
 
 export default function Expense() {
   const { data, isSuccess } = useGetExpensesQuery();
   const [updateExpense] = useUpdateExpenseMutation();
   const [deleteExpense] = useDeleteExpenseMutation();
   const totalExpense = useTotalExpense(data ?? []);
+  const [toggleModal, setToggleModal] = useState(false);
+  const [toggleUpdate, setToggleUpdate] = useState(false);
   const [selectedExpense, setSelectedExpense] = useState<FormInput | null>(
     null
   );
-  const [toggleUpdate, setToggleUpdate] = useState(false);
 
   async function handleUpdate(id: string) {
     const expense = data?.find((v) => v._id === id);
@@ -45,7 +48,18 @@ export default function Expense() {
   return (
     <ExpenseStyled>
       <InnerLayout>
-        <h1>Expenses</h1>
+        <div className='top-content'>
+          <h1>Expenses</h1>
+          <Button
+            name={'Add expense'}
+            icon={plus}
+            bPad={'.8rem 1.6rem'}
+            bRadius={'30px'}
+            bg={'var(--color-transparent'}
+            color={'var(--color-accent'}
+            onClick={() => setToggleModal(true)}
+          />
+        </div>
         <h2 className='total-expense'>
           Total Expense: <span>${totalExpense}</span>
         </h2>
@@ -66,6 +80,7 @@ export default function Expense() {
                   onDelete={deleteExpense}
                   onUpdate={handleUpdate}
                   type={expense.type ?? 'expense'}
+                  onToggle={() => setToggleModal(true)}
                 />
               ))}
           </div>
@@ -78,6 +93,15 @@ export default function Expense() {
 const ExpenseStyled = styled.div`
   display: flex;
   overflow: auto;
+
+  .top-content {
+    display: flex;
+    justify-content: space-between;
+    button {
+      display: none;
+    }
+  }
+
   .total-expense {
     display: flex;
     justify-content: center;
@@ -96,11 +120,21 @@ const ExpenseStyled = styled.div`
       color: var(--color-delete);
     }
   }
+
   .expenses-content {
     display: flex;
     gap: 2rem;
     .expenses {
       flex: 1;
+    }
+  }
+
+  @media (max-width: 967px) {
+    .top-content {
+      button {
+        display: block;
+        border: 2px solid #f56692;
+      }
     }
   }
 `;
