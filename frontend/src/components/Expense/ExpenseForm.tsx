@@ -6,7 +6,7 @@ import {
   useAddExpenseMutation,
   useUpdateExpenseMutation,
 } from '../../store/financeAPI';
-import ReactDatePicker from 'react-datepicker';
+import DatePicker from 'react-datepicker';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
 import { expenseCategory } from '../../utils/formUtils';
@@ -115,7 +115,7 @@ export default function ExpenseForm({
         />
       </div>
       <div className='input-control'>
-        <ReactDatePicker
+        <DatePicker
           wrapperClassName='date-picker'
           id='date'
           placeholderText='Enter a date'

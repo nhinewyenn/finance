@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { FormInput } from '../../utils/typeUtils';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
+import ExpenseFormModal from './ExpenseFormModal';
 
 export default function Expense() {
   const { data, isSuccess } = useGetExpensesQuery();
@@ -68,6 +69,12 @@ export default function Expense() {
             <ExpenseForm
               updateMode={toggleUpdate}
               selectedExpense={selectedExpense}
+            />
+            <ExpenseFormModal
+              updateMode={toggleUpdate}
+              selectedExpense={selectedExpense}
+              isOpen={toggleModal}
+              onClose={() => setToggleModal(false)}
             />
           </div>
           <div className='expenses'>

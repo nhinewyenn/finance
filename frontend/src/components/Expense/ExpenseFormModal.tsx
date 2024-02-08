@@ -4,10 +4,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { incomeCategory } from '../../utils/formUtils';
+import { expenseCategory } from '../../utils/formUtils';
 import {
-  useAddIncomeMutation,
-  useUpdateIncomeMutation,
+  useAddExpenseMutation,
+  useUpdateExpenseMutation,
 } from '../../store/financeAPI';
 import { FormInput } from '../../utils/typeUtils';
 import Button from '../Button/Button';
@@ -15,14 +15,14 @@ import { plus } from '../../utils/Icon';
 
 type IncomeFormProps = {
   updateMode: boolean;
-  selectedIncome: FormInput | null;
+  selectedExpense: FormInput | null;
   isOpen: boolean;
   onClose: () => void;
 };
 
-export default function IncomeFormModal({
+export default function ExpenseFormModal({
   updateMode,
-  selectedIncome,
+  selectedExpense,
   isOpen,
   onClose,
 }: IncomeFormProps) {
@@ -34,14 +34,14 @@ export default function IncomeFormModal({
     category: '',
     description: '',
   });
-  const [updateIncome] = useUpdateIncomeMutation();
-  const [addIncome, { isError, error }] = useAddIncomeMutation();
+  const [updateExpense] = useUpdateExpenseMutation();
+  const [addExpense, { isError, error }] = useAddExpenseMutation();
   const { title, amount, date, category, description } = inputState;
 
   useEffect(() => {
-    // Update form when selectedIncome changes
-    if (selectedIncome) {
-      setInputState(selectedIncome);
+    // Update form when selectedExpense changes
+    if (selectedExpense) {
+      setInputState(selectedExpense);
     } else {
       setInputState({
         _id: '',
@@ -52,7 +52,7 @@ export default function IncomeFormModal({
         description: '',
       });
     }
-  }, [selectedIncome, updateMode]);
+  }, [selectedExpense, updateMode]);
 
   const handleInput =
     (name: string) =>
@@ -79,11 +79,10 @@ export default function IncomeFormModal({
 
       try {
         if (updateMode) {
-          await updateIncome(inputState).unwrap();
+          await updateExpense(inputState).unwrap();
         } else {
-          await addIncome(inputState).unwrap();
+          await addExpense(inputState).unwrap();
         }
-
         setInputState({
           _id: '',
           title: '',
@@ -93,10 +92,10 @@ export default function IncomeFormModal({
           description: '',
         });
       } catch (error) {
-        console.error('Error adding/updating income:', error);
+        throw new Error('Error adding expense:' + error);
       }
     },
-    [addIncome, updateIncome, inputState, updateMode]
+    [addExpense, inputState, updateExpense, updateMode]
   );
 
   return (
@@ -104,9 +103,9 @@ export default function IncomeFormModal({
       {isOpen && (
         <ModalStyled>
           <OverlayStyled>
-            <FormStyled onSubmit={handleSubmit}>
+            <ExpenseFormStyled onSubmit={handleSubmit}>
               <div className='form-header'>
-                <h3>Income form</h3>
+                <h3>Expense form</h3>
                 <button onClick={onClose}>X</button>
               </div>
               {isError && error && (
@@ -115,19 +114,19 @@ export default function IncomeFormModal({
               <div className='input-control'>
                 <input
                   type='text'
-                  name='title'
-                  placeholder='Income Title'
-                  onChange={handleInput('title')}
                   value={title}
+                  name={'title'}
+                  placeholder='Expense Title'
+                  onChange={handleInput('title')}
                 />
               </div>
               <div className='input-control'>
                 <input
-                  type='text'
-                  name='amount'
-                  placeholder='Income Amount'
-                  onChange={handleInput('amount')}
                   value={amount}
+                  type='text'
+                  name={'amount'}
+                  placeholder={'Expense Amount'}
+                  onChange={handleInput('amount')}
                 />
               </div>
               <div className='input-control'>
@@ -135,13 +134,11 @@ export default function IncomeFormModal({
                   wrapperClassName='date-picker'
                   id='date'
                   placeholderText='Enter a date'
-                  selected={date ?? selectedIncome?.date ?? new Date()}
+                  selected={date}
                   dateFormat='dd/MM/yyyy'
-                  onChange={(date) => {
-                    if (date && !isNaN(date.getTime())) {
-                      setInputState({ ...inputState, date });
-                    }
-                  }}
+                  onChange={(date) =>
+                    setInputState({ ...inputState, date: date ?? new Date() })
+                  }
                 />
               </div>
               <div className='selects input-control'>
@@ -155,7 +152,7 @@ export default function IncomeFormModal({
                   <option value='' disabled>
                     Select Option
                   </option>
-                  {incomeCategory.map((option) => (
+                  {expenseCategory.map((option) => (
                     <option key={option.value} value={option.value}>
                       {option.label}
                     </option>
@@ -171,11 +168,11 @@ export default function IncomeFormModal({
                   cols={30}
                   rows={4}
                   onChange={handleInput('description')}
-                />
+                ></textarea>
               </div>
               <div className='submit-btn'>
                 <Button
-                  name={updateMode ? 'Update' : 'Submit'}
+                  name={updateMode ? 'Update Expense' : 'Add Expense'}
                   icon={plus}
                   bPad={'.8rem 1.6rem'}
                   bRadius={'30px'}
@@ -183,7 +180,7 @@ export default function IncomeFormModal({
                   color={'#fff'}
                 />
               </div>
-            </FormStyled>
+            </ExpenseFormStyled>
           </OverlayStyled>
         </ModalStyled>
       )}
@@ -218,10 +215,10 @@ const OverlayStyled = styled.div`
   z-index: 9;
 `;
 
-const FormStyled = styled.form`
+const ExpenseFormStyled = styled.form`
   display: flex;
-  padding: 2rem;
   flex-direction: column;
+  padding: 2rem;
   gap: 2rem;
   input,
   textarea,

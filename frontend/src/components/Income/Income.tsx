@@ -12,7 +12,7 @@ import IncomeItem from './IncomeItem';
 import { useTotalIncome } from '../../utils/useTotal';
 import { useState } from 'react';
 import { FormInput } from '../../utils/typeUtils';
-import FormModal from './IncomeFormModal';
+import IncomeFormModal from './IncomeFormModal';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
 
@@ -65,7 +65,7 @@ export default function Income() {
         <div className='income-content'>
           <div className='form-container'>
             <Form updateMode={toggleUpdate} selectedIncome={selectedIncome} />
-            <FormModal
+            <IncomeFormModal
               updateMode={toggleUpdate}
               selectedIncome={selectedIncome}
               isOpen={toggleModal}
