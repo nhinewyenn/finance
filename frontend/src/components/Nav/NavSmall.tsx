@@ -1,9 +1,5 @@
 /** @format */
 
-import React from 'react';
-
-/** @format */
-
 import styled from 'styled-components';
 import avatar from '../../img/blank-avatar-photo-place-holder-600nw-1114445501.webp';
 import { signout } from '../../utils/Icon';
@@ -14,12 +10,14 @@ import { useCookies } from 'react-cookie';
 import Button from '../Button/Button';
 import { useGetUserId } from '../../utils/formUtils';
 
-type NavProps = {
+type NavSmallProps = {
+  openMenu: () => void;
+  closeMenu: () => void;
   active: number;
   setActive: (id: number) => void;
 };
 
-export default function NavSmall({ active, setActive }: NavProps) {
+export default function NavSmall({ openMenu, closeMenu }: NavSmallProps) {
   const userId = useGetUserId();
 
   const { data, isLoading, isSuccess } = useGetUserByIdQuery(userId!);
@@ -36,6 +34,9 @@ export default function NavSmall({ active, setActive }: NavProps) {
   return (
     <NavSmallStyled>
       <div className='user-container'>
+        <button className='close-btn' onClick={closeMenu}>
+          X
+        </button>
         <img src={avatar} alt='User icon image' />
         <div className='text'>
           {isLoading && <h3>Loading user...</h3>}

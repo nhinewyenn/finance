@@ -17,15 +17,23 @@ export default function Login() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const loginData = await login({
-      username: usernameRef.current?.value,
-      password: passwordRef.current?.value,
-    }).unwrap();
+
+    const username = usernameRef.current?.value;
+    const password = passwordRef.current?.value;
+
+    if (!username || !password) {
+      toast.error('Please enter both username and password.');
+      return;
+    }
 
     try {
-      setCookies('access_token', loginData.user.token);
-      localStorage.setItem('userID', loginData.userID);
-      localStorage.setItem('access_token', loginData.token);
+      const loginData = await login({ username, password }).unwrap();
+      const { token, userID } = loginData.user;
+
+      setCookies('access_token', token);
+      localStorage.setItem('userID', userID);
+      localStorage.setItem('access_token', token);
+
       toast.success('Login success!');
       setTimeout(() => navigate('/'), 500);
     } catch (error) {

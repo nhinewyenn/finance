@@ -17,7 +17,6 @@ type NavProps = {
 
 export default function Nav({ active, setActive }: NavProps) {
   const userId = useGetUserId();
-
   const { data, isLoading, isSuccess } = useGetUserByIdQuery(userId!);
   const [_, setCookies] = useCookies(); //eslint-disable-line
   const navigate = useNavigate();
@@ -35,7 +34,7 @@ export default function Nav({ active, setActive }: NavProps) {
         <img src={avatar} alt='User icon image' />
         <div className='text'>
           {isLoading && <h3>Loading user...</h3>}
-          {isSuccess && <h3 key={data.user._id}>Hi {data.user.username}!</h3>}
+          {isSuccess && <h3 key={data.user._id}>{data.user.username}</h3>}
           <p>Overview</p>
         </div>
       </div>
@@ -48,7 +47,7 @@ export default function Nav({ active, setActive }: NavProps) {
             onClick={() => setActive(item.id)}
           >
             {item.icon}
-            <span>{item.title}</span>
+            <span className='menu-title'>{item.title}</span>
           </li>
         ))}
       </ul>
@@ -157,6 +156,45 @@ const NavStyled = styled.nav`
     .user-container {
       h3 {
         font-size: 1.2rem;
+      }
+    }
+  }
+
+  @media (max-width: 1270px) {
+    width: 100px;
+
+    .user-container {
+      img {
+        width: 50px;
+        height: 50px;
+      }
+    }
+
+    .menu-title {
+      display: none;
+    }
+
+    .user-container {
+      flex-direction: column;
+
+      .text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        h3,
+        p {
+          font-size: 12px;
+        }
+      }
+    }
+
+    .submit-btn {
+      button {
+        padding: 0.8rem 1rem !important;
+        span {
+          display: none;
+        }
       }
     }
   }

@@ -36,7 +36,7 @@ export default function Button({
       className={className}
     >
       {icon}
-      {name}
+      <span>{name}</span>
     </ButtonStyled>
   );
 }
