@@ -67,7 +67,7 @@ export default function Nav({ active, setActive }: NavProps) {
 }
 
 const NavStyled = styled.nav`
-  padding: 2rem 1.5rem;
+  padding: 2rem 1.25rem;
   width: 350px;
   height: 100%;
   background: rgba(252, 246, 249, 0.78);
@@ -194,6 +194,36 @@ const NavStyled = styled.nav`
         padding: 0.8rem 1rem !important;
         span {
           display: none;
+        }
+      }
+    }
+
+    @media (max-width: 700px) {
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+      height: 12%;
+      padding: 2rem 1.25rem;
+
+      .menu-items {
+        flex-direction: row;
+        gap: 0.5rem;
+      }
+
+      .active {
+        &::before {
+          display: none;
+        }
+      }
+
+      .user-container {
+        flex-direction: column;
+
+        .text {
+          p,
+          h3 {
+            display: none;
+          }
         }
       }
     }

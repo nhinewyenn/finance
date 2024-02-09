@@ -181,7 +181,6 @@ const DashboardStyled = styled.div`
     .balance {
       h2 {
         font-size: 1.5rem;
-        font-weight: 700;
       }
     }
   }
@@ -192,15 +191,39 @@ const DashboardStyled = styled.div`
       flex-direction: column;
       justify-content: space-evenly;
 
-      .chart-con {
-        height: 450px;
-        margin-bottom: 1.5rem;
-      }
-
       .amount-con {
         display: flex !important;
         justify-content: space-evenly;
-        margin-bottom: 1rem;
+      }
+
+      .income,
+      .expense,
+      .balance {
+        h2 {
+          font-size: 1.25rem;
+        }
+      }
+
+      #income-amount,
+      #expense-amount,
+      #balance-amount {
+        font-size: 1.85rem;
+      }
+    }
+  }
+
+  @media (max-width: 715px) {
+    .stats-con {
+      #income-amount,
+      #expense-amount,
+      #balance-amount {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 525px) {
+      .amount-con {
+        flex-direction: column;
       }
     }
   }

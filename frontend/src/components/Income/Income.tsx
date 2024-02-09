@@ -144,6 +144,10 @@ const IncomeStyled = styled.div`
         border: 2px solid #f56692;
       }
     }
+
+    .income-content {
+      display: block;
+    }
   }
 
   @media (max-width: 715px) {

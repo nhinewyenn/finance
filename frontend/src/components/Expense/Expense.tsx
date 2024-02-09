@@ -143,5 +143,9 @@ const ExpenseStyled = styled.div`
         border: 2px solid #f56692;
       }
     }
+
+    .expenses-content {
+      display: block;
+    }
   }
 `;

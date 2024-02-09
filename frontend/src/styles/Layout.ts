@@ -7,6 +7,11 @@ export const MainLayout = styled.div`
   height: 100%;
   display: flex;
   gap: 2rem;
+
+  @media (max-width: 700px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 export const InnerLayout = styled.div`
