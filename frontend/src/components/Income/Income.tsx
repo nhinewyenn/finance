@@ -133,7 +133,7 @@ const IncomeStyled = styled.div`
 
   @media (max-width: 1000px) {
     .income-content {
-      gap: 1.5rem;
+      gap: 1.75rem;
     }
   }
 
@@ -142,6 +142,15 @@ const IncomeStyled = styled.div`
       button {
         display: block;
         border: 2px solid #f56692;
+      }
+    }
+  }
+
+  @media (max-width: 715px) {
+    .total-income {
+      font-size: 1.75rem;
+      span {
+        font-size: 2rem;
       }
     }
   }

@@ -105,6 +105,7 @@ const DashboardStyled = styled.div`
         .expense {
           grid-column: span 2;
         }
+
         .income,
         .expense,
         .balance {
@@ -181,6 +182,25 @@ const DashboardStyled = styled.div`
       h2 {
         font-size: 1.5rem;
         font-weight: 700;
+      }
+    }
+  }
+
+  @media (max-width: 960px) {
+    .stats-con {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+
+      .chart-con {
+        height: 450px;
+        margin-bottom: 1.5rem;
+      }
+
+      .amount-con {
+        display: flex !important;
+        justify-content: space-evenly;
+        margin-bottom: 1rem;
       }
     }
   }

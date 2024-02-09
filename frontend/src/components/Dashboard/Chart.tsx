@@ -98,4 +98,12 @@ const ChartStyled = styled.div`
   @media (max-width: 1295px) {
     height: 60%;
   }
+
+  @media (max-width: 960px) {
+    height: 75%;
+  }
+
+  @media (max-width: 860px) {
+    height: 70%;
+  }
 `;
