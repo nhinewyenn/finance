@@ -119,7 +119,7 @@ export default function IncomeItem({
               <Button
                 className='btn-con'
                 icon={trash}
-                bPad={'0.9rem'}
+                bPad={'1rem'}
                 bRadius={'50%'}
                 bg={'var(--primary-color'}
                 color={'#fff'}
@@ -128,7 +128,7 @@ export default function IncomeItem({
               <Button
                 className='btn-con'
                 icon={edit}
-                bPad={'0.9rem'}
+                bPad={'1rem'}
                 bRadius={'50%'}
                 bg={'var(--primary-color'}
                 color={'#fff'}
@@ -137,6 +137,12 @@ export default function IncomeItem({
                   onToggle();
                 }}
               />
+              <button className='btn-mobile'>
+                <i className='fa-solid fa-pen'></i>
+              </button>
+              <button className='btn-mobile'>
+                <i className='fa-solid fa-trash'></i>
+              </button>
             </div>
           </div>
         </h5>
@@ -169,6 +175,10 @@ const IncomeItemStyled = styled.div<{ type: 'income' | 'expense' }>`
     i {
       font-size: 2rem;
     }
+  }
+
+  .btn-mobile {
+    display: none;
   }
 
   .content {
@@ -221,6 +231,7 @@ const IncomeItemStyled = styled.div<{ type: 'income' | 'expense' }>`
   }
 
   @media (max-width: 1500px) {
+    gap: 0.5rem;
     .icon {
       width: 70px;
       height: 70px;
@@ -233,6 +244,36 @@ const IncomeItemStyled = styled.div<{ type: 'income' | 'expense' }>`
     .btn-con {
       width: 50px;
       height: 50px;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .icon {
+      width: 55px;
+      height: 55px;
+    }
+
+    .text p {
+      font-size: 0.85rem;
+    }
+
+    .content {
+      h5 {
+        font-size: 1.2rem;
+      }
+    }
+
+    .btn-con {
+      display: none;
+    }
+
+    .btn-mobile {
+      display: block;
+      padding: 5px;
+      background-color: var(--primary-color);
+      border: none;
+      color: #fff;
+      border-radius: 7.5px;
     }
   }
 `;

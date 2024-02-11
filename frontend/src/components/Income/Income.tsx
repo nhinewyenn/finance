@@ -158,4 +158,24 @@ const IncomeStyled = styled.div`
       }
     }
   }
+
+  @media (max-width: 500px) {
+    h1 {
+      font-size: 1.8rem;
+    }
+
+    .total-income {
+      font-size: 1.5rem;
+      span {
+        font-size: 1.75rem;
+      }
+    }
+
+    .top-content {
+      button {
+        padding: 0.7rem !important;
+        font-size: 0.8rem;
+      }
+    }
+  }
 `;

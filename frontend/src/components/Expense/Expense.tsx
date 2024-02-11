@@ -148,4 +148,24 @@ const ExpenseStyled = styled.div`
       display: block;
     }
   }
+
+  @media (max-width: 500px) {
+    .top-content {
+      button {
+        padding: 0.7rem !important;
+        font-size: 0.8rem;
+      }
+    }
+
+    h1 {
+      font-size: 1.8rem;
+    }
+
+    .total-expense {
+      font-size: 1.5rem;
+      span {
+        font-size: 1.75rem;
+      }
+    }
+  }
 `;

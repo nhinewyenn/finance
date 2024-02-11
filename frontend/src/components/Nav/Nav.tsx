@@ -200,12 +200,15 @@ const NavStyled = styled.nav`
 
     @media (max-width: 700px) {
       flex-direction: row;
-      justify-content: space-between;
+      align-items: center;
+      justify-content: space-evenly;
       width: 100%;
       height: 12%;
       padding: 2rem 1.25rem;
+      gap: 1rem;
 
       .menu-items {
+        flex: 0;
         flex-direction: row;
         gap: 0.5rem;
       }
@@ -216,13 +219,54 @@ const NavStyled = styled.nav`
         }
       }
 
+      .submit-btn {
+        button {
+          padding: 0.75rem !important;
+        }
+      }
+
       .user-container {
-        flex-direction: column;
+        flex-direction: row;
+        height: none;
+        gap: none;
+
+        img {
+          width: 45px;
+          height: 45px;
+        }
 
         .text {
           p,
           h3 {
             display: none;
+          }
+        }
+      }
+    }
+
+    @media (max-width: 500px) {
+      justify-content: center;
+      gap: 0rem;
+
+      .submit-btn {
+        button {
+          padding: 0.5rem !important;
+        }
+      }
+
+      .user-container {
+        img {
+          width: 35px;
+          height: 35px;
+        }
+      }
+
+      .menu-items {
+        gap: 0rem;
+
+        li {
+          i {
+            font-size: 1.25rem;
           }
         }
       }
