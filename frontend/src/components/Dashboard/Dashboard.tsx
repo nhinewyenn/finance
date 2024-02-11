@@ -225,6 +225,12 @@ const DashboardStyled = styled.div`
       .amount-con {
         flex-direction: column;
       }
+
+      .stats-con {
+        .chart-con {
+          height: 80%;
+        }
+      }
     }
   }
 `;

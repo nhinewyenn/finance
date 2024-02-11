@@ -113,9 +113,11 @@ const ChartStyled = styled.div`
 
   @media (max-width: 525px) {
     height: 50%;
+    width: 100%;
   }
 
   @media (max-width: 485px) {
-    height: 45%;
+    height: 40%;
+    width: 100%;
   }
 `;
