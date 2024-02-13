@@ -13,13 +13,14 @@ import {
   getExpenses,
   updateExpense,
 } from '../controllers/ExpenseController';
+import { verifyToken } from '../controllers/errorMiddleware';
 
 const router = express.Router();
 
 router
-  .post('/add-income', addIncome)
+  .post('/add-income', verifyToken, addIncome)
   .patch('/update-income/:id', updateIncome)
-  .get('/get-incomes', getIncomes)
+  .get('/get-incomes', verifyToken, getIncomes)
   .delete('/delete-income/:id', deleteIncome)
   .post('/add-expense', addExpense)
   .patch('/update-expense/:id', updateExpense)

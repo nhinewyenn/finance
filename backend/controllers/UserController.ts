@@ -26,7 +26,7 @@ export async function getUserByID(req: Request, res: Response) {
     const { id } = req.params;
     const user = await UserSchema.findById(id, { password: 0 });
 
-    if (!user) {
+    if (!user && !id) {
       return res.status(404).json({ error: 'User not found' });
     }
 
@@ -43,28 +43,34 @@ export async function getUserByID(req: Request, res: Response) {
  */
 export async function registerUser(req: Request, res: Response) {
   const { username, password } = req.body;
-  const user = await UserSchema.findOne({ username });
+  const userExist = await UserSchema.findOne({ username });
 
-  if (user) {
+  if (userExist) {
     return res.status(400).json({ message: 'Username already exists' });
   }
 
-  try {
-    if (password.length < 8) {
-      return res
-        .status(400)
-        .json({ message: 'Password must be at least 8 characters long' });
-    } else {
-      const salt = await bcrypt.genSalt(10);
-      const hashedPass = await bcrypt.hash(password, salt);
-      const user = new UserSchema({
-        username,
-        password: hashedPass,
-      });
+  if (password.length < 8) {
+    return res
+      .status(400)
+      .json({ message: 'Password must be at least 8 characters long' });
+  }
 
-      await user.save();
-      return res.status(200).json({ message: 'User successfully created' });
-    }
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPass = await bcrypt.hash(password, salt);
+
+    const user = await UserSchema.create({
+      username,
+      password: hashedPass,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'User successfully created',
+      _id: user._id,
+      username: user.username,
+      token: generateToken(user._id),
+    });
   } catch (error) {
     console.error('Error during registration:', error);
     res.status(401).json({ message: 'User not created' });

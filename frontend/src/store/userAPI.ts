@@ -27,6 +27,7 @@ export const userAPI = createApi({
         method: 'POST',
         body: user,
         credentials: 'same-origin',
+        headers: { Authorization: `Bearer ${getToken()}` },
       }),
       invalidatesTags: [{ type: 'Login' }],
     }),

@@ -34,9 +34,9 @@ app.use(
 );
 
 // Routes
-readdirSync('./routes').map((route) =>
-  app.use('/api/v1', require('./routes/' + route))
-);
+readdirSync('./routes').map((route) => {
+  app.use('/api/v1/profile/', require('./routes/' + route));
+});
 
 // Login and register route
 app.get('/api/v1/auth/user', getAllUser);
