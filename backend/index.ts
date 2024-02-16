@@ -3,13 +3,11 @@
 import dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
 import express from 'express';
-import { Request, Response, NextFunction } from 'express';
-
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { db } from './db/db';
 import { readdirSync } from 'fs';
-import cookieSession from 'cookie-session';
-import { notFound, errorHandler } from './controllers/errorMiddleware';
+import { notFound, errorHandler } from './middlewares//errorMiddleware';
 import {
   getAllUser,
   getUserByID,
@@ -24,14 +22,7 @@ const { PORT } = process.env ?? 8000;
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
-app.use(
-  cookieSession({
-    name: 'session',
-    keys: [process.env.SECRET_KEY || ''],
-    httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000,
-  })
-);
+app.use(cookieParser());
 
 // Routes
 readdirSync('./routes').map((route) => {

@@ -1,9 +1,12 @@
 /** @format */
 import express, { Response, Request } from 'express';
 import IncomeSchema from '../models/incomeModel';
+import UserSchema from '../models/userModel';
 
 export async function addIncome(req: Request, res: Response) {
-  const { title, amount, category, description, date } = req.body;
+  const { title, amount, category, description, date, user } = req.body;
+
+  console.log(req.body);
 
   const income = new IncomeSchema({
     title,
@@ -11,7 +14,10 @@ export async function addIncome(req: Request, res: Response) {
     category,
     description,
     date,
+    user: user,
   });
+
+  console.log(income);
 
   try {
     // validations
@@ -24,8 +30,6 @@ export async function addIncome(req: Request, res: Response) {
         .json({ message: 'Amount must be a positive value' });
     }
 
-    console.log(income);
-
     await income.save();
     res.status(200).json({ message: 'Income added' });
   } catch (error) {
@@ -34,9 +38,11 @@ export async function addIncome(req: Request, res: Response) {
 }
 
 export async function getIncomes(req: Request, res: Response) {
+  const user = await UserSchema.findById(req.body.userId);
   try {
-    // Last created item to be at the top
-    const income = await IncomeSchema.find().sort({ createdAt: -1 });
+    const income = await IncomeSchema.findOne({ user: user?._id }).sort({
+      createdAt: -1,
+    });
     res.status(200).json(income);
   } catch (error) {
     res.status(500).json({ message: 'Get income server error', error });
@@ -45,7 +51,7 @@ export async function getIncomes(req: Request, res: Response) {
 
 export async function updateIncome(req: Request, res: Response) {
   try {
-    const { title, amount, category, description, date } = req.body;
+    const { title, amount, category, description, date, user } = req.body;
     const { id } = req.params;
     const income = await IncomeSchema.findByIdAndUpdate(
       id,
@@ -55,6 +61,7 @@ export async function updateIncome(req: Request, res: Response) {
         category,
         description,
         date,
+        user: user,
       },
       { new: true }
     );
@@ -88,7 +95,7 @@ export async function updateIncome(req: Request, res: Response) {
 export async function deleteIncome(req: Request, res: Response) {
   const { id } = req.params;
   IncomeSchema.findByIdAndDelete(id)
-    .then((income) => {
+    .then(() => {
       res.status(200).json({ message: 'Income deleted' });
     })
     .catch((err) => res.status(500).json({ message: 'Delete income error' }));

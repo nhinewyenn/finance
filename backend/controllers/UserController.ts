@@ -69,7 +69,7 @@ export async function registerUser(req: Request, res: Response) {
       message: 'User successfully created',
       _id: user._id,
       username: user.username,
-      token: generateToken(user._id),
+      token: generateToken(user._id, res),
     });
   } catch (error) {
     console.error('Error during registration:', error);
@@ -84,6 +84,7 @@ export async function registerUser(req: Request, res: Response) {
 
 export async function login(req: Request, res: Response) {
   const { username, password } = req.body;
+  console.log(req.body);
 
   if (!username || !password) {
     return res
@@ -108,11 +109,21 @@ export async function login(req: Request, res: Response) {
     return res.status(200).json({
       message: 'Login successful',
       user,
-      token: generateToken(user._id),
+      token: generateToken(user._id, res),
       userID: user._id,
     });
   } catch (error) {
     console.error('Error logging in:', error);
     res.status(400).json({ message: 'An error occurred with login process' });
+  }
+}
+
+export function logout(req: Request, res: Response) {
+  try {
+    res.cookie('jwt', '', { maxAge: 0 });
+    res.status(200).json({ message: 'Logged out successful' });
+  } catch (error) {
+    console.error('Error in logout controller', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 }

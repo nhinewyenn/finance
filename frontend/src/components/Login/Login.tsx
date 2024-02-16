@@ -23,6 +23,8 @@ export default function Login() {
       password: passwordRef.current?.value,
     }).unwrap();
 
+    console.log(loginData);
+
     try {
       setCookies('access_token', loginData.token);
       localStorage.setItem('userID', loginData.userID);
