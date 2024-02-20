@@ -21,8 +21,8 @@ const { PORT } = process.env ?? 8000;
 // Middlewares
 app.use(express.json());
 app.use(cors());
-app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 
 // Routes
 readdirSync('./routes').map((route) => {

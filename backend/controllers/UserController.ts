@@ -12,6 +12,7 @@ import { generateToken } from '../utils/generateToken';
  * @method - get
  */
 export async function getAllUser(req: Request, res: Response) {
+  const user = req.user;
   try {
     const users = await UserSchema.find({}, { password: 0 }); // exclude password
     res.status(200).json({ success: true, count: users.length, users });
@@ -69,7 +70,6 @@ export async function registerUser(req: Request, res: Response) {
       message: 'User successfully created',
       _id: user._id,
       username: user.username,
-      token: generateToken(user._id, res),
     });
   } catch (error) {
     console.error('Error during registration:', error);
@@ -99,17 +99,16 @@ export async function login(req: Request, res: Response) {
     }
 
     const validPassword = await bcrypt.compare(password, user.password);
-
     if (!validPassword) {
       return res
         .status(400)
         .json({ message: 'Incorrect username or password' });
     }
 
-    return res.status(200).json({
+    generateToken(res, user._id);
+    res.status(200).json({
       message: 'Login successful',
       user,
-      token: generateToken(user._id, res),
       userID: user._id,
     });
   } catch (error) {

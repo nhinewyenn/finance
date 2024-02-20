@@ -24,22 +24,17 @@ export async function verifyToken(
   next: NextFunction
 ) {
   try {
-    let token;
-    token = req.cookies['jwt'];
-    const header = req.headers.host;
-    const authHeader = req.headers.authorization;
+    const { jwt } = req.cookies;
 
-    console.log('header', header); // the header does not have authorization field
-    console.log('auth', authHeader); //undefined
-    console.log('token', token); //undefined
+    console.log('cookie', jwt); //undefined
 
-    if (!token) {
+    if (!jwt) {
       return res
         .status(401)
         .json({ error: 'Unauthorized - No Token Provided' });
     }
 
-    const { _id } = jwt.verify(token, JWT_SECRET) as JwtPayload;
+    const { _id } = jwt.verify(jwt, JWT_SECRET) as JwtPayload;
     console.log('Decoded user ID:', _id);
 
     if (!_id) {

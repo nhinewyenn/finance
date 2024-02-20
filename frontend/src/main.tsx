@@ -10,11 +10,16 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Login from './components/Login/Login.tsx';
 import SignUp from './components/Login/Signup.tsx';
 import { CookiesProvider } from 'react-cookie';
+import RequireAuth from './components/Login/RequireAuth.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: (
+      <RequireAuth>
+        <App />
+      </RequireAuth>
+    ),
   },
   {
     path: '/login',
@@ -29,7 +34,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <GlobalStyle />
-    <CookiesProvider defaultSetOptions={{ path: '/' }}>
+    <CookiesProvider defaultSetOptions={{ path: '/login' }}>
       <Provider store={store}>
         <RouterProvider router={router} />
       </Provider>

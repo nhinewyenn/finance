@@ -157,7 +157,7 @@ export default function ExpenseForm({
       </div>
       <div className='submit-btn'>
         <Button
-          name={updateMode ? 'Update Expense' : 'Add Expense'}
+          name={updateMode ? 'Update' : 'Submit'}
           icon={plus}
           bPad={'.8rem 1.6rem'}
           bRadius={'30px'}

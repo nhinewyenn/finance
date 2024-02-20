@@ -11,7 +11,7 @@ import { useCookies } from 'react-cookie';
 export default function Login() {
   const [login, { isError }] = useLoginMutation();
   const navigate = useNavigate();
-  const [_, setCookies] = useCookies(['access_token']); //eslint-disable-line
+  const [cookie, setCookies] = useCookies(['access_token']); //eslint-disable-line
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
