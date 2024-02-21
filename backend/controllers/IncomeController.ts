@@ -3,10 +3,16 @@ import express, { Response, Request } from 'express';
 import IncomeSchema from '../models/incomeModel';
 import UserSchema from '../models/userModel';
 
-export async function addIncome(req: Request, res: Response) {
-  const { title, amount, category, description, date, user } = req.body;
+declare global {
+  namespace Express {
+    interface Request {
+      user: any;
+    }
+  }
+}
 
-  console.log('add income user', req.user);
+export async function addIncome(req: Request, res: Response) {
+  const { title, amount, category, description, date, userID } = req.body;
 
   const income = new IncomeSchema({
     title,
@@ -14,10 +20,8 @@ export async function addIncome(req: Request, res: Response) {
     category,
     description,
     date,
-    user: user,
+    userID: userID,
   });
-
-  console.log(income);
 
   try {
     // validations
@@ -39,8 +43,12 @@ export async function addIncome(req: Request, res: Response) {
 
 export async function getIncomes(req: Request, res: Response) {
   const user = await UserSchema.findById(req.body.userId);
+
+  // if (!user) {
+  //   return res.status(404).json({ message: 'User not found' });
+  // }
   try {
-    const income = await IncomeSchema.findOne({ user: user?._id }).sort({
+    const income = await IncomeSchema.find({ user: user?._id }).sort({
       createdAt: -1,
     });
     res.status(200).json(income);

@@ -5,14 +5,6 @@ import UserSchema from '../models/userModel';
 import bcrypt from 'bcrypt';
 import { generateToken } from '../utils/generateToken';
 
-declare global {
-  namespace Express {
-    interface Request {
-      user: any;
-    }
-  }
-}
-
 // Routes for all will be api/v1/auth
 
 /**
@@ -31,11 +23,10 @@ export async function getAllUser(req: Request, res: Response) {
 
 export async function getUserByID(req: Request, res: Response) {
   try {
-    const { _id } = req.user;
-    console.log(_id);
-    const user = await UserSchema.findById(_id, { password: 0 });
+    const { id } = req.params;
+    const user = await UserSchema.findById(id, { password: 0 });
 
-    if (!user && !_id) {
+    if (!user && !id) {
       return res.status(404).json({ error: 'User not found' });
     }
 
