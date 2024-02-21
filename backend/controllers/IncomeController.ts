@@ -1,7 +1,6 @@
 /** @format */
-import express, { Response, Request } from 'express';
+import { Response, Request } from 'express';
 import IncomeSchema from '../models/incomeModel';
-import UserSchema from '../models/userModel';
 
 declare global {
   namespace Express {
@@ -12,7 +11,7 @@ declare global {
 }
 
 export async function addIncome(req: Request, res: Response) {
-  const { title, amount, category, description, date, userID } = req.body;
+  const { title, amount, category, description, date } = req.body;
 
   const income = new IncomeSchema({
     title,
@@ -20,7 +19,6 @@ export async function addIncome(req: Request, res: Response) {
     category,
     description,
     date,
-    userID: userID,
   });
 
   try {
@@ -42,13 +40,8 @@ export async function addIncome(req: Request, res: Response) {
 }
 
 export async function getIncomes(req: Request, res: Response) {
-  const user = await UserSchema.findById(req.body.userId);
-
-  // if (!user) {
-  //   return res.status(404).json({ message: 'User not found' });
-  // }
   try {
-    const income = await IncomeSchema.find({ user: user?._id }).sort({
+    const income = await IncomeSchema.find().sort({
       createdAt: -1,
     });
     res.status(200).json(income);
@@ -59,7 +52,7 @@ export async function getIncomes(req: Request, res: Response) {
 
 export async function updateIncome(req: Request, res: Response) {
   try {
-    const { title, amount, category, description, date, user } = req.body;
+    const { title, amount, category, description, date } = req.body;
     const { id } = req.params;
     const income = await IncomeSchema.findByIdAndUpdate(
       id,
@@ -69,7 +62,6 @@ export async function updateIncome(req: Request, res: Response) {
         category,
         description,
         date,
-        user: user,
       },
       { new: true }
     );

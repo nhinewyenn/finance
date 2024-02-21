@@ -4,7 +4,7 @@ import ExpenseSchema from '../models/expenseModel';
 import UserSchema from '../models/userModel';
 
 export async function addExpense(req: Request, res: Response) {
-  const { title, amount, category, description, date, user } = req.body;
+  const { title, amount, category, description, date } = req.body;
 
   const expense = new ExpenseSchema({
     title,
@@ -12,7 +12,6 @@ export async function addExpense(req: Request, res: Response) {
     category,
     description,
     date,
-    user: user,
   });
 
   try {
@@ -34,11 +33,9 @@ export async function addExpense(req: Request, res: Response) {
 }
 
 export async function getExpenses(req: Request, res: Response) {
-  const user = await UserSchema.findById(req.body.userId);
-
   try {
     // Last created item to be at the top
-    const expense = await ExpenseSchema.find({ user: user?._id }).sort({
+    const expense = await ExpenseSchema.find().sort({
       createdAt: -1,
     });
     res.status(200).json(expense);
@@ -49,7 +46,7 @@ export async function getExpenses(req: Request, res: Response) {
 
 export async function updateExpense(req: Request, res: Response) {
   try {
-    const { title, amount, category, description, date, user } = req.body;
+    const { title, amount, category, description, date } = req.body;
     const { id } = req.params;
     const income = await ExpenseSchema.findByIdAndUpdate(
       id,
@@ -59,7 +56,6 @@ export async function updateExpense(req: Request, res: Response) {
         category,
         description,
         date,
-        user: user,
       },
       { new: true }
     );

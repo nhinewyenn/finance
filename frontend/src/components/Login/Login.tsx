@@ -2,18 +2,29 @@
 
 import styled from 'styled-components';
 import Button from '../Button/Button';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../store/userAPI';
 import { ToastContainer, toast } from 'react-toastify';
 import { useCookies } from 'react-cookie';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { setCredentials } from '../../store/authSlice';
 
 export default function Login() {
   const [login, { isError }] = useLoginMutation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { userInfo } = useSelector((state: RootState) => state.auth);
   const [cookie, setCookies] = useCookies(['access_token']); //eslint-disable-line
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate('/');
+    }
+  }, [navigate, userInfo]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -30,6 +41,8 @@ export default function Login() {
       localStorage.setItem('userID', loginData.userID);
       localStorage.setItem('access_token', loginData.token);
       toast.success('Login success!');
+      dispatch(setCredentials({ ...loginData }));
+
       setTimeout(() => navigate('/'), 500);
     } catch (error) {
       isError && toast.error('Info does not match!');

@@ -14,6 +14,7 @@ export const store = configureStore({
     [userAPI.reducerPath]: userAPI.reducer,
     auth: authReducer,
   },
+  devTools: true,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(financeAPI.middleware, userAPI.middleware), //enable caching, polling etc
 });

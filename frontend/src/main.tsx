@@ -10,16 +10,18 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Login from './components/Login/Login.tsx';
 import SignUp from './components/Login/Signup.tsx';
 import { CookiesProvider } from 'react-cookie';
-import RequireAuth from './components/Login/RequireAuth.tsx';
+import PrivateRoute from './components/Login/PrivateRoute.tsx';
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: (
-      <RequireAuth>
-        <App />
-      </RequireAuth>
-    ),
+    path: '',
+    element: <PrivateRoute />,
+    children: [
+      {
+        path: '/',
+        element: <App />,
+      },
+    ],
   },
   {
     path: '/login',

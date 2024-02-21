@@ -1,26 +1,28 @@
 /** @format */
 
-// authSlice.ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-interface AuthState {
-  auth: Record<string, unknown>;
-}
-
-const initialState: AuthState = {
-  auth: {},
+const initialState = {
+  userInfo: localStorage.getItem('userInfo')?.length
+    ? JSON.parse(localStorage.getItem('userInfo')!)
+    : null,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setAuth(state, action: PayloadAction<Record<string, unknown>>) {
-      state.auth = action.payload;
+    setCredentials: (state, action) => {
+      state.userInfo = action.payload;
+      localStorage.setItem('userInfo', JSON.stringify(action.payload));
+    },
+    logout: (state, action) => {
+      state.userInfo = null;
+      localStorage.removeItem('userInfo');
     },
   },
 });
 
-export const { setAuth } = authSlice.actions;
+export const { setCredentials, logout } = authSlice.actions;
 
 export default authSlice.reducer;

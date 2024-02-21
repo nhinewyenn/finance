@@ -153,6 +153,15 @@ const ExpenseStyled = styled.div`
     }
   }
 
+  @media (max-width: 715px) {
+    .total-expense {
+      font-size: 1.75rem;
+      span {
+        font-size: 2rem;
+      }
+    }
+  }
+
   @media (max-width: 500px) {
     .top-content {
       button {

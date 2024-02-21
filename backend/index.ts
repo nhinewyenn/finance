@@ -12,6 +12,7 @@ import {
   getAllUser,
   getUserByID,
   login,
+  logout,
   registerUser,
 } from './controllers/UserController';
 
@@ -38,6 +39,7 @@ readdirSync('./routes').map((route) => {
 app.get('/api/v1/auth/user', getAllUser);
 app.get('/api/v1/auth/user/:id', getUserByID);
 app.post('/api/v1/auth/login', login);
+app.post('/api/v1/auth/logout', logout);
 app.post('/api/v1/auth/register', registerUser);
 
 // Middleware
