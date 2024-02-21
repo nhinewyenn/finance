@@ -2,7 +2,6 @@
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { UserApiResponse } from '../utils/typeUtils';
-import { getToken } from '../utils/formUtils';
 
 export const userAPI = createApi({
   reducerPath: 'userAPI',
@@ -21,7 +20,6 @@ export const userAPI = createApi({
         method: 'POST',
         body: user,
         timeout: 1000,
-        headers: { Authorization: `Bearer ${getToken()}` },
       }),
       invalidatesTags: [{ type: 'Register' }],
     }),
@@ -31,7 +29,6 @@ export const userAPI = createApi({
         method: 'POST',
         body: user,
         credentials: 'include',
-        headers: { Authorization: `Bearer ${getToken()}` },
       }),
       invalidatesTags: [{ type: 'Login' }],
     }),

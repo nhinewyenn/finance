@@ -91,11 +91,12 @@ export default function ExpenseFormModal({
           category: '',
           description: '',
         });
+        onClose();
       } catch (error) {
         throw new Error('Error adding expense:' + error);
       }
     },
-    [addExpense, inputState, updateExpense, updateMode]
+    [addExpense, inputState, updateExpense, updateMode, onClose]
   );
 
   return (

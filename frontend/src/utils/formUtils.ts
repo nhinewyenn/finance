@@ -27,12 +27,6 @@ export function dateFormat(date: Date) {
   return moment(date).format('DD/MM/YY');
 }
 
-export function getToken() {
-  return localStorage.getItem('access_token');
-}
-
-console.log(getToken());
-
 export function useGetUserId() {
   return localStorage.getItem('userID');
 }

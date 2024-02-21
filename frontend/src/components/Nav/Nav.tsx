@@ -163,19 +163,17 @@ const NavStyled = styled.nav`
   @media (max-width: 1270px) {
     width: 100px;
 
-    .user-container {
-      img {
-        width: 50px;
-        height: 50px;
-      }
-    }
-
     .menu-title {
       display: none;
     }
 
     .user-container {
       flex-direction: column;
+
+      img {
+        width: 50px;
+        height: 50px;
+      }
 
       .text {
         display: flex;
@@ -227,8 +225,8 @@ const NavStyled = styled.nav`
 
       .user-container {
         flex-direction: row;
-        height: none;
-        gap: none;
+        height: 0;
+        gap: 0;
 
         img {
           width: 45px;

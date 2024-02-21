@@ -58,7 +58,11 @@ export default function Expense() {
             bRadius={'30px'}
             bg={'var(--color-transparent'}
             color={'var(--color-accent'}
-            onClick={() => setToggleModal(true)}
+            onClick={() => {
+              setToggleModal(true);
+              setToggleUpdate(false);
+              setSelectedExpense(null);
+            }}
           />
         </div>
         <h2 className='total-expense'>

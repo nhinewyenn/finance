@@ -60,7 +60,11 @@ export default function Income() {
             bRadius={'30px'}
             bg={'var(--color-transparent'}
             color={'var(--color-accent'}
-            onClick={() => setToggleModal(true)}
+            onClick={() => {
+              setToggleModal(true);
+              setToggleUpdate(false);
+              setSelectedIncome(null);
+            }}
           />
         </div>
         <h2 className='total-income'>

@@ -92,11 +92,12 @@ export default function IncomeFormModal({
           category: '',
           description: '',
         });
+        onClose();
       } catch (error) {
         console.error('Error adding/updating income:', error);
       }
     },
-    [addIncome, updateIncome, inputState, updateMode]
+    [addIncome, updateIncome, inputState, updateMode, onClose]
   );
 
   return (
