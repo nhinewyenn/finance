@@ -10,7 +10,10 @@ export default function History() {
   const { data: expenses } = useGetExpensesQuery();
   const { data: income } = useGetIncomesQuery();
 
-  const storedTransactions = [...(income ?? []), ...(expenses ?? [])];
+  const storedTransactions = [
+    ...(income && Array.isArray(income) ? income : []),
+    ...(expenses && Array.isArray(expenses) ? expenses : []),
+  ];
 
   const history = storedTransactions
     .filter((transaction) => transaction.createdAt)

@@ -21,7 +21,7 @@ export const useTotalIncome = (incomes: FormInput[]) => {
   const [totalIncome, setTotalIncome] = useState(0);
 
   useEffect(() => {
-    if (incomes) {
+    if (Array.isArray(incomes)) {
       setTotalIncome(
         incomes.reduce((total, income) => total + income.amount, 0)
       );

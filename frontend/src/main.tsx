@@ -34,7 +34,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <GlobalStyle />
-    <CookiesProvider defaultSetOptions={{ path: '/login' }}>
+    <CookiesProvider defaultSetOptions={{ path: '/' }}>
       <Provider store={store}>
         <RouterProvider router={router} />
       </Provider>

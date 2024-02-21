@@ -17,13 +17,17 @@ import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
 
 export default function Income() {
-  const { data, isSuccess } = useGetIncomesQuery();
+  const { data, isSuccess, isLoading } = useGetIncomesQuery();
   const [deleteIncome] = useDeleteIncomeMutation();
   const [updateIncome] = useUpdateIncomeMutation();
   const totalIncome = useTotalIncome(data ?? []);
   const [selectedIncome, setSelectedIncome] = useState<FormInput | null>(null);
   const [toggleUpdate, setToggleUpdate] = useState(false);
   const [toggleModal, setToggleModal] = useState(false);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   async function handleUpdate(id: string) {
     const income = data?.find((v) => v._id === id);
@@ -74,6 +78,7 @@ export default function Income() {
           </div>
           <div className='incomes'>
             {isSuccess &&
+              Array.isArray(data) &&
               data.map((income) => (
                 <IncomeItem
                   {...income}

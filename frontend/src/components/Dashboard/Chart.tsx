@@ -33,20 +33,49 @@ ChartJs.register(
 type Accumulator = { [key: string]: number };
 
 export default function Chart() {
-  const { data: expenses } = useGetExpensesQuery();
-  const { data: incomes } = useGetIncomesQuery();
+  const {
+    data: expenses,
+    isLoading: isExpenseLoading,
+    isSuccess: expenseSuccess,
+  } = useGetExpensesQuery();
+  const {
+    data: incomes,
+    isLoading: isIncomeLoading,
+    isSuccess: incomeSuccess,
+  } = useGetIncomesQuery();
 
-  const incomeData = incomes?.reduce((acc: Accumulator, income) => {
-    acc[income.date.toString()] = income.amount;
-    return acc;
-  }, {});
+  if (isIncomeLoading || isExpenseLoading) {
+    return <div>Loading...</div>;
+  }
 
-  const expenseData = expenses?.reduce((acc: Accumulator, expense) => {
-    acc[expense.date.toString()] = expense.amount;
-    return acc;
-  }, {});
+  if (!incomeSuccess || !expenseSuccess) {
+    return <div>Error: Failed to fetch data</div>;
+  }
 
-  const allData: FormInput[] = [...(incomes || []), ...(expenses || [])];
+  const incomeArr = Array.isArray(incomes) ? incomes : [];
+  const expenseArr = Array.isArray(expenses) ? expenses : [];
+
+  const incomeData = Array.isArray(incomes)
+    ? incomes.reduce((acc: Accumulator, income) => {
+        acc[income.date.toString()] = income.amount;
+        return acc;
+      }, {})
+    : {};
+
+  console.log(incomeData);
+
+  const expenseData = Array.isArray(expenses)
+    ? expenses.reduce((acc: Accumulator, expense) => {
+        acc[expense.date.toString()] = expense.amount;
+        return acc;
+      }, {})
+    : {};
+
+  console.log(expenseData);
+
+  const allData: FormInput[] = [...incomeArr, ...expenseArr];
+
+  console.log(allData);
 
   const filteredData = allData.filter(
     (v) => v.amount !== undefined && v.amount !== null && v.amount !== 0
@@ -78,7 +107,7 @@ export default function Chart() {
 
   return (
     <ChartStyled>
-      <Line data={data} />
+      {incomeData && expenseData && <Line data={data} />}
     </ChartStyled>
   );
 }

@@ -5,6 +5,14 @@ import UserSchema from '../models/userModel';
 import bcrypt from 'bcrypt';
 import { generateToken } from '../utils/generateToken';
 
+declare global {
+  namespace Express {
+    interface Request {
+      user: any;
+    }
+  }
+}
+
 // Routes for all will be api/v1/auth
 
 /**
@@ -12,7 +20,6 @@ import { generateToken } from '../utils/generateToken';
  * @method - get
  */
 export async function getAllUser(req: Request, res: Response) {
-  const user = req.user;
   try {
     const users = await UserSchema.find({}, { password: 0 }); // exclude password
     res.status(200).json({ success: true, count: users.length, users });
@@ -24,10 +31,11 @@ export async function getAllUser(req: Request, res: Response) {
 
 export async function getUserByID(req: Request, res: Response) {
   try {
-    const { id } = req.params;
-    const user = await UserSchema.findById(id, { password: 0 });
+    const { _id } = req.user;
+    console.log(_id);
+    const user = await UserSchema.findById(_id, { password: 0 });
 
-    if (!user && !id) {
+    if (!user && !_id) {
       return res.status(404).json({ error: 'User not found' });
     }
 

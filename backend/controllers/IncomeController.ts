@@ -6,7 +6,7 @@ import UserSchema from '../models/userModel';
 export async function addIncome(req: Request, res: Response) {
   const { title, amount, category, description, date, user } = req.body;
 
-  console.log(req.body);
+  console.log('add income user', req.user);
 
   const income = new IncomeSchema({
     title,

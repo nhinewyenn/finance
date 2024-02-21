@@ -206,6 +206,11 @@ const ModalStyled = styled.div`
 
   @media (max-width: 967px) {
     display: block;
+    height: 70vh;
+  }
+
+  @media (max-width: 500px) {
+    width: 75vw;
   }
 `;
 

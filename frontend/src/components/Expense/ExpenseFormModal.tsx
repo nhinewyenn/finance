@@ -172,7 +172,7 @@ export default function ExpenseFormModal({
               </div>
               <div className='submit-btn'>
                 <Button
-                  name={updateMode ? 'Update Expense' : 'Add Expense'}
+                  name={updateMode ? 'Update' : 'Submit'}
                   icon={plus}
                   bPad={'.8rem 1.6rem'}
                   bRadius={'30px'}
@@ -203,6 +203,11 @@ const ModalStyled = styled.div`
 
   @media (max-width: 967px) {
     display: block;
+    height: 70vh;
+  }
+
+  @media (max-width: 500px) {
+    width: 75vw;
   }
 `;
 

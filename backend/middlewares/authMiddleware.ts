@@ -9,7 +9,7 @@ const JWT_SECRET = process.env.SECRET_KEY as string;
 declare global {
   namespace Express {
     interface Request {
-      user?: any;
+      user: any;
     }
   }
 }
@@ -24,17 +24,17 @@ export async function verifyToken(
   next: NextFunction
 ) {
   try {
-    const { jwt } = req.cookies;
+    const { access_token } = req.cookies;
 
-    console.log('cookie', jwt); //undefined
+    console.log('cookie', access_token); //undefined
 
-    if (!jwt) {
+    if (!access_token) {
       return res
         .status(401)
         .json({ error: 'Unauthorized - No Token Provided' });
     }
 
-    const { _id } = jwt.verify(jwt, JWT_SECRET) as JwtPayload;
+    const { _id } = jwt.verify(access_token, JWT_SECRET) as JwtPayload;
     console.log('Decoded user ID:', _id);
 
     if (!_id) {
@@ -49,7 +49,6 @@ export async function verifyToken(
     }
 
     req.user = user;
-    res.locals.user = user;
 
     next();
   } catch (error) {

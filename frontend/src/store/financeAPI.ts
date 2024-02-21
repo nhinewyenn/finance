@@ -7,11 +7,16 @@ export const financeAPI = createApi({
   reducerPath: 'financeAPI',
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:1000/api/v1/profile/',
+    credentials: 'include',
+    headers: {
+      'Access-Control-Allow-Origin': 'http://localhost:5173',
+    },
   }),
   tagTypes: ['Income', 'Expense'],
   endpoints: (builder) => ({
     getIncomes: builder.query<FormInput[], void>({
       query: () => 'get-incomes',
+
       providesTags: [{ type: 'Income' }],
     }),
     addIncome: builder.mutation({
@@ -27,7 +32,6 @@ export const financeAPI = createApi({
         url: `update-income/${_id}`,
         method: 'PATCH',
         body: income,
-        credentials: 'same-origin',
       }),
       transformResponse: (response) => response,
       invalidatesTags: (result, _, arg) => [{ type: 'Income', id: arg.id }],
@@ -56,7 +60,6 @@ export const financeAPI = createApi({
         url: `update-expense/${_id}`,
         method: 'PATCH',
         body: expense,
-        credentials: 'same-origin',
       }),
       transformResponse: (response) => response,
       invalidatesTags: (result, _, arg) => [{ type: 'Expense', id: arg.id }],
