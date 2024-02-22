@@ -14,14 +14,8 @@ import PrivateRoute from './components/Login/PrivateRoute.tsx';
 
 const router = createBrowserRouter([
   {
-    path: '',
-    element: <PrivateRoute />,
-    children: [
-      {
-        path: '/',
-        element: <App />,
-      },
-    ],
+    path: '/',
+    element: <App />,
   },
   {
     path: '/login',

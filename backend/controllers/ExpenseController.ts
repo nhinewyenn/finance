@@ -89,10 +89,10 @@ export async function updateExpense(req: Request, res: Response) {
 export async function deleteExpense(req: Request, res: Response) {
   const { id } = req.params;
   ExpenseSchema.findByIdAndDelete(id)
-    .then((expense) => {
+    .then(() => {
       res.status(200).json({ message: 'Expense deleted' });
     })
     .catch((err) =>
-      res.status(500).json({ message: 'Delete expense server error' })
+      res.status(500).json({ message: 'Delete expense server error', success: false })
     );
 }
