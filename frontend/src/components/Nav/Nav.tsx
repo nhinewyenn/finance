@@ -8,7 +8,10 @@ import { useNavigate } from 'react-router-dom';
 import { useGetUserByIdQuery } from '../../store/userAPI';
 import { useCookies } from 'react-cookie';
 import Button from '../Button/Button';
+import { logoutUser } from '../../store/authSlice';
+
 import { useGetUserId } from '../../utils/formUtils';
+import { useDispatch } from 'react-redux';
 
 type NavProps = {
   active: number;
@@ -17,14 +20,14 @@ type NavProps = {
 
 export default function Nav({ active, setActive }: NavProps) {
   const userId = useGetUserId();
+  const dispatch = useDispatch();
   const { data, isLoading, isSuccess } = useGetUserByIdQuery(userId!);
   const [_, setCookies] = useCookies(); //eslint-disable-line
   const navigate = useNavigate();
 
   function logout() {
     setCookies('access_token', '');
-    localStorage.removeItem('userID');
-    localStorage.removeItem('access_token');
+    dispatch(logoutUser());
     navigate('/login');
   }
 

@@ -19,13 +19,13 @@ export default function SignUp() {
   const passwordRef = useRef<HTMLInputElement>(null);
   const [registerUser, { isError }] = useRegisterMutation();
 
-  const { userInfo } = useSelector((state: RootState) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    if (userInfo) {
+    if (user) {
       navigate('/');
     }
-  }, [navigate, userInfo]);
+  }, [navigate, user]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

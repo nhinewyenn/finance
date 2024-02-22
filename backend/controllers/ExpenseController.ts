@@ -93,6 +93,8 @@ export async function deleteExpense(req: Request, res: Response) {
       res.status(200).json({ message: 'Expense deleted' });
     })
     .catch((err) =>
-      res.status(500).json({ message: 'Delete expense server error', success: false })
+      res
+        .status(500)
+        .json({ message: 'Delete expense server error', success: false })
     );
 }

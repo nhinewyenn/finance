@@ -15,16 +15,16 @@ export default function Login() {
   const [login, { isError }] = useLoginMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { userInfo } = useSelector((state: RootState) => state.auth);
-  const [cookie, setCookies] = useCookies(['access_token']); //eslint-disable-line
+  const { user } = useSelector((state: RootState) => state.auth);
+  const [cookie, setCookies] = useCookies(['access_token']);
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (userInfo) {
+    if (user) {
       navigate('/');
     }
-  }, [navigate, userInfo]);
+  }, [navigate, user]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -34,15 +34,11 @@ export default function Login() {
       password: passwordRef.current?.value,
     }).unwrap();
 
-    console.log(loginData);
-
     try {
-      setCookies('access_token', loginData.token);
+      setCookies('access_token', cookie.access_token);
       localStorage.setItem('userID', loginData.userID);
-      localStorage.setItem('access_token', loginData.token);
       toast.success('Login success!');
       dispatch(setCredentials({ ...loginData }));
-
       setTimeout(() => navigate('/'), 500);
     } catch (error) {
       isError && toast.error('Info does not match!');
