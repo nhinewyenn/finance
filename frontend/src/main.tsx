@@ -6,7 +6,7 @@ import App from './App.tsx';
 import { GlobalStyle } from './styles/GlobalStyle.ts';
 import { Provider } from 'react-redux';
 import { store } from './store/store.ts';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SignUp from './components/Login/Signup.tsx';
 import { CookiesProvider } from 'react-cookie';
 import PrivateRoute from './components/Login/PrivateRoute.tsx';
@@ -17,7 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <GlobalStyle />
     <CookiesProvider defaultSetOptions={{ path: '/' }}>
       <Provider store={store}>
-        <Router>
+        <BrowserRouter>
           <Routes>
             <Route path='' element={<PrivateRoute />}>
               <Route index path='/' element={<App />} />
@@ -25,7 +25,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<SignUp />} />
           </Routes>
-        </Router>
+        </BrowserRouter>
       </Provider>
     </CookiesProvider>
   </React.StrictMode>

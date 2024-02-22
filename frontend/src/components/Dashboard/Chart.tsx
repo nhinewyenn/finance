@@ -47,13 +47,13 @@ export default function Chart() {
   const incomeData: Record<string, number> = {};
   const expenseData: Record<string, number> = {};
 
-  [...incomeArr, ...expenseArr].forEach((v) => {
-    const dateStr = v.date.toString();
-    if (v.amount !== undefined && v.amount !== null && v.amount !== 0) {
-      if (v.type === 'income') {
-        incomeData[dateStr] = (incomeData[dateStr] || 0) + v.amount;
+  [...incomeArr, ...expenseArr].forEach((el) => {
+    const dateStr = el.date.toString();
+    if (el.amount !== undefined && el.amount !== null && el.amount !== 0) {
+      if (el.type === 'income') {
+        incomeData[dateStr] = (incomeData[dateStr] || 0) + el.amount;
       } else {
-        expenseData[dateStr] = (expenseData[dateStr] || 0) + v.amount;
+        expenseData[dateStr] = (expenseData[dateStr] || 0) + el.amount;
       }
     }
   });
