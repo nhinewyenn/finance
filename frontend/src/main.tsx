@@ -19,8 +19,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Provider store={store}>
         <Router>
           <Routes>
-            <Route path='/' element={<PrivateRoute />}>
-              <Route index element={<App />} />
+            <Route path='' element={<PrivateRoute />}>
+              <Route index path='/' element={<App />} />
             </Route>
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<SignUp />} />

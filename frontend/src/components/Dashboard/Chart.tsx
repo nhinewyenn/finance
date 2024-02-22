@@ -17,6 +17,7 @@ import {
   useGetIncomesQuery,
 } from '../../store/financeAPI';
 import { dateFormat } from '../../utils/formUtils';
+import { LoadingSpinner } from '../../utils/LoadingSpinner';
 
 ChartJs.register(
   CategoryScale,
@@ -81,7 +82,7 @@ export default function Chart() {
   };
 
   if (isIncomeLoading || isExpenseLoading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   if (!incomeSuccess || !expenseSuccess) {

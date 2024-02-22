@@ -15,6 +15,7 @@ import { FormInput } from '../../utils/typeUtils';
 import IncomeFormModal from './IncomeFormModal';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
+import { LoadingSpinner } from '../../utils/LoadingSpinner';
 
 export default function Income() {
   const { data, isSuccess, isLoading } = useGetIncomesQuery();
@@ -26,7 +27,7 @@ export default function Income() {
   const [toggleModal, setToggleModal] = useState(false);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   async function handleUpdate(id: string) {

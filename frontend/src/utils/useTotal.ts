@@ -4,29 +4,25 @@ import { useEffect, useState } from 'react';
 import { FormInput } from './typeUtils';
 
 export const useTotalExpense = (expense: FormInput[]) => {
-  const [totalExpense, setTotalExpense] = useState(0);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     if (expense) {
-      setTotalExpense(
-        expense.reduce((total, expense) => total + expense.amount, 0)
-      );
+      setTotal(expense.reduce((total, expense) => total + expense.amount, 0));
     }
   }, [expense]);
 
-  return totalExpense;
+  return total;
 };
 
 export const useTotalIncome = (incomes: FormInput[]) => {
-  const [totalIncome, setTotalIncome] = useState(0);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     if (Array.isArray(incomes)) {
-      setTotalIncome(
-        incomes.reduce((total, income) => total + income.amount, 0)
-      );
+      setTotal(incomes.reduce((total, income) => total + income.amount, 0));
     }
   }, [incomes]);
 
-  return totalIncome;
+  return total;
 };

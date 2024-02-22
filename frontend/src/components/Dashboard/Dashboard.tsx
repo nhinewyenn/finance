@@ -10,6 +10,7 @@ import Chart from './Chart';
 import { dollar } from '../../utils/Icon';
 import { useTotalExpense, useTotalIncome } from '../../utils/useTotal';
 import History from './History';
+import { LoadingSpinner } from '../../utils/LoadingSpinner';
 
 export default function Dashboard() {
   const {
@@ -27,7 +28,7 @@ export default function Dashboard() {
   const totalIncome = useTotalIncome(income ?? []);
 
   if (isIncomeLoading || isExpenseLoading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   if (!incomeSuccess || !expenseSuccess) {
