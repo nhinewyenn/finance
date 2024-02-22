@@ -17,7 +17,6 @@ import {
   useGetIncomesQuery,
 } from '../../store/financeAPI';
 import { dateFormat } from '../../utils/formUtils';
-import { FormInput } from '../../utils/typeUtils';
 
 ChartJs.register(
   CategoryScale,
@@ -29,8 +28,6 @@ ChartJs.register(
   Legend,
   ArcElement
 );
-
-type Accumulator = { [key: string]: number };
 
 export default function Chart() {
   const {
@@ -44,48 +41,26 @@ export default function Chart() {
     isSuccess: incomeSuccess,
   } = useGetIncomesQuery();
 
-  if (isIncomeLoading || isExpenseLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!incomeSuccess || !expenseSuccess) {
-    return <div>Error: Failed to fetch data</div>;
-  }
-
   const incomeArr = Array.isArray(incomes) ? incomes : [];
   const expenseArr = Array.isArray(expenses) ? expenses : [];
+  const incomeData: Record<string, number> = {};
+  const expenseData: Record<string, number> = {};
 
-  const incomeData = Array.isArray(incomes)
-    ? incomes.reduce((acc: Accumulator, income) => {
-        acc[income.date.toString()] = income.amount;
-        return acc;
-      }, {})
-    : {};
+  [...incomeArr, ...expenseArr].forEach((v) => {
+    const dateStr = v.date.toString();
+    if (v.amount !== undefined && v.amount !== null && v.amount !== 0) {
+      if (v.type === 'income') {
+        incomeData[dateStr] = (incomeData[dateStr] || 0) + v.amount;
+      } else {
+        expenseData[dateStr] = (expenseData[dateStr] || 0) + v.amount;
+      }
+    }
+  });
 
-  console.log(incomeData);
-
-  const expenseData = Array.isArray(expenses)
-    ? expenses.reduce((acc: Accumulator, expense) => {
-        acc[expense.date.toString()] = expense.amount;
-        return acc;
-      }, {})
-    : {};
-
-  console.log(expenseData);
-
-  const allData: FormInput[] = [...incomeArr, ...expenseArr];
-
-  console.log(allData);
-
-  const filteredData = allData.filter(
-    (v) => v.amount !== undefined && v.amount !== null && v.amount !== 0
+  const uniqueDates = Array.from(
+    new Set([...incomeArr.map((v) => v.date), ...expenseArr.map((v) => v.date)])
   );
-
-  const datesWithData = filteredData.map((v) => v.date);
-
-  // Remove duplicates and maintain order:
-  const uniqueDates = Array.from(new Set(datesWithData));
-  uniqueDates.sort((a, b) => new Date(a).getTime() - new Date(b).getTime()); //sort ascending
+  uniqueDates.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
 
   const data = {
     labels: uniqueDates.map((date) => dateFormat(date)),
@@ -104,6 +79,14 @@ export default function Chart() {
       },
     ],
   };
+
+  if (isIncomeLoading || isExpenseLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!incomeSuccess || !expenseSuccess) {
+    return <div>Error: Failed to fetch data</div>;
+  }
 
   return (
     <ChartStyled>

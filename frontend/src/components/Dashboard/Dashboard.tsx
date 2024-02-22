@@ -12,10 +12,27 @@ import { useTotalExpense, useTotalIncome } from '../../utils/useTotal';
 import History from './History';
 
 export default function Dashboard() {
-  const { data: expenses } = useGetExpensesQuery();
-  const { data: income } = useGetIncomesQuery();
+  const {
+    data: expenses,
+    isLoading: isExpenseLoading,
+    isSuccess: expenseSuccess,
+  } = useGetExpensesQuery();
+  const {
+    data: income,
+    isLoading: isIncomeLoading,
+    isSuccess: incomeSuccess,
+  } = useGetIncomesQuery();
+
   const totalExpense = useTotalExpense(expenses ?? []);
   const totalIncome = useTotalIncome(income ?? []);
+
+  if (isIncomeLoading || isExpenseLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!incomeSuccess || !expenseSuccess) {
+    return <div>Error: Failed to fetch data</div>;
+  }
 
   return (
     <DashboardStyled>
