@@ -1,7 +1,7 @@
 /** @format */
 import { Response, Request } from 'express';
 import IncomeSchema from '../models/incomeModel';
-import userModel from '../models/userModel';
+import UserSchema from '../models/userModel';
 
 export async function addIncome(req: Request, res: Response) {
   const { title, amount, category, description, date, userID } = req.body;
@@ -26,7 +26,14 @@ export async function addIncome(req: Request, res: Response) {
     }
 
     await income.save();
-    res.status(200).json({ message: 'Income added' });
+
+    const user = await UserSchema.findByIdAndUpdate(req.user._id, {
+      $push: { incomes: income._id },
+    });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ message: 'Income added', success: true, income });
   } catch (error) {
     res.status(500).json({ message: 'Add income server error', error });
   }
@@ -34,8 +41,15 @@ export async function addIncome(req: Request, res: Response) {
 
 export async function getIncomes(req: Request, res: Response) {
   try {
-    const user = await userModel.findById(req.body.userID);
-    const income = await IncomeSchema.find().sort({
+    const user = await UserSchema.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const incomeId = user.incomes ?? [];
+    const income = await IncomeSchema.find({
+      _id: { $in: incomeId },
+    }).sort({
       createdAt: -1,
     });
     res.status(200).json(income);

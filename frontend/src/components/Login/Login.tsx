@@ -20,6 +20,8 @@ export default function Login() {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
+  console.log(user);
+
   useEffect(() => {
     if (user) {
       navigate('/');
@@ -41,7 +43,7 @@ export default function Login() {
       dispatch(setCredentials({ ...loginData }));
       setTimeout(() => navigate('/'), 500);
     } catch (error) {
-      isError && toast.error('Info does not match!');
+      isError && toast.error('Error logging in');
       console.error('Error with logging in:', error);
     }
   }
