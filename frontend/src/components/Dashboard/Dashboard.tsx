@@ -230,7 +230,7 @@ const DashboardStyled = styled.div`
     }
   }
 
-  @media (max-width: 715px) {
+  @media (max-width: 735px) {
     .stats-con {
       #income-amount,
       #expense-amount,

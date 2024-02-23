@@ -16,7 +16,6 @@ export const financeAPI = createApi({
   endpoints: (builder) => ({
     getIncomes: builder.query<FormInput[], void>({
       query: () => 'get-incomes',
-
       providesTags: [{ type: 'Income' }],
     }),
     addIncome: builder.mutation({

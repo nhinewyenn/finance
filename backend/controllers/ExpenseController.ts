@@ -4,21 +4,22 @@ import ExpenseSchema from '../models/expenseModel';
 import UserSchema from '../models/userModel';
 
 export async function addExpense(req: Request, res: Response) {
-  const { title, amount, category, description, date } = req.body;
-
+  const { title, amount, category, description, date, userID } = req.body;
   const expense = new ExpenseSchema({
     title,
     amount,
     category,
     description,
     date,
+    userID,
   });
 
   try {
     // validations
-    if (!title || !category || !description || !date) {
+    if (!title || !category || !date) {
       return res.status(400).json({ message: 'All fields are required' });
     }
+
     if (amount <= 0 && typeof amount !== 'number') {
       return res
         .status(400)
@@ -46,7 +47,7 @@ export async function getExpenses(req: Request, res: Response) {
 
 export async function updateExpense(req: Request, res: Response) {
   try {
-    const { title, amount, category, description, date } = req.body;
+    const { title, amount, category, description, date, userID } = req.body;
     const { id } = req.params;
     const income = await ExpenseSchema.findByIdAndUpdate(
       id,
@@ -56,6 +57,7 @@ export async function updateExpense(req: Request, res: Response) {
         category,
         description,
         date,
+        userID,
       },
       { new: true }
     );

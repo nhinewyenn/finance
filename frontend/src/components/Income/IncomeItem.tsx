@@ -111,9 +111,11 @@ export default function IncomeItem({
               <p>
                 {calendar} {dateFormat(date)}
               </p>
-              <p>
-                {comment} {description}
-              </p>
+              {description && (
+                <p>
+                  {comment} {description}
+                </p>
+              )}
             </div>
             <div className='btn-content'>
               <Button

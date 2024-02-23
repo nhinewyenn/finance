@@ -9,6 +9,7 @@ export type FormInput = {
   description: string;
   type?: 'income' | 'expense';
   createdAt?: Date;
+  userID: string;
 };
 
 export type User = {

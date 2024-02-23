@@ -1,29 +1,22 @@
 /** @format */
 import { Response, Request } from 'express';
 import IncomeSchema from '../models/incomeModel';
-
-declare global {
-  namespace Express {
-    interface Request {
-      user: any;
-    }
-  }
-}
+import userModel from '../models/userModel';
 
 export async function addIncome(req: Request, res: Response) {
-  const { title, amount, category, description, date } = req.body;
-
+  const { title, amount, category, description, date, userID } = req.body;
   const income = new IncomeSchema({
     title,
     amount,
     category,
     description,
     date,
+    userID,
   });
 
   try {
     // validations
-    if (!title || !category || !description || !date) {
+    if (!title || !category || !date) {
       return res.status(400).json({ message: 'All fields are required' });
     }
     if (amount <= 0 && typeof amount !== 'number') {
@@ -41,6 +34,7 @@ export async function addIncome(req: Request, res: Response) {
 
 export async function getIncomes(req: Request, res: Response) {
   try {
+    const user = await userModel.findById(req.body.userID);
     const income = await IncomeSchema.find().sort({
       createdAt: -1,
     });
@@ -52,7 +46,7 @@ export async function getIncomes(req: Request, res: Response) {
 
 export async function updateIncome(req: Request, res: Response) {
   try {
-    const { title, amount, category, description, date } = req.body;
+    const { title, amount, category, description, date, userID } = req.body;
     const { id } = req.params;
     const income = await IncomeSchema.findByIdAndUpdate(
       id,
@@ -62,6 +56,7 @@ export async function updateIncome(req: Request, res: Response) {
         category,
         description,
         date,
+        userID,
       },
       { new: true }
     );

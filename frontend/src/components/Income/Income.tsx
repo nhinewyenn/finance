@@ -26,6 +26,8 @@ export default function Income() {
   const [toggleUpdate, setToggleUpdate] = useState(false);
   const [toggleModal, setToggleModal] = useState(false);
 
+  console.log(data);
+
   if (isLoading) {
     return <LoadingSpinner />;
   }

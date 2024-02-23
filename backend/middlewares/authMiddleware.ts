@@ -26,7 +26,7 @@ export async function verifyToken(
   try {
     const { access_token } = req.cookies;
 
-    console.log('cookie', access_token); //undefined
+    console.log('cookie', access_token);
 
     if (!access_token) {
       return res
@@ -35,20 +35,18 @@ export async function verifyToken(
     }
 
     const { _id } = jwt.verify(access_token, JWT_SECRET) as JwtPayload;
-    console.log('Decoded user ID:', _id);
-
     if (!_id) {
       return res.status(401).json({ error: 'Unauthorized - Invalid Token' });
     }
 
     const user = await UserSchema.findById(_id).select('-password');
-    console.log('user', user);
-
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
     req.user = user;
+
+    console.log('req user', req.user);
 
     next();
   } catch (error) {

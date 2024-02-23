@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { incomeCategory } from '../../utils/formUtils';
+import { incomeCategory, useGetUserId } from '../../utils/formUtils';
 import {
   useAddIncomeMutation,
   useUpdateIncomeMutation,
@@ -19,6 +19,7 @@ type IncomeFormProps = {
 };
 
 export default function Form({ updateMode, selectedIncome }: IncomeFormProps) {
+  const getUserId = useGetUserId();
   const [inputState, setInputState] = useState<FormInput>({
     _id: '',
     title: '',
@@ -26,10 +27,11 @@ export default function Form({ updateMode, selectedIncome }: IncomeFormProps) {
     date: new Date(),
     category: '',
     description: '',
+    userID: getUserId!,
   });
   const [updateIncome] = useUpdateIncomeMutation();
   const [addIncome, { isError, error }] = useAddIncomeMutation();
-  const { title, amount, date, category, description } = inputState;
+  const { title, amount, date, category, description, userID } = inputState;
 
   useEffect(() => {
     // Update form when selectedIncome changes
@@ -43,9 +45,10 @@ export default function Form({ updateMode, selectedIncome }: IncomeFormProps) {
         date: new Date(),
         category: '',
         description: '',
+        userID,
       });
     }
-  }, [selectedIncome, updateMode]);
+  }, [selectedIncome, updateMode, userID]);
 
   const handleInput =
     (name: string) =>
@@ -84,12 +87,13 @@ export default function Form({ updateMode, selectedIncome }: IncomeFormProps) {
           date: new Date(),
           category: '',
           description: '',
+          userID,
         });
       } catch (error) {
         console.error('Error adding/updating income:', error);
       }
     },
-    [addIncome, updateIncome, inputState, updateMode]
+    [addIncome, updateIncome, inputState, updateMode, userID]
   );
 
   return (

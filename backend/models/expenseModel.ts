@@ -33,13 +33,12 @@ const ExpenseSchema = new mongoose.Schema(
     description: {
       type: String,
       maxLength: 20,
-      required: true,
       trim: true,
     },
-    user: {
+    userID: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'User',
+      ref: 'users',
     },
   },
   { timestamps: true }
