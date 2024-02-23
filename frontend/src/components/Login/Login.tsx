@@ -20,8 +20,6 @@ export default function Login() {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  console.log(user);
-
   useEffect(() => {
     if (user) {
       navigate('/');
@@ -79,6 +77,16 @@ export default function Login() {
       <ToastContainer />
       <hr />
       <p>Don't have an account?</p>
+      <button
+        className='demo'
+        onClick={() =>
+          alert(
+            'username: blackpink1234, password: blackpink1234 \n username: testuser1234, password: testuser1234'
+          )
+        }
+      >
+        <a>Demo</a>
+      </button>
       <Link to='/register' style={{ textDecoration: 'none' }}>
         Sign up
       </Link>
@@ -113,6 +121,15 @@ const LoginStyled = styled.form`
     &::placeholder {
       color: rgba(34, 34, 96, 0.4);
     }
+  }
+
+  .demo {
+    border: none;
+    background: none;
+    color: #222260;
+    font-family: inherit;
+    font-size: inherit;
+    margin: none;
   }
 
   .submit-btn {

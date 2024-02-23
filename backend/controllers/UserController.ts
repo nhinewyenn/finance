@@ -118,7 +118,7 @@ export async function login(req: Request, res: Response) {
 
 export function logout(req: Request, res: Response) {
   try {
-    res.cookie('jwt', '', { maxAge: 0 });
+    res.cookie('access_token', '', { maxAge: 0 });
     res.status(200).json({ message: 'Logged out successful' });
   } catch (error) {
     console.error('Error in logout controller', error);

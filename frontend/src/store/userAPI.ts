@@ -12,7 +12,7 @@ export const userAPI = createApi({
       'Access-Control-Allow-Origin': 'http://localhost:5173',
     },
   }),
-  tagTypes: ['Register', 'Login'],
+  tagTypes: ['Register', 'Login', 'Logout'],
   endpoints: (builder) => ({
     register: builder.mutation({
       query: (user) => ({
@@ -32,12 +32,12 @@ export const userAPI = createApi({
       }),
       invalidatesTags: [{ type: 'Login' }],
     }),
-    logout: builder.mutation({
+    logoutUser: builder.mutation<unknown, void>({
       query: () => ({
         url: 'logout',
         method: 'POST',
       }),
-      invalidatesTags: [{ type: 'Login' }],
+      invalidatesTags: [{ type: 'Logout' }],
     }),
     getUserById: builder.query<UserApiResponse, string>({
       query: (id) => `user/${id}`,
@@ -46,5 +46,9 @@ export const userAPI = createApi({
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation, useGetUserByIdQuery } =
-  userAPI;
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useGetUserByIdQuery,
+  useLogoutUserMutation,
+} = userAPI;

@@ -5,11 +5,13 @@ import avatar from '../../img/blank-avatar-photo-place-holder-600nw-1114445501.w
 import { signout } from '../../utils/Icon';
 import { menuItems } from '../../utils/menuItems';
 import { useNavigate } from 'react-router-dom';
-import { useGetUserByIdQuery } from '../../store/userAPI';
+import {
+  useGetUserByIdQuery,
+  useLogoutUserMutation,
+} from '../../store/userAPI';
 import { useCookies } from 'react-cookie';
 import Button from '../Button/Button';
 import { logoutUser } from '../../store/authSlice';
-
 import { useGetUserId } from '../../utils/formUtils';
 import { useDispatch } from 'react-redux';
 
@@ -21,14 +23,21 @@ type NavProps = {
 export default function Nav({ active, setActive }: NavProps) {
   const userId = useGetUserId();
   const dispatch = useDispatch();
+  const [logoutMutation, { isSuccess: logoutSuccess }] =
+    useLogoutUserMutation();
   const { data, isLoading, isSuccess } = useGetUserByIdQuery(userId!);
   const [_, setCookies] = useCookies(); //eslint-disable-line
   const navigate = useNavigate();
 
-  function logout() {
-    setCookies('access_token', '');
-    dispatch(logoutUser());
-    navigate('/login');
+  async function logout() {
+    try {
+      await logoutMutation().unwrap();
+      setCookies('access_token', '');
+      dispatch(logoutUser());
+      logoutSuccess && navigate('/login');
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
