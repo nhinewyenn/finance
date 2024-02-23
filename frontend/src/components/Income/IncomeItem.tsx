@@ -130,7 +130,7 @@ export default function IncomeItem({
               <Button
                 className='btn-con'
                 icon={edit}
-                bPad={'0.9rem'}
+                bPad={'.9rem'}
                 bRadius={'50%'}
                 bg={'var(--primary-color'}
                 color={'#fff'}
@@ -271,11 +271,11 @@ const IncomeItemStyled = styled.div<{ type: 'income' | 'expense' }>`
 
     .btn-mobile {
       display: block;
-      padding: 5px;
+      padding: 6px;
       background-color: var(--primary-color);
       border: none;
       color: #fff;
-      border-radius: 7.5px;
+      border-radius: 10px;
     }
   }
 `;

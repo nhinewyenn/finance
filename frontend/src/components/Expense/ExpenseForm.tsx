@@ -9,7 +9,7 @@ import {
 import DatePicker from 'react-datepicker';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
-import { expenseCategory } from '../../utils/formUtils';
+import { expenseCategory, useGetUserId } from '../../utils/formUtils';
 import { useCallback, useEffect, useState } from 'react';
 
 type ExpenseFormProps = {
@@ -21,6 +21,7 @@ export default function ExpenseForm({
   updateMode,
   selectedExpense,
 }: ExpenseFormProps) {
+  const getUserId = useGetUserId();
   const [inputState, setInputState] = useState<FormInput>({
     _id: '',
     title: '',
@@ -28,10 +29,11 @@ export default function ExpenseForm({
     date: new Date(),
     category: '',
     description: '',
+    userID: getUserId!,
   });
   const [updateExpense] = useUpdateExpenseMutation();
   const [addExpense, { isError, error }] = useAddExpenseMutation();
-  const { title, amount, date, category, description } = inputState;
+  const { title, amount, date, category, description, userID } = inputState;
 
   useEffect(() => {
     // Update form when selectedExpense changes
@@ -45,9 +47,10 @@ export default function ExpenseForm({
         date: new Date(),
         category: '',
         description: '',
+        userID,
       });
     }
-  }, [selectedExpense, updateMode]);
+  }, [selectedExpense, updateMode, userID]);
 
   const handleInput =
     (name: string) =>
@@ -85,12 +88,13 @@ export default function ExpenseForm({
           date: new Date(),
           category: '',
           description: '',
+          userID,
         });
       } catch (error) {
         throw new Error('Error adding expense:' + error);
       }
     },
-    [addExpense, inputState, updateExpense, updateMode]
+    [addExpense, inputState, updateExpense, updateMode, userID]
   );
 
   return (
