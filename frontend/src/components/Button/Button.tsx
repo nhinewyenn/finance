@@ -49,6 +49,6 @@ const ButtonStyled = styled.button`
   display: flex;
   text-align: center;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.25rem;
   transition: all 0.4s ease-in-out;
 `;

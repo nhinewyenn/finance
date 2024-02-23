@@ -119,7 +119,7 @@ export default function IncomeItem({
               <Button
                 className='btn-con'
                 icon={trash}
-                bPad={'1rem'}
+                bPad={'.9rem'}
                 bRadius={'50%'}
                 bg={'var(--primary-color'}
                 color={'#fff'}
@@ -128,7 +128,7 @@ export default function IncomeItem({
               <Button
                 className='btn-con'
                 icon={edit}
-                bPad={'1rem'}
+                bPad={'0.9rem'}
                 bRadius={'50%'}
                 bg={'var(--primary-color'}
                 color={'#fff'}
