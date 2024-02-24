@@ -4,26 +4,28 @@ import IncomeSchema from '../models/incomeModel';
 import UserSchema from '../models/userModel';
 
 export async function addIncome(req: Request, res: Response) {
-  const { title, amount, category, description, date, userID } = req.body;
-  const income = new IncomeSchema({
-    title,
-    amount,
-    category,
-    description,
-    date,
-    userID,
-  });
-
   try {
+    const { title, amount, category, description, date, userID } = req.body;
+
     // validations
     if (!title || !category || !date) {
       return res.status(400).json({ message: 'All fields are required' });
     }
+
     if (amount <= 0 && typeof amount !== 'number') {
       return res
         .status(400)
         .json({ message: 'Amount must be a positive value' });
     }
+
+    const income = new IncomeSchema({
+      title,
+      amount,
+      category,
+      description,
+      date,
+      userID,
+    });
 
     await income.save();
 
@@ -46,9 +48,8 @@ export async function getIncomes(req: Request, res: Response) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const incomeId = user.incomes ?? [];
     const income = await IncomeSchema.find({
-      _id: { $in: incomeId },
+      _id: { $in: user.incomes },
     }).sort({
       createdAt: -1,
     });
@@ -102,10 +103,12 @@ export async function updateIncome(req: Request, res: Response) {
 }
 
 export async function deleteIncome(req: Request, res: Response) {
-  const { id } = req.params;
-  IncomeSchema.findByIdAndDelete(id)
-    .then(() => {
-      res.status(200).json({ message: 'Income deleted' });
-    })
-    .catch((err) => res.status(500).json({ message: 'Delete income error' }));
+  try {
+    const { id } = req.params;
+    await IncomeSchema.findByIdAndDelete(id);
+    res.status(200).json({ message: 'Income deleted' });
+  } catch (error) {
+    console.error('Delete income error:', error);
+    res.status(500).json({ message: 'Delete income server error' });
+  }
 }

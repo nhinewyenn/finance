@@ -26,6 +26,7 @@ export default function Dashboard() {
 
   const totalExpense = useTotalExpense(expenses ?? []);
   const totalIncome = useTotalIncome(income ?? []);
+  const totalBalance = totalIncome - totalExpense;
 
   if (isIncomeLoading || isExpenseLoading) {
     return <LoadingSpinner />;
@@ -57,8 +58,13 @@ export default function Dashboard() {
               </div>
               <div className='balance'>
                 <h2>Total Balance</h2>
-                <p id='balance-amount'>
-                  {dollar} {totalIncome - totalExpense}
+                <p
+                  id='balance-amount'
+                  style={{
+                    color: totalBalance < 0 ? 'red' : 'var(--color-green)',
+                  }}
+                >
+                  {dollar} {totalBalance}
                 </p>
               </div>
             </div>
@@ -146,7 +152,6 @@ const DashboardStyled = styled.div`
           justify-content: center;
           align-items: center;
           p {
-            color: var(--color-green);
             opacity: 0.6;
             font-size: 4rem;
           }
