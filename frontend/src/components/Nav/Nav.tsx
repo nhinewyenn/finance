@@ -29,7 +29,8 @@ export default function Nav({ active, setActive }: NavProps) {
   const [_, setCookies] = useCookies(); //eslint-disable-line
   const navigate = useNavigate();
 
-  async function logout() {
+  async function logout(event: React.FormEvent) {
+    event.preventDefault();
     try {
       await logoutMutation().unwrap();
       setCookies('access_token', '');
