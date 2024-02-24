@@ -25,9 +25,6 @@ export async function verifyToken(
 ) {
   try {
     const { access_token } = req.cookies;
-
-    console.log('cookie', access_token);
-
     if (!access_token) {
       return res
         .status(401)
@@ -45,12 +42,9 @@ export async function verifyToken(
     }
 
     req.user = user;
-
-    console.log('req user', req.user);
-
     next();
   } catch (error) {
-    console.log('Error in protectRoute middleware: ', error);
+    console.error('Error in protectRoute middleware: ', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 }

@@ -11,28 +11,19 @@ import { generateToken } from '../utils/generateToken';
  * @desc - get all user
  * @method - get
  */
-export async function getAllUser(req: Request, res: Response) {
-  try {
-    const users = await UserSchema.find({}, { password: 0 }); // exclude password
-    res.status(200).json({ success: true, count: users.length, users });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to retrieve users' });
-  }
-}
 
 export async function getUserByID(req: Request, res: Response) {
   try {
     const { id } = req.params;
-    const user = await UserSchema.findById(id, { password: 0 });
+    const user = await UserSchema.findById(id).select('-password');
 
-    if (!user && !id) {
+    if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
     res.status(200).json({ success: true, user });
   } catch (error) {
-    console.error(error);
+    console.error('Error retrieving user by ID:', error);
     res.status(500).json({ error: 'Failed to retrieve user' });
   }
 }
@@ -42,23 +33,21 @@ export async function getUserByID(req: Request, res: Response) {
  * @method - post
  */
 export async function registerUser(req: Request, res: Response) {
-  const { username, password } = req.body;
-  const userExist = await UserSchema.findOne({ username });
-
-  if (userExist) {
-    return res.status(400).json({ message: 'Username already exists' });
-  }
-
-  if (password.length < 8) {
-    return res
-      .status(400)
-      .json({ message: 'Password must be at least 8 characters long' });
-  }
-
   try {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPass = await bcrypt.hash(password, salt);
+    const { username, password } = req.body;
+    const userExist = await UserSchema.findOne({ username });
 
+    if (userExist) {
+      return res.status(400).json({ message: 'Username already exists' });
+    }
+
+    if (password.length < 8) {
+      return res
+        .status(400)
+        .json({ message: 'Password must be at least 8 characters long' });
+    }
+
+    const hashedPass = await bcrypt.hash(password, 12);
     const user = await UserSchema.create({
       username,
       password: hashedPass,
@@ -72,7 +61,7 @@ export async function registerUser(req: Request, res: Response) {
     });
   } catch (error) {
     console.error('Error during registration:', error);
-    res.status(401).json({ message: 'User not created' });
+    res.status(500).json({ message: 'User not created' });
   }
 }
 
@@ -82,25 +71,24 @@ export async function registerUser(req: Request, res: Response) {
  */
 
 export async function login(req: Request, res: Response) {
-  const { username, password } = req.body;
-  console.log(req.body);
-
-  if (!username || !password) {
-    return res
-      .status(400)
-      .json({ message: 'Username or password is not presented' });
-  }
-
   try {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+      return res
+        .status(400)
+        .json({ message: 'Username or password is not provided' });
+    }
+
     const user = await UserSchema.findOne({ username });
     if (!user) {
-      return res.status(400).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'User not found' });
     }
 
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
       return res
-        .status(400)
+        .status(401)
         .json({ message: 'Incorrect username or password' });
     }
 
@@ -112,14 +100,19 @@ export async function login(req: Request, res: Response) {
     });
   } catch (error) {
     console.error('Error logging in:', error);
-    res.status(400).json({ message: 'An error occurred with login process' });
+    res
+      .status(500)
+      .json({ message: 'An error occurred with the login process' });
   }
 }
 
 export function logout(req: Request, res: Response) {
   try {
     res.cookie('access_token', '', { maxAge: 0 });
-    res.status(200).json({ message: 'Logged out successful' });
+    res
+      .status(200)
+      .json({ message: 'Logged out successful' })
+      .redirect('/login');
   } catch (error) {
     console.error('Error in logout controller', error);
     res.status(500).json({ message: 'Internal server error' });

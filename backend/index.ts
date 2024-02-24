@@ -9,7 +9,6 @@ import { db } from './db/db';
 import { readdirSync } from 'fs';
 import { notFound, errorHandler } from './middlewares//errorMiddleware';
 import {
-  getAllUser,
   getUserByID,
   login,
   logout,
@@ -36,7 +35,6 @@ readdirSync('./routes').map((route) => {
 });
 
 // Login and register route
-app.get('/api/v1/auth/user', getAllUser);
 app.get('/api/v1/auth/user/:id', getUserByID);
 app.post('/api/v1/auth/login', login);
 app.post('/api/v1/auth/logout', logout);
