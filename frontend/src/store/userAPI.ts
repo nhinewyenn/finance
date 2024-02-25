@@ -12,7 +12,7 @@ export const userAPI = createApi({
       'Access-Control-Allow-Origin': 'http://localhost:5173',
     },
   }),
-  tagTypes: ['Register', 'Login', 'Logout'],
+  tagTypes: ['register', 'login', 'logoutUser'],
   endpoints: (builder) => ({
     register: builder.mutation({
       query: (user) => ({
@@ -21,7 +21,7 @@ export const userAPI = createApi({
         body: user,
         timeout: 1000,
       }),
-      invalidatesTags: [{ type: 'Register' }],
+      invalidatesTags: [{ type: 'register' }],
     }),
     login: builder.mutation({
       query: (user) => ({
@@ -30,18 +30,18 @@ export const userAPI = createApi({
         body: user,
         credentials: 'include',
       }),
-      invalidatesTags: [{ type: 'Login' }],
+      invalidatesTags: [{ type: 'login' }],
     }),
     logoutUser: builder.mutation<unknown, void>({
       query: () => ({
         url: 'logout',
         method: 'POST',
       }),
-      invalidatesTags: [{ type: 'Logout' }],
+      invalidatesTags: [{ type: 'logoutUser' }],
     }),
     getUserById: builder.query<UserApiResponse, string>({
       query: (id) => `user/${id}`,
-      providesTags: (result, error, id) => [{ type: 'Login', id }],
+      providesTags: (result, error, id) => [{ type: 'login', id }],
     }),
   }),
 });

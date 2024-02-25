@@ -35,6 +35,7 @@ export default function Nav({ active, setActive }: NavProps) {
       await logoutMutation().unwrap();
       setCookies('access_token', '');
       dispatch(logoutUser());
+      window.location.reload();
       logoutSuccess && navigate('/login');
     } catch (error) {
       console.error(error);
