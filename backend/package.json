@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mongodb-js/saslprep": "^1.1.4",
     "@types/basic-auth": "^1.1.7",
     "@types/body-parser": "^1.19.5",
     "@types/express-session": "^1.17.10",
