@@ -6,10 +6,10 @@ import { UserApiResponse } from '../utils/typeUtils';
 export const userAPI = createApi({
   reducerPath: 'userAPI',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:1000/api/v1/auth/',
+    baseUrl: import.meta.env.VITE_USER_API,
     credentials: 'include',
     headers: {
-      'Access-Control-Allow-Origin': 'http://localhost:5173',
+      'Access-Control-Allow-Origin': import.meta.env.VITE_HOST,
     },
   }),
   tagTypes: ['register', 'login', 'logoutUser'],
@@ -41,7 +41,7 @@ export const userAPI = createApi({
     }),
     getUserById: builder.query<UserApiResponse, string>({
       query: (id) => `user/${id}`,
-      providesTags: (result, error, id) => [{ type: 'login', id }],
+      providesTags: (_, __, id) => [{ type: 'login', id }],
     }),
   }),
 });

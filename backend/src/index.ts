@@ -10,6 +10,7 @@ import { notFound, errorHandler } from './middlewares/errorMiddleware';
 import transaction from './routes/transactionRoutes';
 import user from './routes/userRoutes';
 import { verifyToken } from './middlewares/authMiddleware';
+import path from 'path';
 
 const app = express();
 const { PORT } = process.env ?? 8000;
@@ -18,12 +19,13 @@ const { PORT } = process.env ?? 8000;
 app.use(express.json());
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: process.env.FRONTEND_URL,
     credentials: true,
   })
 );
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, '../../frontend/dist'))); //serve the frontend static asset
 
 // Routes
 app.use('/api/v1/profile', verifyToken, transaction);

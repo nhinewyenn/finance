@@ -77,14 +77,14 @@ export default function Dashboard() {
             <div className='salary-item'>
               {income && income?.length > 0 && (
                 <>
-                  <p>${Math.min(...income.map((value) => value.amount))}</p>
-                  <p>${Math.max(...income.map((value) => value.amount))}</p>
+                  <p>${Math.min(...income.map((v) => v.amount))}</p>
+                  <p>${Math.max(...income.map((v) => v.amount))}</p>
                 </>
               )}
               {!income?.length && (
                 <>
-                  <p>$0</p>
-                  <p>$0</p>
+                  <p>-</p>
+                  <p>-</p>
                 </>
               )}
             </div>
@@ -94,14 +94,14 @@ export default function Dashboard() {
             <div className='salary-item'>
               {expenses && expenses?.length > 0 && (
                 <>
-                  <p>${Math.min(...expenses.map((value) => value.amount))}</p>
-                  <p>${Math.max(...expenses.map((value) => value.amount))}</p>
+                  <p>${Math.min(...expenses.map((v) => v.amount))}</p>
+                  <p>${Math.max(...expenses.map((v) => v.amount))}</p>
                 </>
               )}
               {!expenses?.length && (
                 <>
-                  <p>$0</p>
-                  <p>$0</p>
+                  <p>-</p>
+                  <p>-</p>
                 </>
               )}
             </div>

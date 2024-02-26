@@ -6,10 +6,10 @@ import { FormInput } from '../utils/typeUtils';
 export const financeAPI = createApi({
   reducerPath: 'financeAPI',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:1000/api/v1/profile/',
+    baseUrl: import.meta.env.VITE_FINANCE_API,
     credentials: 'include',
     headers: {
-      'Access-Control-Allow-Origin': 'http://localhost:5173',
+      'Access-Control-Allow-Origin': import.meta.env.VITE_HOST,
     },
   }),
   tagTypes: ['Income', 'Expense'],
@@ -33,14 +33,14 @@ export const financeAPI = createApi({
         body: income,
       }),
       transformResponse: (response) => response,
-      invalidatesTags: (result, _, arg) => [{ type: 'Income', id: arg.id }],
+      invalidatesTags: (_, __, arg) => [{ type: 'Income', id: arg.id }],
     }),
     deleteIncome: builder.mutation({
       query: (id) => ({
         url: `delete-income/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, _, arg) => [{ type: 'Income', id: arg.id }],
+      invalidatesTags: (_, __, arg) => [{ type: 'Income', id: arg.id }],
     }),
     getExpenses: builder.query<FormInput[], void>({
       query: () => 'get-expenses',
@@ -61,14 +61,14 @@ export const financeAPI = createApi({
         body: expense,
       }),
       transformResponse: (response) => response,
-      invalidatesTags: (result, _, arg) => [{ type: 'Expense', id: arg.id }],
+      invalidatesTags: (_, __, arg) => [{ type: 'Expense', id: arg.id }],
     }),
     deleteExpense: builder.mutation({
       query: (id) => ({
         url: `delete-expense/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, _, arg) => [{ type: 'Expense', id: arg.id }],
+      invalidatesTags: (_, __, arg) => [{ type: 'Expense', id: arg.id }],
     }),
   }),
 });
