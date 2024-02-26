@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 import avatar from '../../img/blank-avatar-photo-place-holder-600nw-1114445501.webp';
-import { signout } from '../../utils/Icon';
+import { signOut } from '../../utils/Icon';
 import { menuItems } from '../../utils/menuItems';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -68,7 +68,7 @@ export default function Nav({ active, setActive }: NavProps) {
 
       <form className='submit-btn' onSubmit={logout}>
         <Button
-          icon={signout}
+          icon={signOut}
           name={'Sign Out'}
           bPad={'.8rem 1.6rem'}
           bRadius={'30px'}
