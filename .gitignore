@@ -1,0 +1,8 @@
+dist
+npm-debug.log
+.nyc
+.env
+.DS_Store
+node_modules
+.vscode/*
+!.vscode/extensions.json
