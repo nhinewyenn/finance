@@ -26,10 +26,6 @@ export default function Income() {
   const [toggleUpdate, setToggleUpdate] = useState(false);
   const [toggleModal, setToggleModal] = useState(false);
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
-
   async function handleUpdate(id: string) {
     const income = data?.find((v) => v._id === id);
 
@@ -52,6 +48,7 @@ export default function Income() {
   return (
     <IncomeStyled>
       <InnerLayout>
+        {isLoading && <LoadingSpinner />}
         <div className='top-content'>
           <h1>Incomes</h1>
           <Button

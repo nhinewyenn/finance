@@ -33,12 +33,12 @@ ChartJs.register(
 export default function Chart() {
   const {
     data: expenses,
-    isLoading: isExpenseLoading,
+    isLoading: loadingExpense,
     isSuccess: expenseSuccess,
   } = useGetExpensesQuery();
   const {
     data: incomes,
-    isLoading: isIncomeLoading,
+    isLoading: loadingIncome,
     isSuccess: incomeSuccess,
   } = useGetIncomesQuery();
 
@@ -47,13 +47,13 @@ export default function Chart() {
   const incomeData: Record<string, number> = {};
   const expenseData: Record<string, number> = {};
 
-  [...incomeArr, ...expenseArr].forEach((el) => {
-    const dateStr = el.date.toString();
-    if (el.amount !== undefined && el.amount !== null && el.amount !== 0) {
-      if (el.type === 'income') {
-        incomeData[dateStr] = (incomeData[dateStr] || 0) + el.amount;
+  [...incomeArr, ...expenseArr].forEach((v) => {
+    const dateStr = v.date.toString();
+    if (v.amount !== undefined && v.amount !== null && v.amount !== 0) {
+      if (v.type === 'income') {
+        incomeData[dateStr] = (incomeData[dateStr] || 0) + v.amount;
       } else {
-        expenseData[dateStr] = (expenseData[dateStr] || 0) + el.amount;
+        expenseData[dateStr] = (expenseData[dateStr] || 0) + v.amount;
       }
     }
   });
@@ -81,7 +81,7 @@ export default function Chart() {
     ],
   };
 
-  if (isIncomeLoading || isExpenseLoading) {
+  if (loadingIncome || loadingExpense) {
     return <LoadingSpinner />;
   }
 

@@ -15,9 +15,10 @@ import { FormInput } from '../../utils/typeUtils';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
 import ExpenseFormModal from './ExpenseFormModal';
+import { LoadingSpinner } from '../../utils/LoadingSpinner';
 
 export default function Expense() {
-  const { data, isSuccess } = useGetExpensesQuery();
+  const { data, isSuccess, isLoading } = useGetExpensesQuery();
   const [updateExpense] = useUpdateExpenseMutation();
   const [deleteExpense] = useDeleteExpenseMutation();
   const totalExpense = useTotalExpense(data ?? []);
@@ -49,6 +50,7 @@ export default function Expense() {
   return (
     <ExpenseStyled>
       <InnerLayout>
+        {isLoading && <LoadingSpinner />}
         <div className='top-content'>
           <h1>Expenses</h1>
           <Button

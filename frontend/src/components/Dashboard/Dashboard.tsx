@@ -15,12 +15,12 @@ import { LoadingSpinner } from '../../utils/LoadingSpinner';
 export default function Dashboard() {
   const {
     data: expenses,
-    isLoading: isExpenseLoading,
+    isLoading: loadingExpense,
     isSuccess: expenseSuccess,
   } = useGetExpensesQuery();
   const {
     data: income,
-    isLoading: isIncomeLoading,
+    isLoading: loadingIncome,
     isSuccess: incomeSuccess,
   } = useGetIncomesQuery();
 
@@ -28,7 +28,7 @@ export default function Dashboard() {
   const totalIncome = useTotalIncome(income ?? []);
   const totalBalance = totalIncome - totalExpense;
 
-  if (isIncomeLoading || isExpenseLoading) {
+  if (loadingIncome || loadingExpense) {
     return <LoadingSpinner />;
   }
 
