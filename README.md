@@ -6,7 +6,7 @@
 Start by cloning the repository to your local machine:
 
 ```
-git clone 
+git clone https://github.com/nhinewyenn/finance.git
 cd mern-booking-app
 ```
 
