@@ -1,3 +1,53 @@
-<img width="1668" alt="Screenshot 2024-01-31 at 11 03 54 pm" src="https://github.com/nhinewyenn/finance/assets/85110195/bac28095-ae34-4c8b-8a08-61229e314ef0">
-<img width="1675" alt="Screenshot 2024-01-31 at 11 04 18 pm" src="https://github.com/nhinewyenn/finance/assets/85110195/04f09036-81dc-4ae5-b6e6-93378f76c6c4">
-<img width="1673" alt="Screenshot 2024-01-31 at 11 04 06 pm" src="https://github.com/nhinewyenn/finance/assets/85110195/74364991-0fed-4b43-9717-354e05e7f53d">
+# SETTING UP
+
+*ensure you have node installed
+
+#### Cloning the Repository
+Start by cloning the repository to your local machine:
+
+```
+git clone https://github.com/chrisblakely01/mern-booking-app.git
+cd mern-booking-app
+```
+
+#### Backend Configuration
+
+1.Environment Files: Navigate to the backend folder and create two files: .env 
+
+```
+PORT=
+NODE_ENV=
+MONGO_URL=<your-mongo-generated-url>
+SECRET_KEY=<random-key>
+REFRESH_TOKEN_SECRET=<random-key>
+FRONTEND_URL=
+
+```
+2. MongoDB setup:
+- Sign up for an account at MongoDB Atlas.
+- Create a new cluster and follow the instructions to set up a new database.
+- Once set up, obtain your MongoDB connection string and add it to the MONGO_URL variable in your .env files.
+
+### Frontend Configuration
+1. Environment Files: Navigate to the frontend folder and create a file: .env:
+
+```
+VITE_USER_API=
+VITE_FINANCE_API=
+VITE_HOST=
+```
+
+### Running the Application
+#### Backend:
+
+- Navigate to the backend directory.
+- Install dependencies: npm install.
+- Start the server: npm start.
+
+
+#### Frontend:
+
+- Open a new terminal and navigate to the frontend directory.
+- Install dependencies: npm install.
+- Start the frontend application: npm run dev.
+- The application should now be running on http://localhost:5173 but verify this in your command line terminal
