@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { FormInput } from './typeUtils';
 
-export const useTotalExpense = (expense: FormInput[]) => {
+export function useTotalExpense(expense: FormInput[]) {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
@@ -13,9 +13,9 @@ export const useTotalExpense = (expense: FormInput[]) => {
   }, [expense]);
 
   return total;
-};
+}
 
-export const useTotalIncome = (incomes: FormInput[]) => {
+export function useTotalIncome(incomes: FormInput[]) {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
@@ -25,4 +25,4 @@ export const useTotalIncome = (incomes: FormInput[]) => {
   }, [incomes]);
 
   return total;
-};
+}
