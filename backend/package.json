@@ -11,7 +11,8 @@
   "scripts": {
     "build": "npm install && npx tsc",
     "start": "rimraf ./dist/index.js && tsc",
-    "dev": "node --watch \"./**\" --ext \"ts,json\" --exec \"ts-node ./src/index.ts\""
+    "dev": "node --watch \"./**\" --ext \"ts,json\" --exec \"ts-node ./src/index.ts\"", 
+    "vercel-build": "echo hello"
   },
   "keywords": [],
   "author": "",
