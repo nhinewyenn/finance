@@ -6,13 +6,13 @@ import {
   deleteIncome,
   getIncomes,
   updateIncome,
-} from '../controllers/IncomeController';
+} from './controllers/IncomeController';
 import {
   addExpense,
   deleteExpense,
   getExpenses,
   updateExpense,
-} from '../controllers/ExpenseController';
+} from './controllers/ExpenseController';
 
 const router = express.Router();
 

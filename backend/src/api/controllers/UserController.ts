@@ -1,9 +1,9 @@
 /** @format */
 
 import { Response, Request } from 'express';
-import UserSchema from '../models/userModel';
+import UserSchema from '../../models/userModel';
 import bcrypt from 'bcrypt';
-import { generateToken } from '../utils/generateToken';
+import { generateToken } from '../../utils/generateToken';
 
 // Routes for all will be api/v1/auth
 

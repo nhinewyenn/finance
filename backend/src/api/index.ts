@@ -5,10 +5,10 @@ dotenv.config({ path: './.env' });
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import { db } from './db/db';
+import { db } from '../config/db';
 import { notFound, errorHandler } from './middlewares/errorMiddleware';
-import transaction from './routes/transactionRoutes';
-import user from './routes/userRoutes';
+import transaction from './transactionRoutes';
+import user from './userRoutes';
 import { verifyToken } from './middlewares/authMiddleware';
 import path from 'path';
 
@@ -25,7 +25,7 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '../../frontend/dist'))); //serve the frontend static asset
+app.use(express.static(path.join(__dirname, '../../../frontend/dist'))); //serve the frontend static asset
 
 // Routes
 app.use('/api/v1/profile', verifyToken, transaction);

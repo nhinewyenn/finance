@@ -1,7 +1,7 @@
 /** @format */
 import express, { Response, Request } from 'express';
-import ExpenseSchema from '../models/expenseModel';
-import UserSchema from '../models/userModel';
+import ExpenseSchema from '../../models/expenseModel';
+import UserSchema from '../../models/userModel';
 
 export async function addExpense(req: Request, res: Response) {
   try {

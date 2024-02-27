@@ -2,7 +2,7 @@
 
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import UserSchema from '../models/userModel';
+import UserSchema from '../../models/userModel';
 
 const JWT_SECRET = process.env.SECRET_KEY as string;
 

@@ -1,7 +1,7 @@
 /** @format */
 import { Response, Request } from 'express';
-import IncomeSchema from '../models/incomeModel';
-import UserSchema from '../models/userModel';
+import IncomeSchema from '../../models/incomeModel';
+import UserSchema from '../../models/userModel';
 
 export async function addIncome(req: Request, res: Response) {
   try {
