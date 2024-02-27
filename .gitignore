@@ -1,4 +1,4 @@
-dist
+# dist
 npm-debug.log
 .nyc
 .env
