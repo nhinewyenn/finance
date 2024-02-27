@@ -3,15 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "./index.js",
-  "pre-commit": [
-    "ts.check",
-    "build",
-    "add-build"
-  ],
   "scripts": {
     "build": "npm install && npx tsc",
-    "start": "rimraf ./dist/index.js && tsc",
-    "dev": "node --watch \"./**\" --ext \"ts,json\" --exec \"ts-node ./src/index.ts\"", 
+    "start": "node ./dist/index.js",
+    "dev": "node --watch \"./**\" --ext \"ts,json\" --exec \"ts-node ./src/index.ts\"",
     "vercel-build": "echo hello"
   },
   "keywords": [],
@@ -45,8 +40,6 @@
     "@types/mongodb": "^4.0.7",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^20.10.7",
-    "pre-commit": "^1.2.2",
-    "rimraf": "^5.0.5",
     "ts-node": "^10.9.2"
   }
 }
