@@ -2,7 +2,7 @@
 
 import dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { db } from '../config/db';
@@ -26,6 +26,11 @@ app.use(
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../../../frontend/dist'))); //serve the frontend static asset
+
+// Middleware: Redirect root URL to login route
+app.get('/', (req: Request, res: Response) => {
+  res.redirect('/api/v1/auth/login');
+});
 
 // Routes
 app.use('/api/v1/profile', verifyToken, transaction);

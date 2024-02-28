@@ -5,11 +5,12 @@ import Button from '../Button/Button';
 import React, { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../store/userAPI';
-import { ToastContainer, toast } from 'react-toastify';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { setCredentials } from '../../store/authSlice';
+import 'react-toastify/dist/ReactToastify.min.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Login() {
   const [login, { isError }] = useLoginMutation();
@@ -36,8 +37,8 @@ export default function Login() {
 
     try {
       setCookies('access_token', cookie.access_token);
-      localStorage.setItem('userID', loginData.userID);
       toast.success('Login success!');
+      localStorage.setItem('userID', loginData.userID);
       dispatch(setCredentials({ ...loginData }));
       setTimeout(() => navigate('/'), 500);
     } catch (error) {
