@@ -12,7 +12,8 @@ function generateToken(res, _id) {
     });
     res.cookie('access_token', token, {
         httpOnly: true, //prevent XSS attack
-        sameSite: 'strict', // CSRF attack cross-site request forgery attack
+        sameSite: 'strict', // CSRF attack cross-site request forgery attack,
+        secure: process.env.NODE_ENV !== 'development',
         maxAge: 30 * 24 * 60 * 1000,
     });
 }

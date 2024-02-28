@@ -32,7 +32,6 @@ app.use('/api/v1/auth', user);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../../../frontend/dist'))); //serve the frontend static asset
-  console.log('NODE_ENV:', process.env.NODE_ENV);
 } else {
   app.get('/', (req: Request, res: Response) => {
     res.redirect('/api/v1/auth/login');
@@ -49,7 +48,7 @@ async function connectDB() {
     console.log('Connected to database');
   } catch (error) {
     console.error('Failed to connect to database:', error);
-    process.exit(1); // Exit process with failure
+    process.exit(1);
   }
 }
 
