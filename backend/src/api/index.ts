@@ -32,8 +32,8 @@ app.use('/api/v1/profile', verifyToken, transaction);
 app.use('/api/v1/auth', user);
 
 // Middleware
-app.use(notFound);
-app.use(errorHandler);
+// app.use(notFound);
+// app.use(errorHandler);
 
 function server() {
   db();
