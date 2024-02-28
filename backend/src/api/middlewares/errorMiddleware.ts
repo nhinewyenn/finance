@@ -21,9 +21,9 @@ export function errorHandler(
   let message = err.message;
 
   if (err.name === 'CastError' && err.kind === 'ObjectId') {
-    status = 404;
     message = 'Resource not found';
   }
+
   res.status(status).json({
     success: false,
     message,

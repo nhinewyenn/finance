@@ -19,7 +19,7 @@ const { PORT } = process.env ?? 8000;
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
+    origin: process.env.FRONTEND_URL || '*',
     credentials: true,
   })
 );
@@ -32,6 +32,7 @@ app.use('/api/v1/auth', user);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../../../frontend/dist'))); //serve the frontend static asset
+  console.log('NODE_ENV:', process.env.NODE_ENV);
 } else {
   app.get('/', (req: Request, res: Response) => {
     res.redirect('/api/v1/auth/login');
@@ -42,11 +43,39 @@ if (process.env.NODE_ENV === 'production') {
 app.use(notFound);
 app.use(errorHandler);
 
-function server() {
-  db();
-  app.listen(PORT, () => {
-    console.log('You are listening to PORT', PORT);
-  });
+async function connectDB() {
+  try {
+    await db();
+    console.log('Connected to database');
+  } catch (error) {
+    console.error('Failed to connect to database:', error);
+    process.exit(1); // Exit process with failure
+  }
 }
 
-server();
+async function startServer() {
+  try {
+    await connectDB();
+    app.listen(PORT, () => {
+      console.log(
+        `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`
+      );
+    });
+  } catch (error) {
+    console.error('Server startup failed:', error);
+    process.exit(1);
+  }
+}
+
+startServer();
+
+// Shutdown
+process.on('SIGINT', () => {
+  console.log('SIGINT received. Shutting down gracefully');
+  process.exit(0);
+});
+
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received. Shutting down gracefully');
+  process.exit(0);
+});
