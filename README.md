@@ -7,7 +7,7 @@ Start by cloning the repository to your local machine:
 
 ```
 git clone https://github.com/nhinewyenn/finance.git
-cd mern-booking-app
+cd finance
 ```
 
 #### Backend Configuration
