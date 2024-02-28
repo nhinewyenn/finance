@@ -31,9 +31,9 @@ app.use(express.static(path.join(__dirname, '../../../frontend/dist'))); //serve
 app.use('/api/v1/profile', verifyToken, transaction);
 app.use('/api/v1/auth', user);
 
-// Middleware
-// app.use(notFound);
-// app.use(errorHandler);
+// Middleware;
+app.use(notFound);
+app.use(errorHandler);
 
 function server() {
   db();
