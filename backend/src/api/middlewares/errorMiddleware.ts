@@ -4,9 +4,11 @@
 import { Request, Response, NextFunction } from 'express';
 
 export function notFound(req: Request, res: Response, next: NextFunction) {
-  const err = new Error(`Not found ${req.originalUrl}`);
-  res.status(404);
-  next(err);
+  const err = new Error(`Not Found - ${req.originalUrl}`);
+  res.status(404).json({
+    success: false,
+    message: err.message,
+  });
 }
 
 export function errorHandler(
@@ -15,16 +17,15 @@ export function errorHandler(
   res: Response,
   next: NextFunction
 ) {
-  let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+  let status = res.statusCode === 200 ? 500 : res.statusCode;
   let message = err.message;
 
   if (err.name === 'CastError' && err.kind === 'ObjectId') {
-    statusCode = 404;
+    status = 404;
     message = 'Resource not found';
   }
-  res.status(statusCode).json({
+  res.status(status).json({
     success: false,
-    message: message,
-    stack: process.env.NODE_ENV === 'production' ? null : err.stack,
+    message,
   });
 }
