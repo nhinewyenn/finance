@@ -40,14 +40,14 @@ app.use((0, cors_1.default)({
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.urlencoded({ extended: true }));
 // Routes
-app.use('/api/profile', authMiddleware_1.verifyToken, transactionRoutes_1.default);
-app.use('/api/auth', userRoutes_1.default);
+app.use('/api/v1/profile', authMiddleware_1.verifyToken, transactionRoutes_1.default);
+app.use('/api/v1/auth', userRoutes_1.default);
 if (process.env.NODE_ENV === 'production') {
     app.use(express_1.default.static(path_1.default.join(__dirname, '../../../frontend/dist'))); //serve the frontend static asset
 }
 else {
     app.get('/', (req, res) => {
-        res.redirect('/api/auth/login');
+        res.redirect('/api/v1/auth/login');
     });
 }
 // Middleware;
