@@ -31,14 +31,14 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/api/profile', verifyToken, transaction);
-app.use('/api/auth', user);
+app.use('/api/v1/profile', verifyToken, transaction);
+app.use('/api/v1/auth', user);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../../../frontend/dist'))); //serve the frontend static asset
 } else {
   app.get('/', (req: Request, res: Response) => {
-    res.redirect('/api/auth/login');
+    res.redirect('/api/v1/auth/login');
   });
 }
 
