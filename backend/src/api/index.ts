@@ -19,8 +19,7 @@ const { PORT } = process.env ?? 8000;
 app.use(express.json());
 app.use(
   cors({
-    origin:
-      'https://finance-dashboard-8a9w.onrender.com' || process.env.FRONTEND_URL,
+    origin: '*',
     credentials: true,
     optionsSuccessStatus: 200,
   })
