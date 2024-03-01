@@ -11,7 +11,7 @@ export const userAPI = createApi({
     credentials: 'include',
     headers: {
       'Access-Control-Allow-Origin':
-        import.meta.env.VITE_HOST || import.meta.env.VITE_RENDER_HOST,
+        import.meta.env.VITE_RENDER_HOST || import.meta.env.VITE_HOST,
     },
   }),
   tagTypes: ['register', 'login', 'logoutUser'],
