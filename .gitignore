@@ -3,6 +3,6 @@ npm-debug.log
 .nyc
 .env
 .DS_Store
-node_modules
 .vscode/*
 package-lock.json
+node_modules

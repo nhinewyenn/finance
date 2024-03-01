@@ -19,7 +19,7 @@ export type User = {
   createdAt?: Date;
 };
 
-export type UserApiResponse = {
+export type UserAPI = {
   success: boolean;
   user: User;
 };

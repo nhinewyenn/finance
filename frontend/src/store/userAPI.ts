@@ -1,7 +1,7 @@
 /** @format */
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { UserApiResponse } from '../utils/typeUtils';
+import { UserAPI } from '../utils/typeUtils';
 
 export const userAPI = createApi({
   reducerPath: 'userAPI',
@@ -39,7 +39,7 @@ export const userAPI = createApi({
       }),
       invalidatesTags: [{ type: 'logoutUser' }],
     }),
-    getUserById: builder.query<UserApiResponse, string>({
+    getUserById: builder.query<UserAPI, string>({
       query: (id) => `user/${id}`,
       providesTags: (_, __, id) => [{ type: 'login', id }],
     }),
