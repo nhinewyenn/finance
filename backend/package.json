@@ -6,8 +6,7 @@
   "scripts": {
     "build": "npm install && npx tsc",
     "start": "NODE_ENV=production node ./dist/api/index.js",
-    "dev": "nodemon --watch 'src' --ext 'ts,json' --exec 'ts-node' ./src/api/index.ts",
-    "vercel-build": "echo hello"
+    "dev": "nodemon --watch 'src' --ext 'ts,json' --exec 'ts-node' ./src/api/index.ts"
   },
   "keywords": [],
   "author": "",
