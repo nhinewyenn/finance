@@ -31,7 +31,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/api/v1/profile', verifyToken, transaction);
+app.use('/api/v1/profile', transaction);
 app.use('/api/v1/auth', user);
 
 if (process.env.NODE_ENV === 'production') {
