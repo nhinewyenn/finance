@@ -2,13 +2,21 @@
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { UserAPI } from '../utils/typeUtils';
+import { RootState } from './store';
 
-console.log(import.meta.env.VITE_USER_API);
 export const userAPI = createApi({
   reducerPath: 'userAPI',
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_USER_API,
     credentials: 'include',
+    prepareHeaders: async (headers, { getState }) => {
+      const token = (getState() as RootState).auth.user?.token;
+
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
     headers: {
       'Access-Control-Allow-Origin':
         import.meta.env.VITE_RENDER_HOST || import.meta.env.VITE_HOST,

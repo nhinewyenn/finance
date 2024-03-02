@@ -97,6 +97,7 @@ export async function login(req: Request, res: Response) {
       message: 'Login successful',
       user,
       userID: user._id,
+      token: generateToken(res, user._id),
     });
   } catch (error) {
     console.error('Error logging in:', error);

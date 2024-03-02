@@ -19,14 +19,13 @@ const { PORT } = process.env ?? 8000;
 app.use(express.json());
 app.use(
   cors({
-    origin: [
-      process.env.FRONTEND_URL as string,
-      process.env.RENDER_URL as string,
-    ],
+    origin: [`${process.env.FRONTEND_URL}`, `${process.env.RENDER_URL}`],
+    methods: 'GET,HEAD,PATCH,POST,DELETE',
     credentials: true,
     optionsSuccessStatus: 200,
   })
 );
+
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
