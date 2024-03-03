@@ -33,14 +33,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/v1/profile', verifyToken, transaction);
 app.use('/api/v1/auth', user);
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../../../frontend/dist'))); //serve the frontend static asset
-} else {
-  app.get('/', (req: Request, res: Response) => {
-    res.redirect('/api/v1/auth/login');
-  });
-}
-
 // Middleware;
 app.use(notFound);
 app.use(errorHandler);
