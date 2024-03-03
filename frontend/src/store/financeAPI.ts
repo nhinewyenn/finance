@@ -6,7 +6,8 @@ import { FormInput } from '../utils/typeUtils';
 export const financeAPI = createApi({
   reducerPath: 'financeAPI',
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_FINANCE_API,
+    baseUrl:
+      import.meta.env.VITE_FINANCE_API || import.meta.env.VITE_RENDER_USER_API,
     credentials: 'include',
     headers: {
       'Access-Control-Allow-Origin': import.meta.env.VITE_HOST,

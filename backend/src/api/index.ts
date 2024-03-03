@@ -30,8 +30,8 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/api/v1/profile', verifyToken, transaction);
-app.use('/api/v1/auth', user);
+app.use('/api/profile', verifyToken, transaction);
+app.use('/api/auth', user);
 
 // Middleware;
 app.use(notFound);
