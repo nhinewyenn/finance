@@ -13,6 +13,7 @@ export function generateToken(res: Response, _id: unknown) {
     sameSite: 'strict', // CSRF attack cross-site request forgery attack,
     secure: process.env.NODE_ENV !== 'development',
     maxAge: 30 * 24 * 60 * 1000,
+    domain: `${process.env.HOST_URL}`,
   });
 
   return token;
