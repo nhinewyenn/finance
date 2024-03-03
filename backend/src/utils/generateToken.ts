@@ -13,7 +13,7 @@ export function generateToken(res: Response, _id: unknown) {
     sameSite: 'none',
     secure: process.env.NODE_ENV !== 'development',
     maxAge: 30 * 24 * 60 * 1000,
-    domain: process.env.HOST_URL,
+    domain: process.env.HOST_URL as string,
   });
 
   return token;
