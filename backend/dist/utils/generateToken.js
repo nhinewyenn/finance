@@ -16,5 +16,6 @@ function generateToken(res, _id) {
         secure: process.env.NODE_ENV !== 'development',
         maxAge: 30 * 24 * 60 * 1000,
     });
+    return token;
 }
 exports.generateToken = generateToken;

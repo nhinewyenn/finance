@@ -103,6 +103,7 @@ function login(req, res) {
                 message: 'Login successful',
                 user,
                 userID: user._id,
+                token: (0, generateToken_1.generateToken)(res, user._id),
             });
         }
         catch (error) {
