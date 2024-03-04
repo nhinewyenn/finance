@@ -7,10 +7,11 @@ export const financeAPI = createApi({
   reducerPath: 'financeAPI',
   baseQuery: fetchBaseQuery({
     baseUrl:
-      import.meta.env.VITE_FINANCE_API || import.meta.env.VITE_RENDER_USER_API,
+      import.meta.env.VITE_RENDER_USER_API ?? import.meta.env.VITE_FINANCE_API,
     credentials: 'include',
     headers: {
-      'Access-Control-Allow-Origin': import.meta.env.VITE_HOST,
+      'Access-Control-Allow-Origin':
+        import.meta.env.VITE_RENDER_HOST ?? import.meta.env.VITE_HOST,
       'Content-Type': 'application/json',
       Accept: 'application/json',
     },
