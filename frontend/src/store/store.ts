@@ -16,7 +16,7 @@ export const store = configureStore({
   },
   devTools: true,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(financeAPI.middleware, userAPI.middleware), //enable caching, polling etc
+    getDefaultMiddleware().concat([financeAPI.middleware, userAPI.middleware]), //enable caching, polling etc
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -8,9 +8,9 @@ export const userAPI = createApi({
   reducerPath: 'userAPI',
   baseQuery: fetchBaseQuery({
     baseUrl:
-      import.meta.env.VITE_USER_API || import.meta.env.VITE_RENDER_USER_API,
+      import.meta.env.VITE_USER_API ?? import.meta.env.VITE_RENDER_USER_API,
     credentials: 'include',
-    prepareHeaders: async (headers, { getState }) => {
+    prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.user?.token;
 
       if (token) {
@@ -20,7 +20,7 @@ export const userAPI = createApi({
     },
     headers: {
       'Access-Control-Allow-Origin':
-        import.meta.env.VITE_RENDER_HOST || import.meta.env.VITE_HOST,
+        import.meta.env.VITE_RENDER_HOST ?? import.meta.env.VITE_HOST,
     },
   }),
   tagTypes: ['register', 'login', 'logoutUser'],

@@ -10,10 +10,9 @@ export function generateToken(res: Response, _id: unknown) {
 
   res.cookie('access_token', token, {
     httpOnly: true, //prevent XSS attack
-    sameSite: 'none',
+    sameSite: 'lax', // CSRF attack cross-site request forgery attack,
     secure: process.env.NODE_ENV !== 'development',
     maxAge: 30 * 24 * 60 * 1000,
-    domain: process.env.DOMAIN as string,
   });
 
   return token;

@@ -9,8 +9,8 @@ import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { setCredentials } from '../../store/authSlice';
-import 'react-toastify/dist/ReactToastify.min.css';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 export default function Login() {
   const [login, { isError }] = useLoginMutation();
@@ -41,9 +41,11 @@ export default function Login() {
       localStorage.setItem('userID', loginData.userID);
       dispatch(setCredentials({ ...loginData }));
       setTimeout(() => navigate('/'), 500);
-    } catch (error) {
-      isError && toast.error('Error logging in');
-      console.error('Error with logging in:', error);
+    } catch (error: unknown) {
+      if (typeof error === 'object' && error !== null) {
+        const err = error as { status?: number; data?: { message?: string } };
+        return isError && toast.error(err.data?.message);
+      }
     }
   }
 

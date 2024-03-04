@@ -24,6 +24,9 @@ export async function verifyToken(
   next: NextFunction
 ) {
   try {
+    console.log('req', req);
+    console.log('headers', req.headers);
+    console.log(req.headers.authorization);
     const { access_token } = req.cookies;
     if (!access_token) {
       return res

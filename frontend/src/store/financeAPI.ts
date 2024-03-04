@@ -11,6 +11,8 @@ export const financeAPI = createApi({
     credentials: 'include',
     headers: {
       'Access-Control-Allow-Origin': import.meta.env.VITE_HOST,
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
     },
   }),
   tagTypes: ['Income', 'Expense'],

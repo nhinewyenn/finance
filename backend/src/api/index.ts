@@ -25,13 +25,12 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
-
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/api/profile', verifyToken, transaction);
 app.use('/api/auth', user);
+app.use('/api/profile', transaction);
 
 // Middleware;
 app.use(notFound);

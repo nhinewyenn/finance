@@ -6,7 +6,6 @@ import { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRegisterMutation } from '../../store/userAPI';
 import { ToastContainer, toast } from 'react-toastify';
-
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function SignUp() {
@@ -25,9 +24,11 @@ export default function SignUp() {
       }).unwrap();
       toast.success('Sign up success!');
       setTimeout(() => navigate('/login'), 500);
-    } catch (error) {
-      isError && toast.error('Password must be 8 character');
-      console.error('Error with registering user:', error);
+    } catch (error: unknown) {
+      if (typeof error === 'object' && error !== null) {
+        const err = error as { status?: number; data?: { message?: string } };
+        return isError && toast.error(err.data?.message);
+      }
     }
   }
 

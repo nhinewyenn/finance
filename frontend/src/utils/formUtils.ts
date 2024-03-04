@@ -30,3 +30,7 @@ export function dateFormat(date: Date) {
 export function useGetUserId() {
   return localStorage.getItem('userID');
 }
+
+export function getToken() {
+  return localStorage.getItem('access_token');
+}

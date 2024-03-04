@@ -20,6 +20,9 @@ const JWT_SECRET = process.env.SECRET_KEY;
 function verifyToken(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            console.log('req', req);
+            console.log('headers', req.headers);
+            console.log(req.headers.authorization);
             const { access_token } = req.cookies;
             if (!access_token) {
                 return res
