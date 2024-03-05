@@ -23,6 +23,8 @@ const db_1 = require("../config/db");
 const errorMiddleware_1 = require("./middlewares/errorMiddleware");
 const transactionRoutes_1 = __importDefault(require("./transactionRoutes"));
 const userRoutes_1 = __importDefault(require("./userRoutes"));
+const authMiddleware_1 = require("./middlewares/authMiddleware");
+const path_1 = __importDefault(require("path"));
 const app = (0, express_1.default)();
 const { PORT } = (_a = process.env) !== null && _a !== void 0 ? _a : 8000;
 // Middlewares
@@ -35,9 +37,18 @@ app.use((0, cors_1.default)({
 }));
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.urlencoded({ extended: true }));
+if (process.env.NODE_ENV === 'production') {
+    app.use(express_1.default.static(path_1.default.join(__dirname, '../../../frontend/dist'))); //serve the frontend static asset
+}
+else {
+    app.get('/', (req, res) => {
+        res.redirect('/api/v1/auth/login');
+        res.send('Welcome!!');
+    });
+}
 // Routes
 app.use('/api/auth', userRoutes_1.default);
-app.use('/api/profile', transactionRoutes_1.default);
+app.use('/api/profile', authMiddleware_1.verifyToken, transactionRoutes_1.default);
 // Middleware;
 app.use(errorMiddleware_1.notFound);
 app.use(errorMiddleware_1.errorHandler);

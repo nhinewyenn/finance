@@ -20,24 +20,21 @@ const JWT_SECRET = process.env.SECRET_KEY;
 function verifyToken(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            console.log('req', req);
-            console.log('headers', req.headers);
-            console.log(req.headers.authorization);
-            const { access_token } = req.cookies;
-            if (!access_token) {
-                return res
-                    .status(401)
-                    .json({ error: 'Unauthorized - No Token Provided' });
+            const authHeader = req.headers.authorization || req.headers.Authorization;
+            if (!authHeader) {
+                return res.status(401).json({
+                    error: 'Unauthorized - Header does not have authorization field',
+                });
             }
-            const { _id } = jsonwebtoken_1.default.verify(access_token, JWT_SECRET);
-            if (!_id) {
-                return res.status(401).json({ error: 'Unauthorized - Invalid Token' });
-            }
-            const user = yield userModel_1.default.findById(_id).select('-password');
+            const token = Array.isArray(authHeader)
+                ? authHeader[0].split(' ')[1]
+                : authHeader.split(' ')[1];
+            console.log(token);
+            const user = jsonwebtoken_1.default.verify(token, JWT_SECRET);
             if (!user) {
                 return res.status(404).json({ error: 'User not found' });
             }
-            req.user = user;
+            req.user = yield userModel_1.default.findById(user._id).select('-password');
             next();
         }
         catch (error) {

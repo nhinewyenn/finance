@@ -17,7 +17,6 @@ exports.logoutUser = exports.login = exports.registerUser = exports.getUserByID 
 const userModel_1 = __importDefault(require("../../models/userModel"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const generateToken_1 = require("../../utils/generateToken");
-// Routes for all will be api/v1/auth
 /**
  * @desc - get all user
  * @method - get
@@ -66,6 +65,7 @@ function registerUser(req, res) {
                 message: 'User successfully created',
                 _id: user._id,
                 username: user.username,
+                token: (0, generateToken_1.genToken)(user._id),
             });
         }
         catch (error) {
@@ -98,12 +98,11 @@ function login(req, res) {
                     .status(401)
                     .json({ message: 'Incorrect username or password' });
             }
-            (0, generateToken_1.generateToken)(res, user._id);
             res.status(200).json({
                 message: 'Login successful',
                 user,
                 userID: user._id,
-                token: (0, generateToken_1.generateToken)(res, user._id),
+                token: (0, generateToken_1.genToken)(user._id),
             });
         }
         catch (error) {
@@ -118,10 +117,7 @@ exports.login = login;
 function logoutUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            res.clearCookie('access_token', {
-                path: '/',
-                httpOnly: true,
-            });
+            res.setHeader('Authorization', '');
             res.status(200).json({ message: 'Logged out successful' });
         }
         catch (error) {
