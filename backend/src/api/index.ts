@@ -29,6 +29,15 @@ app.use(
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../../../frontend/dist'))); //serve the frontend static asset
+} else {
+  app.get('/', (req: Request, res: Response) => {
+    res.send('Welcome');
+    res.redirect('/api/auth/login');
+  });
+}
+
 // Routes
 app.use('/api/auth', user);
 app.use('/api/profile', verifyToken, transaction);
