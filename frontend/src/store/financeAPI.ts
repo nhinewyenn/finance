@@ -7,8 +7,7 @@ import { RootState } from './store';
 export const financeAPI = createApi({
   reducerPath: 'financeAPI',
   baseQuery: fetchBaseQuery({
-    baseUrl:
-      import.meta.env.VITE_FINANCE_API ?? import.meta.env.VITE_RENDER_USER_API,
+    baseUrl: import.meta.env.VITE_RENDER_USER_API,
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.user?.token;
@@ -19,8 +18,7 @@ export const financeAPI = createApi({
       return headers;
     },
     headers: {
-      'Access-Control-Allow-Origin':
-        import.meta.env.VITE_HOST ?? import.meta.env.VITE_RENDER_HOST,
+      'Access-Control-Allow-Origin': import.meta.env.VITE_WEB_HOST,
       'Content-Type': 'application/json',
       Accept: 'application/json',
     },
