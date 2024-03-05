@@ -25,7 +25,6 @@ export async function verifyToken(
 ) {
   try {
     const authHeader = req.headers.authorization || req.headers.Authorization;
-    console.log(authHeader); // this return undefined
 
     if (!authHeader) {
       return res.status(401).json({
@@ -40,12 +39,11 @@ export async function verifyToken(
     console.log(token);
 
     const user = jwt.verify(token, JWT_SECRET) as JwtPayload;
-    if (user) {
-      req.user = await UserSchema.findById(user._id).select('-password');
-    } else {
+    if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
+    req.user = await UserSchema.findById(user._id).select('-password');
     next();
   } catch (error) {
     console.error('Error in protectRoute middleware: ', error);

@@ -7,7 +7,8 @@ import { RootState } from './store';
 export const userAPI = createApi({
   reducerPath: 'userAPI',
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_USER_API,
+    baseUrl:
+      import.meta.env.VITE_USER_API ?? import.meta.env.VITE_RENDER_USER_API,
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.user?.token;
@@ -18,11 +19,13 @@ export const userAPI = createApi({
       return headers;
     },
     headers: {
-      'Access-Control-Allow-Origin': import.meta.env.VITE_HOST,
+      'Access-Control-Allow-Origin':
+        import.meta.env.VITE_HOST ?? import.meta.env.VITE_RENDER_HOST,
       'Content-Type': 'application/json',
       Accept: 'application/json',
     },
   }),
+  tagTypes: ['register', 'login', 'logoutUser'],
   endpoints: (builder) => ({
     register: builder.mutation({
       query: (user) => ({
@@ -31,6 +34,7 @@ export const userAPI = createApi({
         body: user,
         timeout: 1000,
       }),
+      invalidatesTags: [{ type: 'register' }],
     }),
     login: builder.mutation({
       query: (user) => ({
@@ -39,15 +43,18 @@ export const userAPI = createApi({
         body: user,
         credentials: 'include',
       }),
+      invalidatesTags: [{ type: 'login' }],
     }),
     logoutUser: builder.mutation<unknown, void>({
       query: () => ({
         url: 'logout',
         method: 'POST',
       }),
+      invalidatesTags: [{ type: 'logoutUser' }],
     }),
     getUserById: builder.query<UserAPI, string>({
       query: (id) => `user/${id}`,
+      providesTags: (_, __, id) => [{ type: 'login', id }],
     }),
   }),
 });

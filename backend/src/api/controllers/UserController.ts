@@ -5,8 +5,6 @@ import UserSchema from '../../models/userModel';
 import bcrypt from 'bcrypt';
 import { genToken } from '../../utils/generateToken';
 
-// Routes for all will be api/v1/auth
-
 /**
  * @desc - get all user
  * @method - get
@@ -58,6 +56,7 @@ export async function registerUser(req: Request, res: Response) {
       message: 'User successfully created',
       _id: user._id,
       username: user.username,
+      token: genToken(user._id),
     });
   } catch (error) {
     console.error('Error during registration:', error);

@@ -17,7 +17,6 @@ import {
   useGetIncomesQuery,
 } from '../../store/financeAPI';
 import { dateFormat } from '../../utils/formUtils';
-import { LoadingSpinner } from '../../utils/LoadingSpinner';
 
 ChartJs.register(
   CategoryScale,
@@ -31,16 +30,8 @@ ChartJs.register(
 );
 
 export default function Chart() {
-  const {
-    data: expenses,
-    isLoading: loadingExpense,
-    isSuccess: expenseSuccess,
-  } = useGetExpensesQuery();
-  const {
-    data: incomes,
-    isLoading: loadingIncome,
-    isSuccess: incomeSuccess,
-  } = useGetIncomesQuery();
+  const { data: expenses } = useGetExpensesQuery();
+  const { data: incomes } = useGetIncomesQuery();
 
   const incomeArr = Array.isArray(incomes) ? incomes : [];
   const expenseArr = Array.isArray(expenses) ? expenses : [];
@@ -80,14 +71,6 @@ export default function Chart() {
       },
     ],
   };
-
-  if (loadingIncome || loadingExpense) {
-    return <LoadingSpinner />;
-  }
-
-  if (!incomeSuccess || !expenseSuccess) {
-    return <div>Error: Failed to fetch data</div>;
-  }
 
   return (
     <ChartStyled>

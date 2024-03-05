@@ -29,11 +29,15 @@ export default function Dashboard() {
   const totalBalance = totalIncome - totalExpense;
 
   if (loadingIncome || loadingExpense) {
-    return <LoadingSpinner />;
+    return (
+      <InnerLayout>
+        <LoadingSpinner />
+      </InnerLayout>
+    );
   }
 
   if (!incomeSuccess || !expenseSuccess) {
-    return <div>Error: Failed to fetch data</div>;
+    window.location.reload(); //super hacky
   }
 
   return (
