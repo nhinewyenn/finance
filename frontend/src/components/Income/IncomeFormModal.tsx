@@ -115,8 +115,9 @@ export default function IncomeFormModal({
                 <button onClick={onClose}>X</button>
               </div>
               {isError && error && (
-                <p className='error'>All fields are required</p>
+                <p className='error'>Number must be a positive value</p>
               )}
+
               <div className='input-control'>
                 <input
                   type='text'
@@ -124,6 +125,7 @@ export default function IncomeFormModal({
                   placeholder='Income Title'
                   onChange={handleInput('title')}
                   value={title}
+                  required
                 />
               </div>
               <div className='input-control'>
@@ -133,10 +135,12 @@ export default function IncomeFormModal({
                   placeholder='Income Amount'
                   onChange={handleInput('amount')}
                   value={amount}
+                  required
                 />
               </div>
               <div className='input-control'>
                 <DatePicker
+                  required
                   wrapperClassName='date-picker'
                   id='date'
                   placeholderText='Enter a date'

@@ -16,9 +16,11 @@ import IncomeFormModal from './IncomeFormModal';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
 import { LoadingSpinner } from '../../utils/LoadingSpinner';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Income() {
-  const { data, isSuccess, isLoading } = useGetIncomesQuery();
+  const { data, isSuccess, isLoading, isError } = useGetIncomesQuery();
   const [deleteIncome] = useDeleteIncomeMutation();
   const [updateIncome] = useUpdateIncomeMutation();
   const totalIncome = useTotalIncome(data ?? []);
@@ -39,7 +41,14 @@ export default function Income() {
         setToggleUpdate(true);
         await updateIncome(formattedIncome).unwrap();
         setSelectedIncome(formattedIncome);
-      } catch (error) {
+      } catch (error: unknown) {
+        if (typeof error === 'object' && error !== null) {
+          const err = error as {
+            status?: number;
+            data?: { message?: string };
+          };
+          return isError && toast.error(err.data?.message);
+        }
         console.error('Error updating income:', error);
       }
     }
@@ -48,6 +57,7 @@ export default function Income() {
   return (
     <IncomeStyled>
       <InnerLayout>
+        <ToastContainer />
         {isLoading && <LoadingSpinner />}
         <div className='top-content'>
           <h1>Incomes</h1>

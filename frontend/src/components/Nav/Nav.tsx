@@ -9,7 +9,6 @@ import {
   useGetUserByIdQuery,
   useLogoutUserMutation,
 } from '../../store/userAPI';
-import { useCookies } from 'react-cookie';
 import Button from '../Button/Button';
 import { logoutUser } from '../../store/authSlice';
 import { useGetUserId } from '../../utils/formUtils';
@@ -26,14 +25,12 @@ export default function Nav({ active, setActive }: NavProps) {
   const [logoutMutation, { isSuccess: logoutSuccess }] =
     useLogoutUserMutation();
   const { data, isLoading, isSuccess } = useGetUserByIdQuery(userId!);
-  const [_, setCookies] = useCookies(); //eslint-disable-line
   const navigate = useNavigate();
 
   async function logout(event: React.FormEvent) {
     event.preventDefault();
     try {
       await logoutMutation().unwrap();
-      setCookies('access_token', '');
       dispatch(logoutUser());
       window.location.reload();
       logoutSuccess && navigate('/login');

@@ -3,7 +3,7 @@
 import { Response, Request } from 'express';
 import UserSchema from '../../models/userModel';
 import bcrypt from 'bcrypt';
-import { generateToken } from '../../utils/generateToken';
+import { genToken } from '../../utils/generateToken';
 
 // Routes for all will be api/v1/auth
 
@@ -92,12 +92,11 @@ export async function login(req: Request, res: Response) {
         .json({ message: 'Incorrect username or password' });
     }
 
-    generateToken(res, user._id);
     res.status(200).json({
       message: 'Login successful',
       user,
       userID: user._id,
-      token: generateToken(res, user._id),
+      token: genToken(user._id),
     });
   } catch (error) {
     console.error('Error logging in:', error);
@@ -109,10 +108,7 @@ export async function login(req: Request, res: Response) {
 
 export async function logoutUser(req: Request, res: Response) {
   try {
-    res.clearCookie('access_token', {
-      path: '/',
-      httpOnly: true,
-    });
+    res.setHeader('Authorization', '');
     res.status(200).json({ message: 'Logged out successful' });
   } catch (error) {
     console.error('Error in logout controller', error);

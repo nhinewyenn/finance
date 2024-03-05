@@ -5,7 +5,6 @@ import Button from '../Button/Button';
 import React, { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../store/userAPI';
-import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { setCredentials } from '../../store/authSlice';
@@ -17,7 +16,6 @@ export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.auth);
-  const [cookie, setCookies] = useCookies(['access_token']);
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -36,7 +34,6 @@ export default function Login() {
     }).unwrap();
 
     try {
-      setCookies('access_token', cookie.access_token);
       toast.success('Login success!');
       localStorage.setItem('userID', loginData.userID);
       dispatch(setCredentials({ ...loginData }));

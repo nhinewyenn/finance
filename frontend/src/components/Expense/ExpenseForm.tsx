@@ -99,9 +99,13 @@ export default function ExpenseForm({
 
   return (
     <ExpenseFormStyled onSubmit={handleSubmit}>
-      {isError && error && <p className='error'>All fields are required</p>}
+      {isError && error && (
+        <p className='error'>Number must be a positive value</p>
+      )}
+
       <div className='input-control'>
         <input
+          required
           type='text'
           value={title}
           name={'title'}
@@ -111,6 +115,7 @@ export default function ExpenseForm({
       </div>
       <div className='input-control'>
         <input
+          required
           value={amount}
           type='text'
           name={'amount'}
@@ -120,6 +125,7 @@ export default function ExpenseForm({
       </div>
       <div className='input-control'>
         <DatePicker
+          required
           wrapperClassName='date-picker'
           id='date'
           placeholderText='Enter a date'

@@ -16,6 +16,7 @@ const app = express();
 const { PORT } = process.env ?? 8000;
 
 // Middlewares
+
 app.use(express.json());
 app.use(
   cors({
@@ -25,12 +26,13 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
+// app.use(cors());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use('/api/auth', user);
-app.use('/api/profile', transaction);
+app.use('/api/profile', verifyToken, transaction);
 
 // Middleware;
 app.use(notFound);

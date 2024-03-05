@@ -24,27 +24,28 @@ export async function verifyToken(
   next: NextFunction
 ) {
   try {
-    console.log('req', req);
-    console.log('headers', req.headers);
-    console.log(req.headers.authorization);
-    const { access_token } = req.cookies;
-    if (!access_token) {
-      return res
-        .status(401)
-        .json({ error: 'Unauthorized - No Token Provided' });
+    const authHeader = req.headers.authorization || req.headers.Authorization;
+    console.log(authHeader); // this return undefined
+
+    if (!authHeader) {
+      return res.status(401).json({
+        error: 'Unauthorized - Header does not have authorization field',
+      });
     }
 
-    const { _id } = jwt.verify(access_token, JWT_SECRET) as JwtPayload;
-    if (!_id) {
-      return res.status(401).json({ error: 'Unauthorized - Invalid Token' });
-    }
+    const token = Array.isArray(authHeader)
+      ? authHeader[0].split(' ')[1]
+      : authHeader.split(' ')[1];
 
-    const user = await UserSchema.findById(_id).select('-password');
-    if (!user) {
+    console.log(token);
+
+    const user = jwt.verify(token, JWT_SECRET) as JwtPayload;
+    if (user) {
+      req.user = await UserSchema.findById(user._id).select('-password');
+    } else {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    req.user = user;
     next();
   } catch (error) {
     console.error('Error in protectRoute middleware: ', error);

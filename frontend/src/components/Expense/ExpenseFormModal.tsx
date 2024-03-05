@@ -114,10 +114,12 @@ export default function ExpenseFormModal({
                 <button onClick={onClose}>X</button>
               </div>
               {isError && error && (
-                <p className='error'>All fields are required</p>
+                <p className='error'>Number must be a positive value</p>
               )}
+
               <div className='input-control'>
                 <input
+                  required
                   type='text'
                   value={title}
                   name={'title'}
@@ -127,6 +129,7 @@ export default function ExpenseFormModal({
               </div>
               <div className='input-control'>
                 <input
+                  required
                   value={amount}
                   type='text'
                   name={'amount'}
@@ -136,6 +139,7 @@ export default function ExpenseFormModal({
               </div>
               <div className='input-control'>
                 <DatePicker
+                  required
                   wrapperClassName='date-picker'
                   id='date'
                   placeholderText='Enter a date'

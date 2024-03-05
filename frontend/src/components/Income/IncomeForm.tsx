@@ -98,7 +98,9 @@ export default function Form({ updateMode, selectedIncome }: IncomeFormProps) {
 
   return (
     <FormStyled onSubmit={handleSubmit}>
-      {isError && error && <p className='error'>All fields are required</p>}
+      {isError && error && (
+        <p className='error'>Number must be a positive value</p>
+      )}
       <div className='input-control'>
         <input
           type='text'
@@ -106,6 +108,7 @@ export default function Form({ updateMode, selectedIncome }: IncomeFormProps) {
           placeholder='Income Title'
           onChange={handleInput('title')}
           value={title}
+          required
         />
       </div>
       <div className='input-control'>
@@ -115,10 +118,12 @@ export default function Form({ updateMode, selectedIncome }: IncomeFormProps) {
           placeholder='Income Amount'
           onChange={handleInput('amount')}
           value={amount}
+          required
         />
       </div>
       <div className='input-control'>
         <DatePicker
+          required
           wrapperClassName='date-picker'
           id='date'
           placeholderText='Enter a date'
