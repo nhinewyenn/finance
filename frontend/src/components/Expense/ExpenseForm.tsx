@@ -10,7 +10,7 @@ import DatePicker from 'react-datepicker';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
 import { expenseCategory, useGetUserId } from '../../utils/formUtils';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 type ExpenseFormProps = {
   updateMode: boolean;
@@ -21,7 +21,7 @@ export default function ExpenseForm({
   updateMode,
   selectedExpense,
 }: ExpenseFormProps) {
-  const getUserId = useGetUserId();
+  const formRef = useRef<HTMLFormElement>(null);
   const [inputState, setInputState] = useState<FormInput>({
     _id: '',
     title: '',
@@ -29,11 +29,21 @@ export default function ExpenseForm({
     date: new Date(),
     category: '',
     description: '',
-    userID: getUserId!,
+    userID: useGetUserId() as string,
   });
   const [updateExpense] = useUpdateExpenseMutation();
   const [addExpense, { isError, error }] = useAddExpenseMutation();
   const { title, amount, date, category, description, userID } = inputState;
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLFormElement>) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        formRef.current?.requestSubmit();
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     // Update form when selectedExpense changes
@@ -98,7 +108,11 @@ export default function ExpenseForm({
   );
 
   return (
-    <ExpenseFormStyled onSubmit={handleSubmit}>
+    <ExpenseFormStyled
+      onSubmit={handleSubmit}
+      onKeyDown={handleKeyDown}
+      ref={formRef}
+    >
       {isError && error && (
         <p className='error'>Number must be a positive value</p>
       )}

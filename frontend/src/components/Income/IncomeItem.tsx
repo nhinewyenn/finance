@@ -1,29 +1,14 @@
 /** @format */
 
 import styled from 'styled-components';
-import {
-  book,
-  calendar,
-  card,
-  circle,
-  clothing,
-  comment,
-  dollar,
-  edit,
-  food,
-  freelance,
-  medical,
-  money,
-  piggy,
-  stocks,
-  takeaway,
-  trash,
-  tv,
-  users,
-  yt,
-} from '../../utils/Icon';
+import { calendar, comment, dollar, edit, trash } from '../../utils/Icon';
 import Button from '../Button/Button';
-import { dateFormat } from '../../utils/formUtils';
+import {
+  dateFormat,
+  expenseCategoryIcon,
+  incomeCategoryIcon,
+} from '../../utils/formUtils';
+import { useMemo } from 'react';
 
 type IncomeItemProps = {
   id: string;
@@ -50,54 +35,13 @@ export default function IncomeItem({
   onToggle,
   type,
 }: IncomeItemProps) {
-  function incomeCategoryIcon() {
-    switch (category) {
-      case 'salary':
-        return money;
-      case 'freelancing':
-        return freelance;
-      case 'investments':
-        return stocks;
-      case 'stocks':
-        return users;
-      case 'bank':
-        return card;
-      case 'online':
-        return yt;
-      case 'other':
-        return piggy;
-      default:
-        return '';
-    }
-  }
-
-  function expenseCategoryIcon() {
-    switch (category) {
-      case 'education':
-        return book;
-      case 'groceries':
-        return food;
-      case 'health':
-        return medical;
-      case 'subscriptions':
-        return tv;
-      case 'takeaways':
-        return takeaway;
-      case 'clothing':
-        return clothing;
-      case 'travel':
-        return freelance;
-      case 'other':
-        return circle;
-      default:
-        return '';
-    }
-  }
+  const incomeIcon = useMemo(() => incomeCategoryIcon(category), [category]);
+  const expenseIcon = useMemo(() => expenseCategoryIcon(category), [category]);
 
   return (
     <IncomeItemStyled type={type}>
       <div className='icon'>
-        {type === 'expense' ? expenseCategoryIcon() : incomeCategoryIcon()}
+        {type === 'expense' ? expenseIcon : incomeIcon}
       </div>
       <div className='content'>
         <h5>

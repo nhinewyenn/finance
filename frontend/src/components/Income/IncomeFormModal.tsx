@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -26,7 +26,7 @@ export default function IncomeFormModal({
   isOpen,
   onClose,
 }: IncomeFormProps) {
-  const getUserId = useGetUserId();
+  const formRef = useRef<HTMLFormElement>(null);
   const [inputState, setInputState] = useState<FormInput>({
     _id: '',
     title: '',
@@ -34,11 +34,21 @@ export default function IncomeFormModal({
     date: new Date(),
     category: '',
     description: '',
-    userID: getUserId!,
+    userID: useGetUserId() as string,
   });
   const [updateIncome] = useUpdateIncomeMutation();
   const [addIncome, { isError, error }] = useAddIncomeMutation();
   const { title, amount, date, category, description, userID } = inputState;
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLFormElement>) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        formRef.current?.requestSubmit();
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     // Update form when selectedIncome changes
@@ -109,7 +119,11 @@ export default function IncomeFormModal({
       {isOpen && (
         <ModalStyled>
           <OverlayStyled>
-            <FormStyled onSubmit={handleSubmit}>
+            <FormStyled
+              onSubmit={handleSubmit}
+              onKeyDown={handleKeyDown}
+              ref={formRef}
+            >
               <div className='form-header'>
                 <h3>Income form</h3>
                 <button onClick={onClose}>X</button>
