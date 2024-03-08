@@ -12,6 +12,7 @@ import {
 import { FormInput } from '../../utils/typeUtils';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
+import useSubmitOnEnter from '../../utils/useSubmitOnEnter';
 
 type IncomeFormProps = {
   updateMode: boolean;
@@ -32,16 +33,7 @@ export default function Form({ updateMode, selectedIncome }: IncomeFormProps) {
   const [updateIncome] = useUpdateIncomeMutation();
   const [addIncome, { isError, error }] = useAddIncomeMutation();
   const { title, amount, date, category, description, userID } = inputState;
-
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLFormElement>) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        formRef.current?.requestSubmit();
-      }
-    },
-    []
-  );
+  const handleKeyDown = useSubmitOnEnter(formRef);
 
   useEffect(() => {
     // Update form when selectedIncome changes

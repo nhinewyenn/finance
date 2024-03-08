@@ -11,6 +11,7 @@ import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
 import { expenseCategory, useGetUserId } from '../../utils/formUtils';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import useSubmitOnEnter from '../../utils/useSubmitOnEnter';
 
 type ExpenseFormProps = {
   updateMode: boolean;
@@ -34,16 +35,7 @@ export default function ExpenseForm({
   const [updateExpense] = useUpdateExpenseMutation();
   const [addExpense, { isError, error }] = useAddExpenseMutation();
   const { title, amount, date, category, description, userID } = inputState;
-
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLFormElement>) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        formRef.current?.requestSubmit();
-      }
-    },
-    []
-  );
+  const handleKeyDown = useSubmitOnEnter(formRef);
 
   useEffect(() => {
     // Update form when selectedExpense changes

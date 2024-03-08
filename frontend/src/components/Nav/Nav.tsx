@@ -22,10 +22,10 @@ type NavProps = {
 export default function Nav({ active, setActive }: NavProps) {
   const userId = useGetUserId();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [logoutMutation, { isSuccess: logoutSuccess }] =
     useLogoutUserMutation();
   const { data, isLoading, isSuccess } = useGetUserByIdQuery(userId!);
-  const navigate = useNavigate();
 
   async function logout(event: React.FormEvent) {
     event.preventDefault();

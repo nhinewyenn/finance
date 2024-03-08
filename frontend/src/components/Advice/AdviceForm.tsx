@@ -2,18 +2,13 @@
 
 import styled from 'styled-components';
 import { InnerLayout } from '../../styles/Layout';
-import { useCallback, useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
+import useSubmitOnEnter from '../../utils/useSubmitOnEnter';
 
 export default function AdviceForm() {
   const textRef = useRef<HTMLTextAreaElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
-
-  const handleEnter = useCallback((e: React.KeyboardEvent<HTMLFormElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      formRef.current?.requestSubmit();
-    }
-  }, []);
+  const handleKeyDown = useSubmitOnEnter(formRef);
 
   function adjustHeight() {
     if (textRef.current) {
@@ -27,7 +22,7 @@ export default function AdviceForm() {
   }, []);
 
   return (
-    <AdviceFormStyled onKeyDown={handleEnter} ref={formRef}>
+    <AdviceFormStyled onKeyDown={handleKeyDown} ref={formRef}>
       <InnerLayout>
         <label className='input-sizer stacked'>
           <span>Ask advice: </span>

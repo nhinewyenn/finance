@@ -5,17 +5,14 @@ import {
   useGetExpensesQuery,
   useGetIncomesQuery,
 } from '../../store/financeAPI';
+import { FormInput } from '../../utils/typeUtils';
 
 export default function History() {
   const { data: expenses } = useGetExpensesQuery();
   const { data: income } = useGetIncomesQuery();
+  const storedData: FormInput[] = [...(income || []), ...(expenses || [])];
 
-  const storedTransactions = [
-    ...(income && Array.isArray(income) ? income : []),
-    ...(expenses && Array.isArray(expenses) ? expenses : []),
-  ];
-
-  const history = storedTransactions
+  const history = storedData
     .filter((transaction) => transaction.createdAt)
     .sort((a, b) => {
       const dateA = new Date(a.createdAt ?? new Date());
