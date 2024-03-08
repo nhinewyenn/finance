@@ -26,6 +26,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.2.0",
     "mongoose": "^8.0.3",
+    "openai": "^4.28.4",
     "saslprep": "^1.0.3",
     "typescript": "^5.3.3"
   },

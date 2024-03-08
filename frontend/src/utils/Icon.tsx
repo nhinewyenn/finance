@@ -29,3 +29,4 @@ export const medical = <i className='fa-solid fa-briefcase-medical'></i>;
 export const tv = <i className='fa-solid fa-tv'></i>;
 export const circle = <i className='fa-solid fa-circle-dot'></i>;
 export const edit = <i className='fa-solid fa-pen'></i>;
+export const info = <i className='fa-solid fa-circle-info'></i>;

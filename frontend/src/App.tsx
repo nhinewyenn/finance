@@ -9,6 +9,7 @@ import { useMemo, useState } from 'react';
 import Dashboard from './components/Dashboard/Dashboard';
 import Income from './components/Income/Income';
 import Expense from './components/Expense/Expense';
+import Advice from './components/Advice/Advice';
 
 const AppStyled = styled.div`
   height: 100vh;
@@ -41,9 +42,10 @@ function App() {
         return <Income />;
       case 4:
         return <Expense />;
+      case 5:
+        return <Advice />;
       default:
         return <Dashboard />;
-        break;
     }
   }
 
