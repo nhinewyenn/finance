@@ -9,7 +9,7 @@ import {
   useUpdateIncomeMutation,
 } from '../../store/financeAPI';
 import IncomeItem from './IncomeItem';
-import { useTotalIncome } from '../../utils/useTotal';
+import { useTotalIncome } from '../../hooks/useTotal';
 import { useState } from 'react';
 import { FormInput } from '../../utils/typeUtils';
 import IncomeFormModal from './IncomeFormModal';

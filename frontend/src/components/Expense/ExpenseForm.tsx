@@ -11,7 +11,7 @@ import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
 import { expenseCategory, useGetUserId } from '../../utils/formUtils';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import useSubmitOnEnter from '../../utils/useSubmitOnEnter';
+import useSubmitOnEnter from '../../hooks/useSubmitOnEnter';
 
 type ExpenseFormProps = {
   updateMode: boolean;

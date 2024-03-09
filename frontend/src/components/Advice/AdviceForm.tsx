@@ -3,7 +3,7 @@
 import styled from 'styled-components';
 import { InnerLayout } from '../../styles/Layout';
 import { useLayoutEffect, useRef } from 'react';
-import useSubmitOnEnter from '../../utils/useSubmitOnEnter';
+import useSubmitOnEnter from '../../hooks/useSubmitOnEnter';
 
 export default function AdviceForm() {
   const textRef = useRef<HTMLTextAreaElement>(null);
@@ -25,7 +25,6 @@ export default function AdviceForm() {
     <AdviceFormStyled onKeyDown={handleKeyDown} ref={formRef}>
       <InnerLayout>
         <label className='input-sizer stacked'>
-          <span>Ask advice: </span>
           <textarea
             ref={textRef}
             rows={1}
@@ -48,7 +47,6 @@ const AdviceFormStyled = styled.form`
     position: relative;
     border: solid 1px;
     padding: 1rem;
-    margin: 5px;
     background: #fcf6f9;
     border-radius: 20px;
     border: 2px solid #fff;
@@ -83,11 +81,6 @@ const AdviceFormStyled = styled.form`
       border: none;
     }
 
-    span {
-      padding: 0.25em;
-      color: #f56692;
-    }
-
     &::after {
       content: attr(data-value) ' ';
       visibility: hidden;
@@ -102,15 +95,6 @@ const AdviceFormStyled = styled.form`
       input:focus {
         outline: none;
       }
-    }
-  }
-
-  .input-sizer {
-    > span {
-      text-transform: uppercase;
-      font-size: 0.8em;
-      font-weight: bold;
-      text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.15);
     }
   }
 `;

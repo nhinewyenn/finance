@@ -8,7 +8,7 @@ import {
 } from '../../store/financeAPI';
 import Chart from './Chart';
 import { dollar } from '../../utils/Icon';
-import { useTotalExpense, useTotalIncome } from '../../utils/useTotal';
+import { useTotalExpense, useTotalIncome } from '../../hooks/useTotal';
 import History from './History';
 import { LoadingSpinner } from '../../utils/LoadingSpinner';
 

@@ -8,6 +8,7 @@ import cors from 'cors';
 import { db } from '../config/db';
 import { notFound, errorHandler } from './middlewares/errorMiddleware';
 import transaction from './transactionRoutes';
+import openAI from './openAIRoutes';
 import user from './userRoutes';
 import { verifyToken } from './middlewares/authMiddleware';
 import path from 'path';
@@ -41,6 +42,7 @@ if (process.env.NODE_ENV === 'production') {
 // Routes
 app.use('/api/auth', user);
 app.use('/api/profile', verifyToken, transaction);
+app.use('/api/profile', verifyToken, openAI);
 
 // Middleware;
 app.use(notFound);

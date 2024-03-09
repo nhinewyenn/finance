@@ -1,7 +1,7 @@
 /** @format */
 
 import { useEffect, useState } from 'react';
-import { FormInput } from './typeUtils';
+import { FormInput } from '../utils/typeUtils';
 
 export function useTotalExpense(expense: FormInput[]) {
   const [total, setTotal] = useState(0);

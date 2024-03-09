@@ -9,7 +9,7 @@ import {
   useUpdateExpenseMutation,
 } from '../../store/financeAPI';
 import IncomeItem from '../Income/IncomeItem';
-import { useTotalExpense } from '../../utils/useTotal';
+import { useTotalExpense } from '../../hooks/useTotal';
 import { useState } from 'react';
 import { FormInput } from '../../utils/typeUtils';
 import Button from '../Button/Button';

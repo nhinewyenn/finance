@@ -12,7 +12,7 @@ import {
 import { FormInput } from '../../utils/typeUtils';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
-import useSubmitOnEnter from '../../utils/useSubmitOnEnter';
+import useSubmitOnEnter from '../../hooks/useSubmitOnEnter';
 
 type IncomeFormProps = {
   updateMode: boolean;

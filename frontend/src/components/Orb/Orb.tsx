@@ -1,7 +1,7 @@
 /** @format */
 
 import styled, { keyframes } from 'styled-components';
-import { useWindowView } from '../../utils/useWindowView';
+import { useWindowView } from '../../hooks/useWindowView';
 
 export default function Orb() {
   const { width, height } = useWindowView();
