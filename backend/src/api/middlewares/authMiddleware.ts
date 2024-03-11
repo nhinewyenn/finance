@@ -36,8 +36,6 @@ export async function verifyToken(
       ? authHeader[0].split(' ')[1]
       : authHeader.split(' ')[1];
 
-    console.log(token);
-
     const user = jwt.verify(token, JWT_SECRET) as JwtPayload;
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
