@@ -107,7 +107,7 @@ export async function login(req: Request, res: Response) {
 
 export async function logoutUser(req: Request, res: Response) {
   try {
-    res.setHeader('Authorization', '');
+    res.removeHeader('Authorization');
     res.status(200).json({ message: 'Logged out successful' });
   } catch (error) {
     console.error('Error in logout controller', error);

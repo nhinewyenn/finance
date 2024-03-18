@@ -10,7 +10,7 @@ import {
 } from '../../store/financeAPI';
 import IncomeItem from './IncomeItem';
 import { useTotalIncome } from '../../hooks/useTotal';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FormInput } from '../../utils/typeUtils';
 import IncomeFormModal from './IncomeFormModal';
 import Button from '../Button/Button';
@@ -28,31 +28,34 @@ export default function Income() {
   const [toggleUpdate, setToggleUpdate] = useState(false);
   const [toggleModal, setToggleModal] = useState(false);
 
-  async function handleUpdate(id: string) {
-    const income = data?.find((v) => v._id === id);
+  const handleUpdate = useCallback(
+    async (id: string) => {
+      const income = data?.find((v) => v._id === id);
 
-    if (income) {
-      const formattedIncome = {
-        ...income,
-        date: new Date(income.date),
-        _id: id,
-      };
-      try {
-        setToggleUpdate(true);
-        await updateIncome(formattedIncome).unwrap();
-        setSelectedIncome(formattedIncome);
-      } catch (error: unknown) {
-        if (typeof error === 'object' && error !== null) {
-          const err = error as {
-            status?: number;
-            data?: { message?: string };
-          };
-          return isError && toast.error(err.data?.message);
+      if (income) {
+        const formattedIncome = {
+          ...income,
+          date: new Date(income.date),
+          _id: id,
+        };
+        try {
+          setToggleUpdate(true);
+          await updateIncome(formattedIncome).unwrap();
+          setSelectedIncome(formattedIncome);
+        } catch (error: unknown) {
+          if (typeof error === 'object' && error !== null) {
+            const err = error as {
+              status?: number;
+              data?: { message?: string };
+            };
+            return isError && toast.error(err.data?.message);
+          }
+          console.error('Error updating income:', error);
         }
-        console.error('Error updating income:', error);
       }
-    }
-  }
+    },
+    [data, updateIncome, setToggleUpdate, setSelectedIncome, isError]
+  );
 
   return (
     <IncomeStyled>

@@ -18,14 +18,11 @@ export async function addExpense(req: Request, res: Response) {
         .json({ message: 'Amount must be a positive value' });
     }
 
-    const expense = new ExpenseSchema({
-      title,
-      amount,
-      category,
-      description,
-      date,
-      userID,
-    });
+    const expense = await ExpenseSchema.findOneAndUpdate(
+      { title, amount, category, description, date, userID },
+      { title, amount, category, description, date, userID },
+      { upsert: true, new: true }
+    );
 
     await expense.save();
 
@@ -62,6 +59,13 @@ export async function getExpenses(req: Request, res: Response) {
 export async function updateExpense(req: Request, res: Response) {
   try {
     const { title, amount, category, description, date, userID } = req.body;
+
+    if (amount <= 0 && typeof amount !== 'number') {
+      return res
+        .status(400)
+        .json({ message: 'Amount must be a positive value' });
+    }
+
     const { id } = req.params;
     const expense = await ExpenseSchema.findByIdAndUpdate(
       id,
@@ -83,12 +87,6 @@ export async function updateExpense(req: Request, res: Response) {
       });
     }
 
-    if (amount <= 0 && typeof amount !== 'number') {
-      return res
-        .status(400)
-        .json({ message: 'Amount must be a positive value' });
-    }
-
     res.status(200).json({
       success: true,
       message: 'Expense updated successfully',
@@ -106,7 +104,7 @@ export async function deleteExpense(req: Request, res: Response) {
   try {
     const { id } = req.params;
     await ExpenseSchema.findByIdAndDelete(id);
-    res.status(200).json({ message: 'Expense deleted' });
+    res.status(200).json({ message: 'Expense deleted', success: true });
   } catch (error) {
     console.error('Delete expense error:', error);
     res.status(500).json({ message: 'Delete expense server error' });

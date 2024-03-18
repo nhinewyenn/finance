@@ -6,20 +6,27 @@ import {
   useGetIncomesQuery,
 } from '../../store/financeAPI';
 import { FormInput } from '../../utils/typeUtils';
+import { useMemo } from 'react';
 
 export default function History() {
   const { data: expenses } = useGetExpensesQuery();
   const { data: income } = useGetIncomesQuery();
-  const storedData: FormInput[] = [...(income || []), ...(expenses || [])];
+  const storedData: FormInput[] = useMemo(() => {
+    const incomeArray = Array.isArray(income) ? income : [];
+    const expensesArray = Array.isArray(expenses) ? expenses : [];
+    return [...incomeArray, ...expensesArray];
+  }, [expenses, income]);
 
-  const history = storedData
-    .filter((transaction) => transaction.createdAt)
-    .sort((a, b) => {
-      const dateA = new Date(a.createdAt ?? new Date());
-      const dateB = new Date(b.createdAt ?? new Date());
-      return dateB.getTime() - dateA.getTime();
-    })
-    .slice(0, 3);
+  const history = useMemo(() => {
+    return storedData
+      .filter((transaction) => transaction.createdAt)
+      .sort((a, b) => {
+        const dateA = new Date(a.createdAt ?? new Date());
+        const dateB = new Date(b.createdAt ?? new Date());
+        return dateB.getTime() - dateA.getTime();
+      })
+      .slice(0, 3);
+  }, [storedData]);
 
   return (
     <HistoryStyled>

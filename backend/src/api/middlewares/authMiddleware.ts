@@ -41,7 +41,7 @@ export async function verifyToken(
       return res.status(404).json({ error: 'User not found' });
     }
 
-    req.user = await UserSchema.findById(user._id).select('-password');
+    req.user = await UserSchema.findById(user._id).select('-password').lean();
     next();
   } catch (error) {
     console.error('Error in protectRoute middleware: ', error);

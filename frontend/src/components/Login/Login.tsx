@@ -37,7 +37,7 @@ export default function Login() {
       toast.success('Login success!');
       localStorage.setItem('userID', loginData.userID);
       dispatch(setCredentials({ ...loginData }));
-      setTimeout(() => navigate('/'), 500);
+      navigate('/', { replace: true });
     } catch (error: unknown) {
       if (typeof error === 'object' && error !== null) {
         const err = error as { status?: number; data?: { message?: string } };

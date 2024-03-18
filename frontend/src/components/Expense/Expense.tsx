@@ -10,7 +10,7 @@ import {
 } from '../../store/financeAPI';
 import IncomeItem from '../Income/IncomeItem';
 import { useTotalExpense } from '../../hooks/useTotal';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FormInput } from '../../utils/typeUtils';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icon';
@@ -28,24 +28,27 @@ export default function Expense() {
     null
   );
 
-  async function handleUpdate(id: string) {
-    const expense = data?.find((v) => v._id === id);
+  const handleUpdate = useCallback(
+    async (id: string) => {
+      const expense = data?.find((v) => v._id === id);
 
-    if (expense) {
-      const formattedExpense = {
-        ...expense,
-        date: new Date(expense.date),
-        _id: id,
-      };
-      try {
-        setToggleUpdate(true);
-        await updateExpense(formattedExpense).unwrap();
-        setSelectedExpense(formattedExpense);
-      } catch (error) {
-        console.error('Error updating expense:', error);
+      if (expense) {
+        const formattedExpense = {
+          ...expense,
+          date: new Date(expense.date),
+          _id: id,
+        };
+        try {
+          setToggleUpdate(true);
+          await updateExpense(formattedExpense).unwrap();
+          setSelectedExpense(formattedExpense);
+        } catch (error) {
+          console.error('Error updating expense:', error);
+        }
       }
-    }
-  }
+    },
+    [data, updateExpense, setToggleUpdate, setSelectedExpense]
+  );
 
   return (
     <ExpenseStyled>

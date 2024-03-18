@@ -6,5 +6,9 @@ import { RootState } from '../../store/store';
 
 export default function PrivateRoute() {
   const { user } = useSelector((state: RootState) => state.auth);
-  return user ? <Outlet /> : <Navigate to='/login' replace={true} />;
+  return user !== null && Object.keys(user).length !== 0 ? (
+    <Outlet />
+  ) : (
+    <Navigate to='/login' replace={true} />
+  );
 }

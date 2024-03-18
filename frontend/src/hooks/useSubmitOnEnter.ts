@@ -2,12 +2,14 @@
 
 import { useCallback } from 'react';
 
-function useSubmitOnEnter(formRef: React.RefObject<HTMLFormElement>) {
+function useSubmitOnEnter(
+  formRef: React.MutableRefObject<HTMLFormElement | null>
+) {
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLFormElement>) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
+      if (e.code === 'Enter' && !e.shiftKey && formRef.current) {
         e.preventDefault();
-        formRef.current?.requestSubmit();
+        formRef.current?.dispatchEvent(new Event('submit'));
       }
     },
     [formRef]

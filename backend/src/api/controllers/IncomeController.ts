@@ -27,15 +27,24 @@ export async function addIncome(req: Request, res: Response) {
       userID,
     });
 
-    await income.save();
+    const savedIncome = await income.save();
 
-    const user = await UserSchema.findByIdAndUpdate(req.user._id, {
-      $push: { incomes: income._id },
-    });
+    if (!savedIncome) {
+      return res.status(500).json({ message: 'Failed to save income' });
+    }
+
+    const user = await UserSchema.findOneAndUpdate(
+      { _id: req.user._id },
+      { $push: { incomes: savedIncome._id } },
+      { new: true }
+    );
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    res.status(200).json({ message: 'Income added', success: true, income });
+    res
+      .status(200)
+      .json({ message: 'Income added', success: true, savedIncome });
   } catch (error) {
     res.status(500).json({ message: 'Add income server error', error });
   }
@@ -63,6 +72,13 @@ export async function updateIncome(req: Request, res: Response) {
   try {
     const { title, amount, category, description, date, userID } = req.body;
     const { id } = req.params;
+
+    if (amount <= 0 && typeof amount !== 'number') {
+      return res
+        .status(400)
+        .json({ message: 'Amount must be a positive value' });
+    }
+
     const income = await IncomeSchema.findByIdAndUpdate(
       id,
       {
@@ -83,12 +99,6 @@ export async function updateIncome(req: Request, res: Response) {
       });
     }
 
-    if (amount <= 0 && typeof amount !== 'number') {
-      return res
-        .status(400)
-        .json({ message: 'Amount must be a positive value' });
-    }
-
     res.status(200).json({
       success: true,
       message: 'Income updated successfully',
@@ -105,7 +115,12 @@ export async function updateIncome(req: Request, res: Response) {
 export async function deleteIncome(req: Request, res: Response) {
   try {
     const { id } = req.params;
-    await IncomeSchema.findByIdAndDelete(id);
+    const income = await IncomeSchema.findByIdAndDelete(id);
+
+    if (!income) {
+      return res.status(404).json({ message: 'Income not found' });
+    }
+
     res.status(200).json({ message: 'Income deleted' });
   } catch (error) {
     console.error('Delete income error:', error);
