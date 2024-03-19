@@ -317,4 +317,12 @@ const ExpenseFormStyled = styled.form`
       }
     }
   }
+
+  @media (max-width: 450px) {
+    .submit-btn {
+      button {
+        padding: 0.65rem !important;
+      }
+    }
+  }
 `;

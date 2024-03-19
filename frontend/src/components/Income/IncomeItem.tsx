@@ -8,7 +8,7 @@ import {
   expenseCategoryIcon,
   incomeCategoryIcon,
 } from '../../utils/formUtils';
-import { useMemo } from 'react';
+import { useCallback } from 'react';
 
 type IncomeItemProps = {
   id: string;
@@ -35,13 +35,21 @@ export default function IncomeItem({
   onToggle,
   type,
 }: IncomeItemProps) {
-  const incomeIcon = useMemo(() => incomeCategoryIcon(category), [category]);
-  const expenseIcon = useMemo(() => expenseCategoryIcon(category), [category]);
+  const handleDelete = useCallback(() => {
+    onDelete(id);
+  }, [onDelete, id]);
+
+  const handleUpdate = useCallback(() => {
+    onUpdate(id);
+    onToggle();
+  }, [onUpdate, onToggle, id]);
 
   return (
     <IncomeItemStyled type={type}>
       <div className='icon'>
-        {type === 'expense' ? expenseIcon : incomeIcon}
+        {type === 'expense'
+          ? expenseCategoryIcon(category)
+          : incomeCategoryIcon(category)}
       </div>
       <div className='content'>
         <h5>
@@ -67,27 +75,24 @@ export default function IncomeItem({
                 icon={trash}
                 bPad={'.9rem'}
                 bRadius={'50%'}
-                bg={'var(--primary-color'}
+                bg={'var(--primary-color)'}
                 color={'#fff'}
-                onClick={() => onDelete(id)}
+                onClick={handleDelete}
               />
               <Button
                 className='btn-con'
                 icon={edit}
                 bPad={'.9rem'}
                 bRadius={'50%'}
-                bg={'var(--primary-color'}
+                bg={'var(--primary-color)'}
                 color={'#fff'}
-                onClick={() => {
-                  onUpdate(id);
-                  onToggle();
-                }}
+                onClick={handleUpdate}
               />
-              <button className='btn-mobile'>
-                <i className='fa-solid fa-pen'></i>
+              <button className='btn-mobile' onClick={handleUpdate}>
+                {edit}
               </button>
-              <button className='btn-mobile'>
-                <i className='fa-solid fa-trash'></i>
+              <button className='btn-mobile' onClick={handleDelete}>
+                {trash}
               </button>
             </div>
           </div>
